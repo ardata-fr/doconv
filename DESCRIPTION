@@ -4,9 +4,14 @@ Title: Document Conversion to PDF or PNG
 Version: 0.0.2
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
-    email = "david.gohel@ardata.fr")
+    email = "david.gohel@ardata.fr"),
+    person(given = "ArData", role = "cph")
     )
-Description: A set of tools to help converting documents to pdf or png.
+Description: A set of tools to help converting documents to pdf or png. 
+ The tool offers a set of functions for converting 'Microsoft Word' or 
+ 'Microsoft PowerPoint' documents to 'PDF' format and also for converting 
+ them to images in the form of thumbnails. In order to work, 'LibreOffice' 
+ must be installed on the machine and possibly 'python'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

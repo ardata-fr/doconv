@@ -10,7 +10,8 @@ to_miniature(
   width = NULL,
   border_color = "#ccc",
   border_geometry = "2x2",
-  fileout = NULL
+  fileout = NULL,
+  use_docx2pdf = FALSE
 )
 }
 \arguments{
@@ -26,6 +27,12 @@ to_miniature(
 
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}
+
+\item{use_docx2pdf}{if TRUE (and if 'Microsoft Word' executable
+can be found as well as 'docx2pdf'), docx2pdf will be used to
+convert 'Word' documents to PDF. This makes it possible to have a
+PDF identical to the 'Word' display whereas with 'LibreOffice', this
+is not always the case.}
 }
 \value{
 a magick image object as returned by \code{\link[=image_read]{image_read()}}.

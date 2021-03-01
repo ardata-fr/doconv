@@ -86,12 +86,14 @@ images_to_miniature <- function(img_list, row = NULL, width = 650,
 
   if (is.null(row)) {
     row <- seq_along(img_list)
+  } else if(length(img_list) != length(row)){
+    stop("The length of the `row` argument does not correspond to the ",
+         "number of images to be processed.")
   }
 
   geometry <- sprintf("%.0fx", max(table(row)) * width)
 
   img_list <- lapply(img_list, image_border, color = border_color, geometry = border_geometry)
-
   img_list <- split(img_list, row)
   img_stack <- list()
   for (row_imgs in img_list) {

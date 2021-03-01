@@ -11,6 +11,11 @@
 #' @param border_geometry border geometry to be added around images
 #' @param fileout if not NULL, result is saved in a png file whose filename
 #' is defined by this argument.
+#' @param use_docx2pdf if TRUE (and if 'Microsoft Word' executable
+#' can be found as well as 'docx2pdf'), docx2pdf will be used to
+#' convert 'Word' documents to PDF. This makes it possible to have a
+#' PDF identical to the 'Word' display whereas with 'LibreOffice', this
+#' is not always the case.
 #' @return a magick image object as returned by [image_read()].
 #' @examples
 #' library(locatexec)
@@ -29,7 +34,7 @@
 #'   to_miniature(pptx_file)
 to_miniature <- function(filename, row = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
-                         fileout = NULL) {
+                         fileout = NULL, use_docx2pdf = FALSE) {
 
   if (!file.exists(filename)) {
     stop("filename does not exist")
@@ -46,7 +51,7 @@ to_miniature <- function(filename, row = NULL, width = NULL,
     docx_to_miniature(
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout)
+      fileout = fileout, use_docx2pdf = use_docx2pdf)
   } else if(grepl("\\.pdf$", filename)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
@@ -75,9 +80,13 @@ pdf_to_miniature <- function(filename, row = NULL, width = 650,
 
 docx_to_miniature <- function(filename, row = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
-                              fileout = NULL) {
+                              fileout = NULL, use_docx2pdf = FALSE) {
   pdf_filename <- tempfile(fileext = ".pdf")
-  docx2pdf(input = filename, output = pdf_filename)
+
+  if(use_docx2pdf && exec_available("word") && docx2pdf_available())
+    docx2pdf(input = filename, output = pdf_filename)
+  else to_pdf(input = filename, output = pdf_filename)
+
   x <- pdf_to_miniature(pdf_filename,
     row = row, width = width,
     border_color = border_color, border_geometry = border_geometry
