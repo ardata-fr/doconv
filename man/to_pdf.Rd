@@ -4,10 +4,20 @@
 \alias{to_pdf}
 \title{Convert documents to pdf}
 \usage{
-to_pdf(input, output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input))
+to_pdf(
+  input,
+  output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input),
+  use_docx2pdf = FALSE
+)
 }
 \arguments{
 \item{input, output}{file input and optional file output.}
+
+\item{use_docx2pdf}{if TRUE (and if 'Microsoft Word' executable
+can be found as well as 'docx2pdf'), docx2pdf will be used to
+convert 'Word' documents to PDF. This makes it possible to have a
+PDF identical to the 'Word' display whereas with 'LibreOffice', this
+is not always the case.}
 }
 \description{
 Convert documents to pdf using Libre Office. It
