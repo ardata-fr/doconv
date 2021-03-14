@@ -87,9 +87,11 @@ images_to_miniature <- function(img_list, row = NULL, width = 650,
   if (is.null(row)) {
     row <- seq_along(img_list)
   } else if(length(img_list) != length(row)){
-    stop("The length of the `row` argument does not correspond to the ",
-         "number of images to be processed.")
+    stop("The length of the `row` argument (", length(row), ") does not correspond to the ",
+         "number of images (", length(img_list), ") to be processed.")
   }
+  img_list <- img_list[row > 0]
+  row <- row[row > 0]
 
   geometry <- sprintf("%.0fx", max(table(row)) * width)
 
