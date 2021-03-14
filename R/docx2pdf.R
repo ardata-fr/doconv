@@ -104,7 +104,8 @@ docx2pdf_exec <- function() {
 #' implemented via JXA (Javascript for Automation, aka AppleScript in JS).
 #'
 #' This is a simple call to python module 'docx2pdf'.
-#' @param input,output file input and optional file output.
+#' @param input,output file input and optional file output (default
+#' to input with pdf extension).
 #' @examples
 #' library(locatexec)
 #' if (exec_available('python') && docx2pdf_available()) {
@@ -118,6 +119,7 @@ docx2pdf_exec <- function() {
 #'     message(basename(out), " is existing now.")
 #'   }
 #' }
+#' @return the name of the produced pdf (the same value as `output`)
 #' @family tools for docx2pdf
 docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
 

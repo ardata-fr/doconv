@@ -21,6 +21,7 @@
 #'
 #'   out <- to_pdf(input = file)
 #' }
+#' @return the name of the produced pdf (the same value as `output`)
 #' @importFrom locatexec libreoffice_exec
 #' @importFrom locatexec is_windows
 to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),

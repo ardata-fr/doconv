@@ -3,10 +3,11 @@
 
 # doconv
 
-The tool offers a set of functions for converting Microsoft Word or
-Microsoft PowerPoint documents to PDF format and also for converting
-them to images in the form of thumbnails. In order to work, LibreOffice
-must be installed on the machine and possibly python.
+The tool offers a set of functions for converting ‘Microsoft Word’ or
+‘Microsoft PowerPoint’ documents to ‘PDF’ format and also for
+converting them to images in the form of thumbnails. In order to work,
+‘LibreOffice’ must be installed on the machine and possibly ‘python’
+and ‘Microsoft Word’.
 
 <!-- badges: start -->
 

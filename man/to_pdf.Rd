@@ -19,6 +19,9 @@ convert 'Word' documents to PDF. This makes it possible to have a
 PDF identical to the 'Word' display whereas with 'LibreOffice', this
 is not always the case.}
 }
+\value{
+the name of the produced pdf (the same value as \code{output})
+}
 \description{
 Convert documents to pdf using Libre Office. It
 supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"

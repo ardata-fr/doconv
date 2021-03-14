@@ -7,7 +7,11 @@
 docx2pdf(input, output = gsub("\\\\.docx$", ".pdf", input))
 }
 \arguments{
-\item{input, output}{file input and optional file output.}
+\item{input, output}{file input and optional file output (default
+to input with pdf extension).}
+}
+\value{
+the name of the produced pdf (the same value as \code{output})
 }
 \description{
 Convert docx to pdf directly using "Microsoft Word".
