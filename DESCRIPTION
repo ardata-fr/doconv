@@ -20,4 +20,3 @@ RoxygenNote: 7.1.1
 Depends: R (>= 4.0.0)
 Imports: tools, magick, pdftools, locatexec
 SystemRequirements: python, LibreOffice
-Remotes: ardata-fr/locatexec
