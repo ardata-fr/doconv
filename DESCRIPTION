@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
@@ -12,6 +12,9 @@ Description: Functions to convert documents to 'PDF' or 'PNG'.
  'Microsoft PowerPoint' documents to 'PDF' format and also for converting 
  them to images in the form of thumbnails. In order to work, 'LibreOffice' 
  must be installed on the machine and possibly 'python' and 'Microsoft Word'.
+ If the latter is available, it can be used to produce PDF documents identical 
+ to the originals, otherwise, 'LibreOffice' is used (and can sometimes 
+ generate results slightly different from the originals).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

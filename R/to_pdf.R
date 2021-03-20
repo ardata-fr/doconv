@@ -44,18 +44,17 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     docx2pdf(input = input, output = output)
   } else {
     file_set_origin <- list.files(default_root, full.names = TRUE)
-    old_warn <- getOption("warn")
-    options(warn = -1)
-    info <- try(
-      system2(
-        libreoffice_exec(),
-        args = c("--headless",
-                 if(!is_windows()) "\"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}\"",
-                 "--convert-to", "pdf:writer_pdf_Export",
-                 "--outdir", shQuote(default_root, type = "cmd"),
-                 shQuote(input, type = "cmd")),
-        stderr = TRUE, stdout = TRUE), silent = TRUE)
-    options(warn = old_warn)
+    suppressWarnings(
+      info <- try(
+        system2(
+          libreoffice_exec(),
+          args = c("--headless",
+                   if(!is_windows()) "\"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}\"",
+                   "--convert-to", "pdf:writer_pdf_Export",
+                   "--outdir", shQuote(default_root, type = "cmd"),
+                   shQuote(input, type = "cmd")),
+          stderr = TRUE, stdout = TRUE), silent = TRUE)
+    )
     out <- !1 %in% attr(info, "status")
     if(!out) {
       stop(paste0(info, collapse = "\n"))

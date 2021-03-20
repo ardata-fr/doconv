@@ -13,11 +13,10 @@
 #' }
 #' @family tools for docx2pdf
 docx2pdf_available <- function(error = FALSE) {
-  old_warn <- getOption("warn")
-  options(warn = -1)
-  info <- try(system2(python_exec(), args = c("-c", shQuote("import docx2pdf", type = "cmd")),
-                  stderr = TRUE, stdout = TRUE), silent = TRUE)
-  options(warn = old_warn)
+  suppressWarnings(
+    info <- try(system2(python_exec(), args = c("-c", shQuote("import docx2pdf", type = "cmd")),
+                    stderr = TRUE, stdout = TRUE), silent = TRUE)
+  )
   out <- !1 %in% attr(info, "status")
 
   if (error && !out) {
@@ -47,11 +46,10 @@ docx2pdf_available <- function(error = FALSE) {
 #' @family tools for docx2pdf
 docx2pdf_uninstall <- function() {
 
-  old_warn <- getOption("warn")
-  options(warn = -1)
-  info <- try(system2(pip_exec(), args = c("uninstall", "-y", "docx2pdf"),
-                      stderr = TRUE, stdout = TRUE), silent = TRUE)
-  options(warn = old_warn)
+  suppressWarnings(
+    info <- try(system2(pip_exec(), args = c("uninstall", "-y", "docx2pdf"),
+                        stderr = TRUE, stdout = TRUE), silent = TRUE)
+  )
   out <- !1 %in% attr(info, "status")
   out
 }
@@ -79,11 +77,10 @@ docx2pdf_install <- function(force = FALSE) {
     docx2pdf_uninstall()
   }
 
-  old_warn <- getOption("warn")
-  options(warn = -1)
-  info <- try(system2(pip_exec(), args = c("install", "docx2pdf"),
-                      stderr = TRUE, stdout = TRUE), silent = TRUE)
-  options(warn = old_warn)
+  suppressWarnings(
+    info <- try(system2(pip_exec(), args = c("install", "docx2pdf"),
+      stderr = TRUE, stdout = TRUE), silent = TRUE)
+  )
   out <- !1 %in% attr(info, "status")
   out
 }
@@ -138,14 +135,13 @@ docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
             overwrite = TRUE)
   output_name <- file.path(default_root, gsub("\\.docx$", ".pdf", basename(input)))
 
-  old_warn <- getOption("warn")
-  options(warn = -1)
-  info <- try(
-    system2(
-      docx2pdf_exec(),
-      args = shQuote(default_root, type = "cmd"),
-      stderr = TRUE, stdout = TRUE), silent = TRUE)
-  options(warn = old_warn)
+  suppressWarnings(
+    info <- try(
+      system2(
+        docx2pdf_exec(),
+        args = shQuote(default_root, type = "cmd"),
+        stderr = TRUE, stdout = TRUE), silent = TRUE)
+  )
   out <- !1 %in% attr(info, "status")
   if(!out) {
     stop(paste0(info, collapse = "\n"))
