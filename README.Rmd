@@ -35,6 +35,7 @@ You can install the latest version from GitHub with:
 devtools::install_github("ardata-fr/doconv")
 ```
 
+You need R version `>= 4.0` to use this package.
 
 ## Example
 
@@ -54,7 +55,8 @@ to_miniature(
 ```
 
 It uses 'LibreOffice' to convert Word or PowerPoint documents to PDF. It
-probably works with other types of document. If option `use_docx2pdf=TRUE`,
+probably works with other types of document but the package is only 
+focusing on PDF, Word and PowerPoint documents. If option `use_docx2pdf=TRUE`,
 [docx2pdf](https://github.com/AlJohri/docx2pdf) is used instead of 'LibreOffice'
 to convert Word files to PDF; you can only use that option if 'Word' and
 'docx2pdf' is installed on your machine.
@@ -77,10 +79,44 @@ to_pdf(docx_file, output = "bookdown.pdf")
 unlink(c("bookdown.pdf", "first_example.pdf") )
 ```
 
+## Setup
+
+First 'LibreOffice' must be available on your machine, please visit https://www.libreoffice.org/ and follow the installation instructions.
+
+> If 'Microsoft Word' is available on your machine, you can get images 
+or pdf that looks exactly the same than the document rendered with 
+'Microsoft Word', if not 'LibreOffice' is used to convert Word documents 
+to PDF or as an image, in this case, be aware that 'LibreOffice' does not 
+always render the document as 'Microsoft Word' would do (sections can be 
+misunderstood for example). 
+
+If 'Microsoft Word' is available on your machine, install python module 
+'docx2pdf' with the following instructions (and make sure beforehand that 
+python is available on your machine too):
+
+```{r eval=FALSE}
+library(locatexec)
+library(doconv)
+if(exec_available("python", error = TRUE) && # check that python is available
+   !docx2pdf_available()){ # check that docx2pdf is available
+  docx2pdf_install()
+}
+```
+
+## docx2pdf and batch process
+
+If docx2pdf process Word documents that contains TOC or any Word computed field, 
+the user will be invited to confirm the operation with a Word pop-up that must be 
+confirmed. That makes the process unreliable when running in non-interactive mode. 
+
+**Then `docx2pdf` option should only be used in interactive mode.**
+
+
 ## Related work
 
 * Packages [docxtractr](http://cran.r-project.org/package=docxtractr) is providing 
-`convert_to_pdf()` that works very well. 
+`convert_to_pdf()` that works very well. The functionality integrated in Bob Rudis' 
+package depends only on 'LibreOffice'. 
 
 ```{r include=FALSE}
 minimage::compress_images("man/figures", "man/figures", overwrite = TRUE)
