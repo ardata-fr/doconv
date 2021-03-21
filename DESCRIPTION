@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.0.4.002
+Version: 0.0.4.003
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
@@ -19,6 +19,5 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Depends: R (>= 4.0.0)
-Imports: tools, magick, pdftools, locatexec
+Imports: magick, pdftools, locatexec, rappdirs
 SystemRequirements: python, LibreOffice

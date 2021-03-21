@@ -1,6 +1,7 @@
-#' @importFrom tools R_user_dir
+#' @importFrom rappdirs user_data_dir
 working_directory <- function(){
-  dir <- R_user_dir(package = "doconv", which = "data")
+  dir <- user_data_dir(appname = "doconv", appauthor = "ardata")
+  dir <- absolute_path(dir)
   file.path(dir, "tmp_convert")
 }
 
