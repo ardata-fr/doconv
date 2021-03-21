@@ -34,7 +34,7 @@ if (exec_available("libreoffice")) {
   file <- tempfile(fileext = ".pptx")
   file.copy(
     system.file(package = "doconv",
-      "doc-examples/first_example.pptx"),
+      "doc-examples/example.pptx"),
     file)
 
   out <- to_pdf(input = file)

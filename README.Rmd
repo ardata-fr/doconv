@@ -47,10 +47,10 @@ library(doconv)
 You can generate thumbails as an image by using `to_miniature`:
 
 ```{r}
-docx_file <- system.file(package = "doconv", "doc-examples/bookdown.docx")
+docx_file <- system.file(package = "doconv", "doc-examples/example.docx")
 to_miniature(
   filename = docx_file, 
-  row = c(1, 1, 1, 2, 2, 2),
+  row = c(1, 1, 2, 2),
   use_docx2pdf = TRUE)
 ```
 
@@ -64,19 +64,19 @@ to convert Word files to PDF; you can only use that option if 'Word' and
 ## Convert a PowerPoint file to PDF
 
 ```{r}
-docx_file <- system.file(package = "doconv", "doc-examples/first_example.pptx")
-to_pdf(docx_file, output = "first_example.pdf")
-to_miniature("first_example.pdf", width = 750)
+docx_file <- system.file(package = "doconv", "doc-examples/example.pptx")
+to_pdf(docx_file, output = "pptx_example.pdf")
+to_miniature("pptx_example.pdf", width = 1000)
 ```
 
 ### Convert a Word file to PDF
 
 ```{r}
-to_pdf(docx_file, output = "bookdown.pdf")
+to_pdf(docx_file, output = "docx_example.pdf")
 ```
 
 ```{r include=FALSE}
-unlink(c("bookdown.pdf", "first_example.pdf") )
+unlink(c("docx_example.pdf", "pptx_example.pdf") )
 ```
 
 ## Setup
@@ -91,7 +91,7 @@ always render the document as 'Microsoft Word' would do (sections can be
 misunderstood for example). 
 
 If 'Microsoft Word' is available on your machine, install python module 
-'docx2pdf' with the following instructions (and make sure beforehand that 
+'docx2pdf' with the command `docx2pdf_install()` (and make sure beforehand that 
 python is available on your machine too):
 
 ```{r eval=FALSE}
@@ -109,7 +109,7 @@ If docx2pdf process Word documents that contains TOC or any Word computed field,
 the user will be invited to confirm the operation with a Word pop-up that must be 
 confirmed. That makes the process unreliable when running in non-interactive mode. 
 
-**Then `docx2pdf` option should only be used in interactive mode.**
+**Then `docx2pdf` option should only be used in interactive mode when Word is available.**
 
 
 ## Related work

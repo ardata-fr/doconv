@@ -1,0 +1,74 @@
+---
+date: "`r Sys.Date()`"
+title: "A Word document"
+output: 
+  officedown::rdocx_document:
+    mapstyles:
+      Normal: ['First Paragraph']
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.cap = TRUE)
+library(officedown)
+library(officer)
+library(ggplot2)
+```
+
+## Table of content
+
+<!---BLOCK_TOC--->
+
+\newpage
+
+## Machin
+
+<!---BLOCK_MULTICOL_START--->
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Curabitur ligula quam, iaculis faucibus
+orci quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar,
+laoreet tellus sed, sollicitudin tortor. Curabitur ligula quam, iaculis faucibus
+orci quis, vestibulum lobortis lectus. Suspendisse fringilla nisl pulvinar,
+laoreet tellus sed, sollicitudin tortor. 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. 
+
+`r run_columnbreak()`Suspendisse fringilla nisl pulvinar, laoreet tellus sed, sollicitudin tortor. 
+
+```{r tab.cap="cars", tab.id="cars"}
+head(cars)
+```
+
+<!---BLOCK_MULTICOL_STOP{widths: [3,3], space: 0.2, sep: true}--->
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pulvinar arcu,
+quis aliquam dui. In at cursus ante. Vestibulum non sagittis lacus. Duis vitae
+iaculis dui. 
+
+Vivamus tempor, nibh ut pretium tempus, enim lorem dignissim quam,
+at euismod massa magna at magna.
+
+## Machine
+
+```{r tab.cap="caption 1", tab.id="mtcars"}
+head(mtcars, n = 15)
+```
+
+\newpage
+
+## Machin machine 
+
+```{r fig.cap="A boxplot", fig.id = "boxplot"}
+ggplot(economics, aes(date, unemploy / pop)) +
+  geom_line() + theme_minimal()
+```
+
+## List of figures
+
+<!---BLOCK_TOC{seq_id: 'fig'}--->
+
+## List of tables
+
+<!---BLOCK_TOC{seq_id: 'tab'}--->

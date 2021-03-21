@@ -27,7 +27,7 @@ This is a simple call to python module 'docx2pdf'.
 library(locatexec)
 if (exec_available('python') && docx2pdf_available()) {
   file <- system.file(package = "doconv",
-    "doc-examples/bookdown.docx")
+    "doc-examples/example.docx")
 
   out <- docx2pdf(input = file,
     output = tempfile(fileext = ".pdf"))

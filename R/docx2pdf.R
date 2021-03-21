@@ -90,7 +90,11 @@ docx2pdf_install <- function(force = FALSE) {
 docx2pdf_exec <- function() {
   exec_available("python", error = TRUE)
   docx2pdf_available(error = TRUE)
-  file.path(dirname(python_exec()), if(is_windows()) "Scripts", "docx2pdf")
+
+  bin <- "docx2pdf"
+  if(is_windows()) bin <- paste0("Scripts/", bin)
+
+  file.path(dirname(python_exec()), bin)
 }
 
 #' @export
@@ -109,7 +113,7 @@ docx2pdf_exec <- function() {
 #' library(locatexec)
 #' if (exec_available('python') && docx2pdf_available()) {
 #'   file <- system.file(package = "doconv",
-#'     "doc-examples/bookdown.docx")
+#'     "doc-examples/example.docx")
 #'
 #'   out <- docx2pdf(input = file,
 #'     output = tempfile(fileext = ".pdf"))
@@ -149,6 +153,7 @@ docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
     stop(paste0(info, collapse = "\n"))
   }
   success <- file.copy(from = output_name, to = output, overwrite = TRUE)
+
   unlink(file.path(default_root, basename(input)), force = TRUE)
   rm_working_directory()
   if(!success) stop("could not convert ", input)

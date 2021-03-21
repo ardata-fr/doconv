@@ -21,14 +21,14 @@
 #' library(locatexec)
 #' docx_file <- system.file(
 #'   package = "doconv",
-#'   "doc-examples/bookdown.docx"
+#'   "doc-examples/example.docx"
 #' )
 #' if(exec_available("python") && docx2pdf_available())
 #'   to_miniature(docx_file)
 #'
 #' pptx_file <- system.file(
 #'   package = "doconv",
-#'   "doc-examples/first_example.pptx"
+#'   "doc-examples/example.pptx"
 #' )
 #' if(exec_available("libreoffice"))
 #'   to_miniature(pptx_file)

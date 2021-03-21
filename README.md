@@ -39,10 +39,10 @@ library(doconv)
 You can generate thumbails as an image by using `to_miniature`:
 
 ``` r
-docx_file <- system.file(package = "doconv", "doc-examples/bookdown.docx")
+docx_file <- system.file(package = "doconv", "doc-examples/example.docx")
 to_miniature(
   filename = docx_file, 
-  row = c(1, 1, 1, 2, 2, 2),
+  row = c(1, 1, 2, 2),
   use_docx2pdf = TRUE)
 ```
 
@@ -58,10 +58,10 @@ use that option if ‘Word’ and ‘docx2pdf’ is installed on your machine.
 ## Convert a PowerPoint file to PDF
 
 ``` r
-docx_file <- system.file(package = "doconv", "doc-examples/first_example.pptx")
-to_pdf(docx_file, output = "first_example.pdf")
-#> [1] "first_example.pdf"
-to_miniature("first_example.pdf", width = 750)
+docx_file <- system.file(package = "doconv", "doc-examples/example.pptx")
+to_pdf(docx_file, output = "pptx_example.pdf")
+#> [1] "pptx_example.pdf"
+to_miniature("pptx_example.pdf", width = 1000)
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -69,8 +69,8 @@ to_miniature("first_example.pdf", width = 750)
 ### Convert a Word file to PDF
 
 ``` r
-to_pdf(docx_file, output = "bookdown.pdf")
-#> [1] "bookdown.pdf"
+to_pdf(docx_file, output = "docx_example.pdf")
+#> [1] "docx_example.pdf"
 ```
 
 ## Setup
@@ -86,8 +86,8 @@ First ‘LibreOffice’ must be available on your machine, please visit
 > Word’ would do (sections can be misunderstood for example).
 
 If ‘Microsoft Word’ is available on your machine, install python module
-‘docx2pdf’ with the following instructions (and make sure beforehand
-that python is available on your machine too):
+‘docx2pdf’ with the command `docx2pdf_install()` (and make sure
+beforehand that python is available on your machine too):
 
 ``` r
 library(locatexec)
@@ -105,7 +105,8 @@ computed field, the user will be invited to confirm the operation with a
 Word pop-up that must be confirmed. That makes the process unreliable
 when running in non-interactive mode.
 
-**Then `docx2pdf` option should only be used in interactive mode.**
+**Then `docx2pdf` option should only be used in interactive mode when
+Word is available.**
 
 ## Related work
 

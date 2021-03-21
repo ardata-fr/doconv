@@ -13,8 +13,7 @@ Description: Functions to convert documents to 'PDF' or 'PNG'.
  them to images in the form of thumbnails. In order to work, 'LibreOffice' 
  must be installed on the machine and possibly 'python' and 'Microsoft Word'.
  If the latter is available, it can be used to produce PDF documents identical 
- to the originals, otherwise, 'LibreOffice' is used (and can sometimes 
- generate results slightly different from the originals).
+ to the originals, otherwise, 'LibreOffice' is used.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
