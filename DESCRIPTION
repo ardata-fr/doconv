@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.0.3
+Version: 0.0.4.001
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),

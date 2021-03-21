@@ -85,10 +85,12 @@ docx2pdf_install <- function(force = FALSE) {
   out
 }
 
+
+#' @importFrom locatexec is_windows
 docx2pdf_exec <- function() {
   exec_available("python", error = TRUE)
   docx2pdf_available(error = TRUE)
-  file.path(dirname(python_exec()), "docx2pdf")
+  file.path(dirname(python_exec()), if(is_windows()) "Scripts", "docx2pdf")
 }
 
 #' @export
