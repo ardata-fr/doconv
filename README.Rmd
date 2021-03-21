@@ -114,7 +114,7 @@ confirmed. That makes the process unreliable when running in non-interactive mod
 
 ## Related work
 
-* Packages [docxtractr](http://cran.r-project.org/package=docxtractr) is providing 
+* Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr) is providing 
 `convert_to_pdf()` that works very well. The functionality integrated in Bob Rudis' 
 package depends only on 'LibreOffice'. 
 

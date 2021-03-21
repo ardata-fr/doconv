@@ -1,14 +1,32 @@
 #' @import magick
 #' @export
 #' @title Thumbnail of a document
-#' @description Convert a file to an image (magick image)
-#' where pages are arranged in a layout. Result can be saved
-#' to a png file.
-#' @param filename input file
-#' @param row row index for every pages
-#' @param width width of a single image
-#' @param border_color border color
-#' @param border_geometry border geometry to be added around images
+#' @description Convert a file into an image (magick image) where the
+#' pages are arranged in rows, each row can contain one to several pages.
+#'
+#' The result can be saved as a png file.
+#' @param filename input filename, a 'Microsoft Word' or a
+#' 'Microsoft Word' or a 'PDF' document.
+#' @param row row index for every pages. 0 are to be used to drop
+#' the page from the final minature.
+#'
+#' * `c(1, 1)` is to be used to specify that a 2 pages document
+#' is to be displayed in a single row with two columns.
+#' * `c(1, 1, 2, 3, 3)` is to be used to specify that a 5 pages document
+#' is to be displayed as: first row with pages 1 and 2, second row with page 3,
+#' third row with pages 4 and 5.
+#' * `c(1, 1, 0, 2, 2)` is to be used to specify that a 5 pages document
+#' is to be displayed as: first row with pages 1 and 2,
+#' second row with pages 4 and 5.
+#'
+#' @param width width of a single image, recommanded values are:
+#'
+#' * 650 for docx files
+#' * 750 for pptx files
+#'
+#' @param border_color border color, see [image_border()].
+#' @param border_geometry border geometry to be added around
+#' images, see [image_border()].
 #' @param fileout if not NULL, result is saved in a png file whose filename
 #' is defined by this argument.
 #' @param use_docx2pdf if TRUE (and if 'Microsoft Word' executable

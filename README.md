@@ -110,7 +110,7 @@ Word is available.**
 
 ## Related work
 
-  - Packages [docxtractr](http://cran.r-project.org/package=docxtractr)
+  - Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr)
     is providing `convert_to_pdf()` that works very well. The
     functionality integrated in Bob Rudis’ package depends only on
     ‘LibreOffice’.

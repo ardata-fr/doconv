@@ -15,15 +15,32 @@ to_miniature(
 )
 }
 \arguments{
-\item{filename}{input file}
+\item{filename}{input filename, a 'Microsoft Word' or a
+'Microsoft Word' or a 'PDF' document.}
 
-\item{row}{row index for every pages}
+\item{row}{row index for every pages. 0 are to be used to drop
+the page from the final minature.
+\itemize{
+\item \code{c(1, 1)} is to be used to specify that a 2 pages document
+is to be displayed in a single row with two columns.
+\item \code{c(1, 1, 2, 3, 3)} is to be used to specify that a 5 pages document
+is to be displayed as: first row with pages 1 and 2, second row with page 3,
+third row with pages 4 and 5.
+\item \code{c(1, 1, 0, 2, 2)} is to be used to specify that a 5 pages document
+is to be displayed as: first row with pages 1 and 2,
+second row with pages 4 and 5.
+}}
 
-\item{width}{width of a single image}
+\item{width}{width of a single image, recommanded values are:
+\itemize{
+\item 650 for docx files
+\item 750 for pptx files
+}}
 
-\item{border_color}{border color}
+\item{border_color}{border color, see \code{\link[=image_border]{image_border()}}.}
 
-\item{border_geometry}{border geometry to be added around images}
+\item{border_geometry}{border geometry to be added around
+images, see \code{\link[=image_border]{image_border()}}.}
 
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}
@@ -38,9 +55,10 @@ is not always the case.}
 a magick image object as returned by \code{\link[=image_read]{image_read()}}.
 }
 \description{
-Convert a file to an image (magick image)
-where pages are arranged in a layout. Result can be saved
-to a png file.
+Convert a file into an image (magick image) where the
+pages are arranged in rows, each row can contain one to several pages.
+
+The result can be saved as a png file.
 }
 \examples{
 library(locatexec)
