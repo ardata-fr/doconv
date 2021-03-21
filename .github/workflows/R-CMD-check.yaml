@@ -58,6 +58,9 @@ jobs:
            sudo apt install libreoffice
            sysreqs="export DEBIAN_FRONTEND=noninteractive; apt-get -y update && apt-get install -y libpoppler-cpp-dev libssl-dev zlib1g-dev pandoc-citeproc libmagic-dev libxml2-dev libmagick++-dev libcairo2-dev imagemagick libxft-dev libcurl4-openssl-dev librsvg2-dev libharfbuzz-dev libfribidi-dev libtiff-dev libpng-dev"
            sudo -s eval "$sysreqs"
+        if: matrix.config.os == 'windows-latest'
+        run: |
+          choco install libreoffice-fresh -y
 
       - uses: actions/setup-python@v2
         with:
