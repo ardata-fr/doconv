@@ -94,14 +94,10 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
-      - name: set env vars
-        if: matrix.config.os == 'ubuntu-16.04'
-        env:
-          LD_LIBRARY_PATH: /usr/lib/libreoffice/program/
-
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
+          LD_LIBRARY_PATH: /usr/lib/libreoffice/program/
         run: rcmdcheck::rcmdcheck(args = c("--no-manual"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
