@@ -18,22 +18,13 @@ init_working_directory <- function(force = TRUE){
   dir
 }
 
-absolute_path <- function(x) {
-  if (length(x) != 1L) {
+absolute_path <- function(x){
+
+  if (length(x) != 1L)
     stop("'x' must be a single character string")
-  }
   epath <- path.expand(x)
 
-  if (file.exists(epath)) {
-    epath <- normalizePath(epath, "/", mustWork = TRUE)
-  } else {
-    if (!dir.exists(dirname(epath))) {
-      stop("directory ", x, " does not exist.", call. = FALSE)
-    }
-    cat("", file = epath)
-    epath <- normalizePath(epath, "/", mustWork = TRUE)
-    unlink(epath)
-  }
+  epath <- normalizePath(epath, "/", mustWork = file.exists(epath))
   epath
 }
 
