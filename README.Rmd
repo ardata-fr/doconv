@@ -35,8 +35,6 @@ You can install the latest version from GitHub with:
 devtools::install_github("ardata-fr/doconv")
 ```
 
-You need R version `>= 4.0` to use this package.
-
 ## Example
 
 ```{r}
@@ -105,9 +103,9 @@ if(exec_available("python", error = TRUE) && # check that python is available
 
 ## docx2pdf and batch process
 
-If docx2pdf process Word documents that contains TOC or any Word computed field, 
-the user will be invited to confirm the operation with a Word pop-up that must be 
-confirmed. That makes the process unreliable when running in non-interactive mode. 
+If docx2pdf process Word documents that contains TOC or any Word computed field,
+the user will be invited to confirm the operation with a Word dialog box. That makes
+the process unreliable when running in non-interactive mode. 
 
 **Then `docx2pdf` option should only be used in interactive mode when Word is available.**
 

@@ -26,8 +26,6 @@ You can install the latest version from GitHub with:
 devtools::install_github("ardata-fr/doconv")
 ```
 
-You need R version `>= 4.0` to use this package.
-
 ## Example
 
 ``` r
@@ -60,7 +58,6 @@ use that option if ‘Word’ and ‘docx2pdf’ is installed on your machine.
 ``` r
 docx_file <- system.file(package = "doconv", "doc-examples/example.pptx")
 to_pdf(docx_file, output = "pptx_example.pdf")
-#> [1] "pptx_example.pdf"
 to_miniature("pptx_example.pdf", width = 1000)
 ```
 
@@ -70,7 +67,6 @@ to_miniature("pptx_example.pdf", width = 1000)
 
 ``` r
 to_pdf(docx_file, output = "docx_example.pdf")
-#> [1] "docx_example.pdf"
 ```
 
 ## Setup
@@ -102,8 +98,8 @@ if(exec_available("python", error = TRUE) && # check that python is available
 
 If docx2pdf process Word documents that contains TOC or any Word
 computed field, the user will be invited to confirm the operation with a
-Word pop-up that must be confirmed. That makes the process unreliable
-when running in non-interactive mode.
+Word dialog box. That makes the process unreliable when running in
+non-interactive mode.
 
 **Then `docx2pdf` option should only be used in interactive mode when
 Word is available.**

@@ -4,24 +4,40 @@
 #' supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"
 #' can also be converted but some Word features are not supported
 #' such as sections.
-#' @param input,output file input and optional file output.
+#' @param input,output file input and optional file output. If output
+#' file is not provided, the value will be the value of input file with
+#' extension "pdf".
 #' @param use_docx2pdf if TRUE (and if 'Microsoft Word' executable
 #' can be found as well as 'docx2pdf'), docx2pdf will be used to
 #' convert 'Word' documents to PDF. This makes it possible to have a
 #' PDF identical to the 'Word' display whereas with 'LibreOffice', this
 #' is not always the case.
+#' @section Ubuntu platforms:
+#' On some Ubuntu platforms, 'LibreOffice' require to add in
+#' the environment variable `LD_LIBRARY_PATH` the following path:
+#' `/usr/lib/libreoffice/program` (you should see the message
+#' "libreglo.so cannot open shared object file" if it is the case). This
+#' can be done with R
+#' command `Sys.setenv(LD_LIBRARY_PATH = "/usr/lib/libreoffice/program/")`
 #' @examples
 #' library(locatexec)
 #' if (exec_available("libreoffice")) {
-#'   file <- tempfile(fileext = ".pptx")
-#'   file.copy(
-#'     system.file(package = "doconv",
-#'       "doc-examples/example.pptx"),
-#'     file)
 #'
-#'   out <- to_pdf(input = file)
+#'   out_pptx <- tempfile(fileext = ".pdf")
+#'   file <- system.file(package = "doconv",
+#'     "doc-examples/example.pptx")
+#'
+#'   to_pdf(input = file, output = out_pptx)
+#'
+#'   out_docx <- tempfile(fileext = ".pdf")
+#'   file <- system.file(package = "doconv",
+#'     "doc-examples/example.docx")
+#'
+#'   to_pdf(input = file, output = out_docx)
+#'
 #' }
-#' @return the name of the produced pdf (the same value as `output`)
+#' @return the name of the produced pdf (the same value as `output`),
+#' invisibly.
 #' @importFrom locatexec libreoffice_exec
 #' @importFrom locatexec is_windows
 to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
@@ -70,8 +86,6 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     }
   }
 
-
-
-  output
+  invisible(output)
 }
 

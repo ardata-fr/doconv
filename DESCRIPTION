@@ -7,17 +7,16 @@ Authors@R: c(
     email = "david.gohel@ardata.fr"),
     person(given = "ArData", role = "cph")
     )
-Description: Functions to convert documents to 'PDF' or 'PNG'. 
- The tool offers a set of functions for converting 'Microsoft Word' or 
- 'Microsoft PowerPoint' documents to 'PDF' format and also for converting 
- them to images in the form of thumbnails. In order to work, 'LibreOffice' 
- must be installed on the machine and possibly 'python' and 'Microsoft Word'.
- If the latter is available, it can be used to produce PDF documents identical 
- to the originals, otherwise, 'LibreOffice' is used.
+Description: Functions to convert 'Microsoft Word' or 'Microsoft PowerPoint' 
+ documents to 'PDF' format and also for converting them into a thumbnail. 
+ In order to work, 'LibreOffice' must be installed on the machine and 
+ possibly 'python' and 'Microsoft Word'. If the latter is available, 
+ it can be used to produce PDF documents identical to the originals, 
+ otherwise, 'LibreOffice' is used.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: magick, pdftools, locatexec, rappdirs
-SystemRequirements: python, LibreOffice
+BugReports: https://github.com/ardata-fr/doconv/issues
