@@ -13,8 +13,6 @@ and ‘Microsoft Word’.
 
 [![R build
 status](https://github.com/ardata-fr/doconv/workflows/R-CMD-check/badge.svg)](https://github.com/ardata-fr/doconv/actions)
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 ## Installation
