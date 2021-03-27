@@ -21,8 +21,13 @@ library(locatexec)
 if(exec_available("python") &&
    exec_version("python") > numeric_version("3") &&
    !docx2pdf_available()) {
+  \donttest{
+  # this will install and uninstall 'docx2pdf' (i.e. `pip install docx2pdf`)
+  # in your python environnement. It can run during 10s and
+  # require user to have write permission in python environnement.
   docx2pdf_install()
   docx2pdf_uninstall()
+  }
 }
 }
 \seealso{

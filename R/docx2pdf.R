@@ -40,8 +40,13 @@ docx2pdf_available <- function(error = FALSE) {
 #' if(exec_available("python") &&
 #'    exec_version("python") > numeric_version("3") &&
 #'    docx2pdf_available()) {
+#'   \donttest{
+#'   # this will uninstall and install 'docx2pdf' (i.e. `pip install docx2pdf`)
+#'   # in your python environnement. It can run during 10s and
+#'   # require user to have write permission in python environnement.
 #'   docx2pdf_uninstall()
 #'   docx2pdf_install()
+#'   }
 #' }
 #' @family tools for docx2pdf
 docx2pdf_uninstall <- function() {
@@ -67,8 +72,13 @@ docx2pdf_uninstall <- function() {
 #' if(exec_available("python") &&
 #'    exec_version("python") > numeric_version("3") &&
 #'    !docx2pdf_available()) {
+#'   \donttest{
+#'   # this will install and uninstall 'docx2pdf' (i.e. `pip install docx2pdf`)
+#'   # in your python environnement. It can run during 10s and
+#'   # require user to have write permission in python environnement.
 #'   docx2pdf_install()
 #'   docx2pdf_uninstall()
+#'   }
 #' }
 #' @importFrom locatexec pip_exec exec_available
 #' @family tools for docx2pdf

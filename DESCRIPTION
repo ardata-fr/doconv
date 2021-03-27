@@ -15,7 +15,6 @@ Description: Functions to convert 'Microsoft Word' or 'Microsoft PowerPoint'
  otherwise, 'LibreOffice' is used.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: magick, pdftools, locatexec, rappdirs
