@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.1.1.001
+Version: 0.1.1
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
@@ -19,3 +19,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: magick, pdftools, locatexec, rappdirs
 BugReports: https://github.com/ardata-fr/doconv/issues
+SystemRequirements: LibreOffice, Microsoft Word

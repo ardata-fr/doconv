@@ -72,6 +72,14 @@ to_pdf(docx_file, output = "docx_example.pdf")
 First ‘LibreOffice’ must be available on your machine, please visit
 <https://www.libreoffice.org/> and follow the installation instructions.
 
+Use function `check_libreoffice_export()` to check that the software is
+installed and can export to PDF:
+
+``` r
+check_libreoffice_export()
+#> [1] TRUE
+```
+
 > If ‘Microsoft Word’ is available on your machine, you can get images
 > or pdf that looks exactly the same than the document rendered with
 > ‘Microsoft Word’, if not ‘LibreOffice’ is used to convert Word

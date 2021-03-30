@@ -4,10 +4,9 @@
 - ubuntu 16.04 (release)
 - macOS (release)
 - winbuilder (with older, release and devel) 
+- fedora (devel) with libreoffice-base
+- fedora (devel) with libreoffice
 
 ## R CMD check results
 
-There were no ERROR or WARNING. There were one NOTE:
-
-* This is a new release.
-
+There were no ERROR, WARNING or NOTE.
