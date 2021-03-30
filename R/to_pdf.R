@@ -21,7 +21,7 @@
 #' command `Sys.setenv(LD_LIBRARY_PATH = "/usr/lib/libreoffice/program/")`
 #' @examples
 #' library(locatexec)
-#' if (exec_available("libreoffice")) {
+#' if (exec_available("libreoffice") && check_libreoffice_export()) {
 #'
 #'   out_pptx <- tempfile(fileext = ".pdf")
 #'   file <- system.file(package = "doconv",
@@ -87,5 +87,46 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
   }
 
   invisible(output)
+}
+
+#' @export
+#' @title Check if PDF export is functional
+#' @description Test if 'LibreOffice' can export to PDF.
+#' An attempt to export to PDF is made to confirm that
+#' the PDF export is functional.
+#' @return a single logical value.
+#' @examples
+#' library(locatexec)
+#' if(exec_available("libreoffice")){
+#'   check_libreoffice_export()
+#' }
+check_libreoffice_export <- function() {
+
+  init_working_directory(force = TRUE)
+  default_root <- working_directory()
+
+  input <- file.path(default_root, "minimal-word.docx")
+
+  file.copy(
+    system.file(package = "doconv", "doc-examples", "minimal-word.docx"),
+    default_root
+  )
+
+  suppressWarnings(
+    try(
+      system2(
+        libreoffice_exec(),
+        args = c("--headless",# useless unless with older versions
+                 if(!is_windows()) "\"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}\"",
+                 "--convert-to", "pdf:writer_pdf_Export",
+                 "--outdir", shQuote(default_root, type = "cmd"),
+                 shQuote(input, type = "cmd")),
+        stderr = TRUE, stdout = TRUE), silent = TRUE)
+  )
+  expected <- file.path(default_root, "minimal-word.pdf")
+  success <- file.exists(expected)
+  rm_working_directory()
+
+  success
 }
 

@@ -42,13 +42,13 @@
 #'   "doc-examples/example.docx"
 #' )
 #' if(exec_available("python") && docx2pdf_available())
-#'   to_miniature(docx_file)
+#'   to_miniature(docx_file, use_docx2pdf = TRUE)
 #'
 #' pptx_file <- system.file(
 #'   package = "doconv",
 #'   "doc-examples/example.pptx"
 #' )
-#' if(exec_available("libreoffice"))
+#' if(exec_available("libreoffice") && check_libreoffice_export())
 #'   to_miniature(pptx_file)
 to_miniature <- function(filename, row = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",

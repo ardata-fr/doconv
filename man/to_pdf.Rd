@@ -43,7 +43,7 @@ command \code{Sys.setenv(LD_LIBRARY_PATH = "/usr/lib/libreoffice/program/")}
 
 \examples{
 library(locatexec)
-if (exec_available("libreoffice")) {
+if (exec_available("libreoffice") && check_libreoffice_export()) {
 
   out_pptx <- tempfile(fileext = ".pdf")
   file <- system.file(package = "doconv",

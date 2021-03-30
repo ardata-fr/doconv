@@ -67,12 +67,12 @@ docx_file <- system.file(
   "doc-examples/example.docx"
 )
 if(exec_available("python") && docx2pdf_available())
-  to_miniature(docx_file)
+  to_miniature(docx_file, use_docx2pdf = TRUE)
 
 pptx_file <- system.file(
   package = "doconv",
   "doc-examples/example.pptx"
 )
-if(exec_available("libreoffice"))
+if(exec_available("libreoffice") && check_libreoffice_export())
   to_miniature(pptx_file)
 }
