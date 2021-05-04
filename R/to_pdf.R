@@ -55,6 +55,9 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     to = default_root,
     overwrite = TRUE
   )
+  tmp_user <- tempfile(pattern = "lo_", fileext = "")
+  on.exit(unlink(tmp_user, recursive = TRUE, force = TRUE))
+
 
   if(grepl("\\.(doc|docx)$", input) && use_docx2pdf && exec_available("word") && docx2pdf_available()){
     docx2pdf(input = input, output = output)
@@ -65,7 +68,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
         system2(
           libreoffice_exec(),
           args = c("--headless",
-                   if(!is_windows()) "\"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}\"",
+                   sprintf("\"-env:UserInstallation=file://%s\"", tmp_user),
                    "--convert-to", "pdf:writer_pdf_Export",
                    "--outdir", shQuote(default_root, type = "cmd"),
                    shQuote(input, type = "cmd")),
@@ -111,13 +114,15 @@ check_libreoffice_export <- function() {
     system.file(package = "doconv", "doc-examples", "minimal-word.docx"),
     default_root
   )
+  tmp_user <- tempfile(pattern = "lo_", fileext = "")
+  on.exit(unlink(tmp_user, recursive = TRUE, force = TRUE))
 
   suppressWarnings(
     try(
       system2(
         libreoffice_exec(),
         args = c("--headless",# useless unless with older versions
-                 if(!is_windows()) "\"-env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER}\"",
+                 sprintf("\"-env:UserInstallation=file://%s\"", tmp_user),
                  "--convert-to", "pdf:writer_pdf_Export",
                  "--outdir", shQuote(default_root, type = "cmd"),
                  shQuote(input, type = "cmd")),
