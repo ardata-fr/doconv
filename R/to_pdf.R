@@ -4,6 +4,9 @@
 #' supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"
 #' can also be converted but some Word features are not supported
 #' such as sections.
+#'
+#' Windows users must be warned the program is slow on your platform. Performances
+#' are not excellent but fast enough on other platform.
 #' @param input,output file input and optional file output. If output
 #' file is not provided, the value will be the value of input file with
 #' extension "pdf".
@@ -12,6 +15,9 @@
 #' convert 'Word' documents to PDF. This makes it possible to have a
 #' PDF identical to the 'Word' display whereas with 'LibreOffice', this
 #' is not always the case.
+#' @param UserInstallation use this value to set a non-default user profile path
+#' for "LibreOffice". If not provided a temporary dir is created. It makes possibles
+#' to use more than a single session of "LibreOffice."
 #' @section Ubuntu platforms:
 #' On some Ubuntu platforms, 'LibreOffice' require to add in
 #' the environment variable `LD_LIBRARY_PATH` the following path:
@@ -27,13 +33,13 @@
 #'   file <- system.file(package = "doconv",
 #'     "doc-examples/example.pptx")
 #'
-#'   to_pdf(input = file, output = out_pptx)
+#'   \donttest{to_pdf(input = file, output = out_pptx)}
 #'
 #'   out_docx <- tempfile(fileext = ".pdf")
 #'   file <- system.file(package = "doconv",
 #'     "doc-examples/example.docx")
 #'
-#'   to_pdf(input = file, output = out_docx)
+#'   \donttest{to_pdf(input = file, output = out_docx)}
 #'
 #' }
 #' @return the name of the produced pdf (the same value as `output`),
@@ -41,7 +47,7 @@
 #' @importFrom locatexec libreoffice_exec
 #' @importFrom locatexec is_windows
 to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
-                   use_docx2pdf = FALSE) {
+                   use_docx2pdf = FALSE, UserInstallation = NULL) {
   if (!file.exists(input)) {
     stop("input does not exist")
   }
@@ -55,8 +61,13 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     to = default_root,
     overwrite = TRUE
   )
-  tmp_user <- tempfile(pattern = "lo_", fileext = "")
-  on.exit(unlink(tmp_user, recursive = TRUE, force = TRUE))
+
+  if(is.null(UserInstallation)){
+    UserInstallation <- absolute_path(tempfile(pattern = "lo_", fileext = ""))
+    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE))
+  } else {
+    UserInstallation <- absolute_path(UserInstallation)
+  }
 
 
   if(grepl("\\.(doc|docx)$", input) && use_docx2pdf && exec_available("word") && docx2pdf_available()){
@@ -68,7 +79,8 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
         system2(
           libreoffice_exec(),
           args = c("--headless",
-                   sprintf("\"-env:UserInstallation=file://%s\"", tmp_user),
+                   if(!is_windows()) sprintf("\"-env:UserInstallation=file://%s\"", UserInstallation)
+                   else sprintf("\"-env:UserInstallation=file:///%s\"", UserInstallation),
                    "--convert-to", "pdf:writer_pdf_Export",
                    "--outdir", shQuote(default_root, type = "cmd"),
                    shQuote(input, type = "cmd")),
@@ -78,7 +90,6 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     if(!out) {
       stop(paste0(info, collapse = "\n"))
     }
-
     file_set_new <- list.files(default_root, full.names = TRUE)
     file_set_new <- setdiff(file_set_new, file_set_origin)
     success <- file.copy(from = file_set_new, to = output, overwrite = TRUE)
@@ -97,13 +108,16 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
 #' @description Test if 'LibreOffice' can export to PDF.
 #' An attempt to export to PDF is made to confirm that
 #' the PDF export is functional.
+#' @param UserInstallation use this value to set a non-default user profile path
+#' for "LibreOffice". If not provided a temporary dir is created. It makes possibles
+#' to use more than a single session of "LibreOffice."
 #' @return a single logical value.
 #' @examples
 #' library(locatexec)
 #' if(exec_available("libreoffice")){
-#'   check_libreoffice_export()
+#'   \donttest{check_libreoffice_export()}
 #' }
-check_libreoffice_export <- function() {
+check_libreoffice_export <- function(UserInstallation = NULL) {
 
   init_working_directory(force = TRUE)
   default_root <- working_directory()
@@ -114,15 +128,21 @@ check_libreoffice_export <- function() {
     system.file(package = "doconv", "doc-examples", "minimal-word.docx"),
     default_root
   )
-  tmp_user <- tempfile(pattern = "lo_", fileext = "")
-  on.exit(unlink(tmp_user, recursive = TRUE, force = TRUE))
+
+  if(is.null(UserInstallation)){
+    UserInstallation <- absolute_path(tempfile(pattern = "lo_", fileext = ""))
+    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE))
+  } else {
+    UserInstallation <- absolute_path(UserInstallation)
+  }
 
   suppressWarnings(
     try(
       system2(
         libreoffice_exec(),
         args = c("--headless",# useless unless with older versions
-                 sprintf("\"-env:UserInstallation=file://%s\"", tmp_user),
+                 if(!is_windows()) sprintf("\"-env:UserInstallation=file://%s\"", UserInstallation)
+                 else sprintf("\"-env:UserInstallation=file:///%s\"", UserInstallation),
                  "--convert-to", "pdf:writer_pdf_Export",
                  "--outdir", shQuote(default_root, type = "cmd"),
                  shQuote(input, type = "cmd")),

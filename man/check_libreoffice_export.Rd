@@ -4,7 +4,12 @@
 \alias{check_libreoffice_export}
 \title{Check if PDF export is functional}
 \usage{
-check_libreoffice_export()
+check_libreoffice_export(UserInstallation = NULL)
+}
+\arguments{
+\item{UserInstallation}{use this value to set a non-default user profile path
+for "LibreOffice". If not provided a temporary dir is created. It makes possibles
+to use more than a single session of "LibreOffice."}
 }
 \value{
 a single logical value.
@@ -17,6 +22,6 @@ the PDF export is functional.
 \examples{
 library(locatexec)
 if(exec_available("libreoffice")){
-  check_libreoffice_export()
+  \donttest{check_libreoffice_export()}
 }
 }

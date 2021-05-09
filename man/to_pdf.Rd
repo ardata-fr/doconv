@@ -7,7 +7,8 @@
 to_pdf(
   input,
   output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input),
-  use_docx2pdf = FALSE
+  use_docx2pdf = FALSE,
+  UserInstallation = NULL
 )
 }
 \arguments{
@@ -20,6 +21,10 @@ can be found as well as 'docx2pdf'), docx2pdf will be used to
 convert 'Word' documents to PDF. This makes it possible to have a
 PDF identical to the 'Word' display whereas with 'LibreOffice', this
 is not always the case.}
+
+\item{UserInstallation}{use this value to set a non-default user profile path
+for "LibreOffice". If not provided a temporary dir is created. It makes possibles
+to use more than a single session of "LibreOffice."}
 }
 \value{
 the name of the produced pdf (the same value as \code{output}),
@@ -30,6 +35,9 @@ Convert documents to pdf using Libre Office. It
 supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"
 can also be converted but some Word features are not supported
 such as sections.
+
+Windows users must be warned the program is slow on your platform. Performances
+are not excellent but fast enough on other platform.
 }
 \section{Ubuntu platforms}{
 
@@ -49,13 +57,13 @@ if (exec_available("libreoffice") && check_libreoffice_export()) {
   file <- system.file(package = "doconv",
     "doc-examples/example.pptx")
 
-  to_pdf(input = file, output = out_pptx)
+  \donttest{to_pdf(input = file, output = out_pptx)}
 
   out_docx <- tempfile(fileext = ".pdf")
   file <- system.file(package = "doconv",
     "doc-examples/example.docx")
 
-  to_pdf(input = file, output = out_docx)
+  \donttest{to_pdf(input = file, output = out_docx)}
 
 }
 }
