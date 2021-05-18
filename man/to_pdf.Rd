@@ -8,6 +8,7 @@ to_pdf(
   input,
   output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input),
   use_docx2pdf = FALSE,
+  timeout = 120,
   UserInstallation = NULL
 )
 }
@@ -21,6 +22,8 @@ can be found as well as 'docx2pdf'), docx2pdf will be used to
 convert 'Word' documents to PDF. This makes it possible to have a
 PDF identical to the 'Word' display whereas with 'LibreOffice', this
 is not always the case.}
+
+\item{timeout}{timeout in seconds, ignored if 0.}
 
 \item{UserInstallation}{use this value to set a non-default user profile path
 for "LibreOffice". If not provided a temporary dir is created. It makes possibles

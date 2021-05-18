@@ -116,7 +116,8 @@ docx2pdf_exec <- function() {
 #' On Windows, this is implemented via win32com while on macOS this is
 #' implemented via JXA (Javascript for Automation, aka AppleScript in JS).
 #'
-#' This is a simple call to python module 'docx2pdf'.
+#' This is a simple call to python module 'docx2pdf' into a working
+#' directory managed with function [working_directory()].
 #' @param input,output file input and optional file output (default
 #' to input with pdf extension).
 #' @examples
@@ -143,7 +144,7 @@ docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
   input <- absolute_path(input)
   output <- absolute_path(output)
 
-  init_working_directory(force = TRUE)
+  init_working_directory()
   default_root <- working_directory()
 
   file.copy(from = input,

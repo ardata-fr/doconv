@@ -18,6 +18,7 @@
 #' @param UserInstallation use this value to set a non-default user profile path
 #' for "LibreOffice". If not provided a temporary dir is created. It makes possibles
 #' to use more than a single session of "LibreOffice."
+#' @param timeout timeout in seconds, ignored if 0.
 #' @section Ubuntu platforms:
 #' On some Ubuntu platforms, 'LibreOffice' require to add in
 #' the environment variable `LD_LIBRARY_PATH` the following path:
@@ -47,14 +48,17 @@
 #' @importFrom locatexec libreoffice_exec
 #' @importFrom locatexec is_windows
 to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
-                   use_docx2pdf = FALSE, UserInstallation = NULL) {
+                   use_docx2pdf = FALSE, timeout = 120, UserInstallation = NULL) {
   if (!file.exists(input)) {
     stop("input does not exist")
   }
   input <- absolute_path(input)
 
-  init_working_directory(force = TRUE)
-  default_root <- working_directory()
+  default_root <- tempfile()
+  dir.create(default_root, showWarnings = FALSE)
+  on.exit(
+    unlink(default_root, recursive = TRUE, force = TRUE)
+  )
 
   file.copy(
     from = input,
@@ -84,7 +88,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
                    "--convert-to", "pdf:writer_pdf_Export",
                    "--outdir", shQuote(default_root, type = "cmd"),
                    shQuote(input, type = "cmd")),
-          stderr = TRUE, stdout = TRUE), silent = TRUE)
+          stderr = TRUE, stdout = TRUE, timeout = timeout), silent = TRUE)
     )
     out <- !1 %in% attr(info, "status")
     if(!out) {
@@ -99,6 +103,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
       stop("could not convert ", shQuote(input))
     }
   }
+
 
   invisible(output)
 }
@@ -119,8 +124,11 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
 #' }
 check_libreoffice_export <- function(UserInstallation = NULL) {
 
-  init_working_directory(force = TRUE)
-  default_root <- working_directory()
+  default_root <- tempfile()
+  dir.create(default_root, showWarnings = FALSE)
+  on.exit(
+    unlink(default_root, recursive = TRUE, force = TRUE)
+  )
 
   input <- file.path(default_root, "minimal-word.docx")
 
@@ -146,11 +154,10 @@ check_libreoffice_export <- function(UserInstallation = NULL) {
                  "--convert-to", "pdf:writer_pdf_Export",
                  "--outdir", shQuote(default_root, type = "cmd"),
                  shQuote(input, type = "cmd")),
-        stderr = TRUE, stdout = TRUE), silent = TRUE)
+        stderr = TRUE, stdout = TRUE, timeout = 15), silent = TRUE)
   )
   expected <- file.path(default_root, "minimal-word.pdf")
   success <- file.exists(expected)
-  rm_working_directory()
 
   success
 }

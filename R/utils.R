@@ -1,20 +1,45 @@
 #' @importFrom rappdirs user_data_dir
+#' @export
+#' @title manage docx2pdf working directory
+#' @description Initialize or remove working directory used
+#' when docx2pdf create the PDF.
+#'
+#' The operation may require writing rights to the directory by the Word program.
+#' On some operating systems (Mac OS), Word (via docx2pdf) must be authorized
+#' to write in the directories, if the authorization does not exist, a
+#' manual confirmation window is launched, thus preventing automation.
+#'
+#' The package chooses to use only one directory in order to have only one
+#' time to click this confirmation. This directory is managed by the rappdirs
+#' package. Its value can be read with the `working_directory()` function.
+#' The directory can be deleted with `rm_working_directory()` and created
+#' with `init_working_directory()`.
+#'
+#' As a user, you do not have to use these functions because they are called
+#' automatically by the `docx2pdf()` function. They are provided to meet
+#' the requirements of CRAN policy:
+#'
+#' *"\[...\] packages may store user-specific data, configuration and cache files in their respective user
+#' directories \[...\], provided that by default sizes are kept as small as possible
+#' and the contents are actively managed (including removing outdated material)."*
 working_directory <- function(){
   dir <- user_data_dir(appname = "doconv", appauthor = "ardata")
-  dir <- absolute_path(dir)
-  file.path(dir, "tmp_convert")
+  absolute_path(dir)
 }
 
-rm_working_directory <- function(force = TRUE){
+#' @export
+#' @rdname working_directory
+rm_working_directory <- function(){
   dir <- working_directory()
   unlink(dir, recursive = TRUE, force = TRUE)
 }
 
-init_working_directory <- function(force = TRUE){
+#' @export
+#' @rdname working_directory
+init_working_directory <- function(){
+  rm_working_directory()
   dir <- working_directory()
-  if(force) rm_working_directory()
-  if(!dir.exists(dir))
-    dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
   dir
 }
 

@@ -21,7 +21,8 @@ on your machine.
 On Windows, this is implemented via win32com while on macOS this is
 implemented via JXA (Javascript for Automation, aka AppleScript in JS).
 
-This is a simple call to python module 'docx2pdf'.
+This is a simple call to python module 'docx2pdf' into a working
+directory managed with function \code{\link[=working_directory]{working_directory()}}.
 }
 \examples{
 library(locatexec)
