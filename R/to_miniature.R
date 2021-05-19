@@ -34,6 +34,8 @@
 #' convert 'Word' documents to PDF. This makes it possible to have a
 #' PDF identical to the 'Word' display whereas with 'LibreOffice', this
 #' is not always the case.
+#' @param timeout timeout in seconds that libreoffice is allowed to use
+#' in order to generate the corresponding pdf file, ignored if 0.
 #' @return a magick image object as returned by [image_read()].
 #' @examples
 #' library(locatexec)
@@ -52,7 +54,7 @@
 #'   to_miniature(pptx_file)
 to_miniature <- function(filename, row = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
-                         fileout = NULL, use_docx2pdf = FALSE) {
+                         fileout = NULL, use_docx2pdf = FALSE, timeout = 120) {
 
   if (!file.exists(filename)) {
     stop("filename does not exist")
@@ -63,13 +65,15 @@ to_miniature <- function(filename, row = NULL, width = NULL,
     pptx_to_miniature(
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout)
+      fileout = fileout,
+      timeout = timeout)
   } else if(grepl("\\.(doc|docx)$", filename)){
     if(is.null(width)) width <- 650
     docx_to_miniature(
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout, use_docx2pdf = use_docx2pdf)
+      fileout = fileout, use_docx2pdf = use_docx2pdf,
+      timeout = timeout)
   } else if(grepl("\\.pdf$", filename)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
@@ -98,12 +102,13 @@ pdf_to_miniature <- function(filename, row = NULL, width = 650,
 
 docx_to_miniature <- function(filename, row = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
-                              fileout = NULL, use_docx2pdf = FALSE) {
+                              fileout = NULL, use_docx2pdf = FALSE,
+                              timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
 
   if(use_docx2pdf && exec_available("word") && docx2pdf_available())
     docx2pdf(input = filename, output = pdf_filename)
-  else to_pdf(input = filename, output = pdf_filename)
+  else to_pdf(input = filename, output = pdf_filename, timeout = timeout)
 
   x <- pdf_to_miniature(pdf_filename,
     row = row, width = width,
@@ -116,9 +121,10 @@ docx_to_miniature <- function(filename, row = NULL, width = 650,
 
 pptx_to_miniature <- function(filename, row = NULL, width = 750,
                               border_color = "#ccc", border_geometry = "2x2",
-                              fileout = NULL) {
+                              fileout = NULL,
+                              timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
-  to_pdf(input = filename, output = pdf_filename)
+  to_pdf(input = filename, output = pdf_filename, timeout = timeout)
   x <- pdf_to_miniature(pdf_filename,
     row = row, width = width,
     border_color = border_color, border_geometry = border_geometry

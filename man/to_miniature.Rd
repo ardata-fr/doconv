@@ -11,7 +11,8 @@ to_miniature(
   border_color = "#ccc",
   border_geometry = "2x2",
   fileout = NULL,
-  use_docx2pdf = FALSE
+  use_docx2pdf = FALSE,
+  timeout = 120
 )
 }
 \arguments{
@@ -50,6 +51,9 @@ can be found as well as 'docx2pdf'), docx2pdf will be used to
 convert 'Word' documents to PDF. This makes it possible to have a
 PDF identical to the 'Word' display whereas with 'LibreOffice', this
 is not always the case.}
+
+\item{timeout}{timeout in seconds that libreoffice is allowed to use
+in order to generate the corresponding pdf file, ignored if 0.}
 }
 \value{
 a magick image object as returned by \code{\link[=image_read]{image_read()}}.
