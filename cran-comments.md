@@ -1,12 +1,10 @@
-## Test environments
 
-- local OS X install (R 4.0.2)
-- ubuntu 16.04 (release)
-- macOS (release)
-- winbuilder (with older, release and devel) 
-- fedora (devel) with libreoffice-base
-- fedora (devel) with libreoffice
+## Test environments
+* local R installation, R 4.0.5
+* Ubuntu, mac os and windows (on Github), R 4.0.5
+* win-builder (older, release and devel)
 
 ## R CMD check results
 
-There were no ERROR, WARNING or NOTE.
+0 errors | 0 warnings | 0 note
+
