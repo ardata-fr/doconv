@@ -54,7 +54,7 @@ absolute_path <- function(x){
 }
 
 #' @noRd
-#' @importFrom pdftools pdf_convert
+#' @importFrom pdftools pdf_convert pdf_length
 #' @title Convert a PDF document to images
 #' @description Convert a pdf file to a list of images (magick images).
 #' @param file the pdf file
@@ -74,11 +74,12 @@ pdf_to_images <- function(file) {
   dest <- tempfile()
   dir.create(dest)
 
-  png_file <- gsub("\\.pdf$", "%03d.png", basename(file))
+  png_file <- gsub("\\.pdf$", "", basename(file))
+  png_files <- paste0(png_file, seq_len(pdf_length(file)), ".png")
 
   screen_copies <- pdf_convert(
     pdf = file, format = "png", verbose = FALSE,
-    filenames = file.path(dest, png_file)
+    filenames = file.path(dest, png_files)
   )
   img_src <- list.files(dest, pattern = "\\.png$", full.names = TRUE)
   img_list <- lapply(img_src, image_read)

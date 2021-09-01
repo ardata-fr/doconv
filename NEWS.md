@@ -1,3 +1,7 @@
+# doconv 0.1.4
+
+* internals: png filenames are now computed and no more defined with a mask that became unstable recently.
+
 # doconv 0.1.3
 
 ## Issues
