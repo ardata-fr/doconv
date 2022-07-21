@@ -16,16 +16,19 @@ init_working_directory()
 Initialize or remove working directory used
 when docx2pdf create the PDF.
 
-The operation may require writing rights to the directory by the Word program.
-On some operating systems (Mac OS), Word (via docx2pdf) must be authorized
+On 'macOS', the operation require writing rights to the directory by the Word or PowerPoint program.
+Word or PowerPoint program must be authorized
 to write in the directories, if the authorization does not exist, a
 manual confirmation window is launched, thus preventing automation.
 
-The package chooses to use only one directory in order to have only one
-time to click this confirmation. This directory is managed by the rappdirs
-package. Its value can be read with the \code{working_directory()} function.
-The directory can be deleted with \code{rm_working_directory()} and created
-with \code{init_working_directory()}.
+Fortunately, users only have to do this once. The package implementation use
+only one directory where results are saved in order to have only one
+time to click this confirmation.
+
+This directory is managed by the rappdirs package. Its value can be
+read with the \code{working_directory()} function. The directory can be
+deleted with \code{rm_working_directory()} and created with \code{init_working_directory()}.
+Each call will remove that directory when completed.
 
 As a user, you do not have to use these functions because they are called
 automatically by the \code{docx2pdf()} function. They are provided to meet

@@ -4,10 +4,10 @@
 # doconv
 
 The tool offers a set of functions for converting ‘Microsoft Word’ or
-‘Microsoft PowerPoint’ documents to ‘PDF’ format and also for
-converting them to images in the form of thumbnails. In order to work,
-‘LibreOffice’ must be installed on the machine and possibly ‘python’
-and ‘Microsoft Word’.
+‘Microsoft PowerPoint’ documents to ‘PDF’ format and also for converting
+them to images in the form of thumbnails. In order to work, the package
+will use ‘Microsoft Word’, ‘Microsoft PowerPoint’, if they are not
+available program ‘LibreOffice’ can be used.
 
 <!-- badges: start -->
 
@@ -38,18 +38,18 @@ You can generate thumbails as an image by using `to_miniature`:
 docx_file <- system.file(package = "doconv", "doc-examples/example.docx")
 to_miniature(
   filename = docx_file, 
-  row = c(1, 1, 2, 2),
-  use_docx2pdf = TRUE)
+  row = c(1, 1, 2, 2))
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-It uses ‘LibreOffice’ to convert Word or PowerPoint documents to PDF. It
-probably works with other types of document but the package is only
-focusing on PDF, Word and PowerPoint documents. If option
-`use_docx2pdf=TRUE`, [docx2pdf](https://github.com/AlJohri/docx2pdf) is
-used instead of ‘LibreOffice’ to convert Word files to PDF; you can only
-use that option if ‘Word’ and ‘docx2pdf’ is installed on your machine.
+It uses ‘Microsoft Word’ or ‘Microsoft PowerPoint’ program to convert
+Word or PowerPoint documents to PDF. If program ‘Microsoft Word’ or
+‘Microsoft PowerPoint’ is not available, it uses ‘LibreOffice’ to
+convert Word or PowerPoint documents to PDF.
+
+Thus, this package can only be used when ‘Microsoft Word’ and ‘Microsoft
+PowerPoint’ programs are available or eventually ‘LibreOffice’.
 
 ## Convert a PowerPoint file to PDF
 
@@ -61,15 +61,34 @@ to_miniature("pptx_example.pdf", width = 1000)
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-### Convert a Word file to PDF
+## Convert a Word file to PDF
 
 ``` r
 to_pdf(docx_file, output = "docx_example.pdf")
 ```
 
+## Update Word fields and TOC
+
+``` r
+library(officer)
+library(doconv)
+
+read_docx() |> 
+  body_add_fpar(
+    value = fpar(
+      run_word_field("DOCPROPERTY \"coco\" \\* MERGEFORMAT"))) |>
+  set_doc_properties(coco = "test") |>
+  print(target = "output.docx") |>
+  docx_update()
+```
+
 ## Setup
 
-First ‘LibreOffice’ must be available on your machine, please visit
+If not available on your machine and if possible, install ‘Microsoft
+Word’ or ‘Microsoft PowerPoint’ programs.
+
+If ‘Microsoft Word’ and ‘Microsoft PowerPoint’ can not be installed,
+install ‘LibreOffice’ on your machine; please visit
 <https://www.libreoffice.org/> and follow the installation instructions.
 
 Use function `check_libreoffice_export()` to check that the software is
@@ -80,39 +99,40 @@ check_libreoffice_export()
 #> [1] TRUE
 ```
 
-> If ‘Microsoft Word’ is available on your machine, you can get images
-> or pdf that looks exactly the same than the document rendered with
-> ‘Microsoft Word’, if not ‘LibreOffice’ is used to convert Word
-> documents to PDF or as an image, in this case, be aware that
-> ‘LibreOffice’ does not always render the document as ‘Microsoft
-> Word’ would do (sections can be misunderstood for example).
+If ‘Microsoft Word’ or ‘Microsoft PowerPoint’ are available on your
+machine, you can get images or pdf that looks exactly the same than the
+original document. If not ‘LibreOffice’ is used to convert Word
+documents to PDF or as an image, in this case, be aware that
+‘LibreOffice’ does not always render the document as ‘Microsoft Word’
+would do (sections can be misunderstood for example).
 
-If ‘Microsoft Word’ is available on your machine, install python module
-‘docx2pdf’ with the command `docx2pdf_install()` (and make sure
-beforehand that python is available on your machine too):
+### Authorization on macOS
 
-``` r
-library(locatexec)
-library(doconv)
-if(exec_available("python", error = TRUE) && # check that python is available
-   !docx2pdf_available()){ # check that docx2pdf is available
-  docx2pdf_install()
-}
-```
+If you are running R for ‘macOS’, you have to authorize few things
+before starting.
 
-## docx2pdf and batch process
+PDF processing will happen into a working directory managed with
+function `working_directory()`.
 
-If docx2pdf process Word documents that contains TOC or any Word
-computed field, the user will be invited to confirm the operation with a
-Word dialog box. That makes the process unreliable when running in
-non-interactive mode.
+Manual interventions are necessary to authorize ‘Word’ and ‘PowerPoint’
+applications to write in a single directory: the working directory.
 
-**Then `docx2pdf` option should only be used in interactive mode when
-Word is available.**
+These permissions must be set manually, this is required by the macOS
+security policy. We think that this is not a problem because it is
+unlikely that you will use a Mac machine as a server.
+
+User must manually click on few buttons:
+
+1.  allow R to run ‘AppleScript’ scripts that will control Word
+2.  allow Word to write to the working directory.
+
+![](man/figures/authorizations.png)
+
+Don’t worry, these are one-time operations.
 
 ## Related work
 
-  - Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr)
+-   Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr)
     is providing `convert_to_pdf()` that works very well. The
     functionality integrated in Bob Rudis’ package depends only on
     ‘LibreOffice’.

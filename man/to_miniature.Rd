@@ -11,7 +11,6 @@ to_miniature(
   border_color = "#ccc",
   border_geometry = "2x2",
   fileout = NULL,
-  use_docx2pdf = FALSE,
   timeout = 120
 )
 }
@@ -46,12 +45,6 @@ images, see \code{\link[=image_border]{image_border()}}.}
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}
 
-\item{use_docx2pdf}{if TRUE (and if 'Microsoft Word' executable
-can be found as well as 'docx2pdf'), docx2pdf will be used to
-convert 'Word' documents to PDF. This makes it possible to have a
-PDF identical to the 'Word' display whereas with 'LibreOffice', this
-is not always the case.}
-
 \item{timeout}{timeout in seconds that libreoffice is allowed to use
 in order to generate the corresponding pdf file, ignored if 0.}
 }
@@ -70,8 +63,8 @@ docx_file <- system.file(
   package = "doconv",
   "doc-examples/example.docx"
 )
-if(exec_available("python") && docx2pdf_available())
-  to_miniature(docx_file, use_docx2pdf = TRUE)
+if(exec_available("word"))
+  to_miniature(docx_file)
 
 pptx_file <- system.file(
   package = "doconv",

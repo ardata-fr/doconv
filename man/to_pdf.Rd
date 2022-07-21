@@ -7,7 +7,6 @@
 to_pdf(
   input,
   output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input),
-  use_docx2pdf = FALSE,
   timeout = 120,
   UserInstallation = NULL
 )
@@ -16,12 +15,6 @@ to_pdf(
 \item{input, output}{file input and optional file output. If output
 file is not provided, the value will be the value of input file with
 extension "pdf".}
-
-\item{use_docx2pdf}{if TRUE (and if 'Microsoft Word' executable
-can be found as well as 'docx2pdf'), docx2pdf will be used to
-convert 'Word' documents to PDF. This makes it possible to have a
-PDF identical to the 'Word' display whereas with 'LibreOffice', this
-is not always the case.}
 
 \item{timeout}{timeout in seconds, ignored if 0.}
 

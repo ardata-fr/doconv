@@ -1,6 +1,13 @@
 # doconv 0.1.4
 
+## Features
+
+* new fonction `docx_update()` to refresh all TOC and fields.
+
+## Changes
+
 * internals: png filenames are now defined with a correct mask
+* [breaking change]: python, docx2pdf are not required anymore. 
 
 # doconv 0.1.3
 
