@@ -1,11 +1,12 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.1.4.002
+Version: 0.1.4.003
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
-    person(given = "ArData", role = "cph")
+    person(given = "ArData", role = "cph"),
+    person("David", "Hajage", role = "ctb", comment = "initial powershell code")
     )
 Description: Functions to convert 'Microsoft Word' or 'Microsoft PowerPoint' 
  documents to 'PDF' format and also for converting them into a thumbnail. 
@@ -18,5 +19,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Imports: magick, pdftools, locatexec, rappdirs, processx
+Suggests: officer
 BugReports: https://github.com/ardata-fr/doconv/issues
 SystemRequirements: LibreOffice, Microsoft Word

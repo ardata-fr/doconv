@@ -3,6 +3,7 @@
 ## Features
 
 * new fonction `docx_update()` to refresh all TOC and fields.
+* new `dpi` parameters for image resolution
 
 ## Changes
 

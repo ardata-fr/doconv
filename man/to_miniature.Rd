@@ -10,6 +10,7 @@ to_miniature(
   width = NULL,
   border_color = "#ccc",
   border_geometry = "2x2",
+  dpi = 150,
   fileout = NULL,
   timeout = 120
 )
@@ -41,6 +42,8 @@ second row with pages 4 and 5.
 
 \item{border_geometry}{border geometry to be added around
 images, see \code{\link[=image_border]{image_border()}}.}
+
+\item{dpi}{resolution (dots per inch) to use for images, see \code{\link[=pdf_convert]{pdf_convert()}}.}
 
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}

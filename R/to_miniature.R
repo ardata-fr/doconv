@@ -29,6 +29,7 @@
 #' images, see [image_border()].
 #' @param fileout if not NULL, result is saved in a png file whose filename
 #' is defined by this argument.
+#' @param dpi resolution (dots per inch) to use for images, see [pdf_convert()].
 #' @param timeout timeout in seconds that libreoffice is allowed to use
 #' in order to generate the corresponding pdf file, ignored if 0.
 #' @return a magick image object as returned by [image_read()].
@@ -50,6 +51,7 @@
 #' @importFrom locatexec pip_exec exec_available
 to_miniature <- function(filename, row = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
+                         dpi = 150,
                          fileout = NULL, timeout = 120) {
 
   if (!file.exists(filename)) {
@@ -61,7 +63,7 @@ to_miniature <- function(filename, row = NULL, width = NULL,
     pptx_to_miniature(
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout, timeout = timeout)
+      fileout = fileout, dpi = dpi, timeout = timeout)
   } else if(grepl("\\.(doc|docx)$", filename)){
     if(is.null(width)) width <- 650
     docx_to_miniature(
@@ -73,6 +75,7 @@ to_miniature <- function(filename, row = NULL, width = NULL,
     pdf_to_miniature(
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
+      dpi = dpi,
       fileout = fileout)
   } else {
     stop("function to_miniature do support this type of file:", basename(filename))
@@ -82,11 +85,12 @@ to_miniature <- function(filename, row = NULL, width = NULL,
 
 pdf_to_miniature <- function(filename, row = NULL, width = 650,
                              border_color = "#ccc", border_geometry = "2x2",
+                             dpi = 150,
                              fileout = NULL) {
-  img_list <- pdf_to_images(filename)
+  img_list <- pdf_to_images(filename, dpi = dpi)
   x <- images_to_miniature(
     img_list = img_list,
-    row = row, width = width * 150/72,
+    row = row, width = width * dpi/72,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
@@ -96,7 +100,7 @@ pdf_to_miniature <- function(filename, row = NULL, width = 650,
 
 docx_to_miniature <- function(filename, row = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
-                              fileout = NULL, timeout = 120) {
+                              fileout = NULL, dpi = 150, timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
 
   if (exec_available("word")) {
@@ -106,7 +110,7 @@ docx_to_miniature <- function(filename, row = NULL, width = 650,
   }
 
   x <- pdf_to_miniature(pdf_filename,
-    row = row, width = width,
+    row = row, width = width, dpi = dpi,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
@@ -116,6 +120,7 @@ docx_to_miniature <- function(filename, row = NULL, width = 650,
 
 pptx_to_miniature <- function(filename, row = NULL, width = 750,
                               border_color = "#ccc", border_geometry = "2x2",
+                              dpi = 150,
                               fileout = NULL, timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
   if (exec_available("powerpoint")) {
@@ -125,7 +130,7 @@ pptx_to_miniature <- function(filename, row = NULL, width = 750,
   }
 
   x <- pdf_to_miniature(pdf_filename,
-    row = row, width = width,
+    row = row, width = width, dpi = dpi,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
