@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 124.44 144.00" id="svg2" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs id="defs4">
+    <style type="text/css" id="style6">
+    line, polyline, path, rect, circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+  </style>
+  </defs>
+  <polyline points="2.285 37.429 2.285 106.799 62.105 141.486 121.926 106.799 121.926 37.429 62.105 2.743 2.285 37.429" style="stroke-width: 4; fill-opacity: 0.5; fill: rgb(240, 240, 240); stroke: rgb(235, 60, 0);" clip-path="url(#cpMHwxMjQuNDQxfDE0My45OTd8MC4xNDMxMzc=)" id="polyline29"/>
+  <text transform="matrix(0.866025, -0.5, 0.5, 0.866026, 46.601307, 88.062561)" style="fill: rgb(235, 60, 0); font-size: 7px; white-space: pre;" x="0" y="50">www.ardata.fr</text>
+  <text transform="matrix(0.866025, -0.5, 0.5, 0.866026, -46.563812, -36.882568)" style="fill: rgb(235, 60, 0); font-size: 17px; font-weight: 700; letter-spacing: 0.3px; white-space: pre;" x="8.134" y="104.286">doconv</text>
+  <path d="M 41.469 87.335 L 41.469 56.936 L 68.359 47 L 82.97 51.677 L 82.97 92.596 L 68.359 97 L 41.469 87.335 L 68.359 90.571 L 68.359 55.183 L 50.822 59.274 L 50.822 83.243 L 41.469 87.335 Z" style="stroke: none; fill: rgb(235, 59, 0);"/>
+</svg>

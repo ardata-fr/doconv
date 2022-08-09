@@ -9,6 +9,7 @@
 
 * internals: png filenames are now defined with a correct mask
 * [breaking change]: python, docx2pdf are not required anymore. 
+* `tools::R_user_dir()` is used instead of package 'rappdirs'.
 
 # doconv 0.1.3
 

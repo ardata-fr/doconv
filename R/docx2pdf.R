@@ -27,7 +27,7 @@
 #' 1. allow R to run 'AppleScript' scripts that will control Word
 #' 2. allow Word to write to the working directory.
 #'
-#' This are one-time operations.
+#' This process is a one-time operation.
 #'
 #' @param input,output file input and optional file output (default
 #' to input with pdf extension).
@@ -166,8 +166,11 @@ docx2pdf_win <- function(input, output = gsub("\\.docx$", ".pdf", input)){
 #'         value = fpar(
 #'           run_word_field("DOCPROPERTY \"coco\" \\* MERGEFORMAT")))
 #'     doc <- set_doc_properties(doc, coco = "test")
-#'     file <- print(doc, target = "output.docx")
-#'     docx_update(file)
+#'
+#'     docx_out <- tempfile(fileext = ".docx")
+#'
+#'     file <- print(doc, target = docx_out)
+#'     docx_update(docx_out)
 #'   }
 #' }
 #' @return the name of the produced pdf (the same value as `output`)
@@ -266,7 +269,7 @@ docx_update_win <- function(input){
 #' 1. allow R to run 'AppleScript' scripts that will control PowerPoint
 #' 2. allow PowerPoint to write to the working directory.
 #'
-#' This are one-time operations.
+#' This process is a one-time operation.
 #' @param input,output file input and optional file output (default
 #' to input with pdf extension).
 #' @examples

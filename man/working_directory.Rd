@@ -25,7 +25,7 @@ Fortunately, users only have to do this once. The package implementation use
 only one directory where results are saved in order to have only one
 time to click this confirmation.
 
-This directory is managed by the rappdirs package. Its value can be
+This directory is managed by R function \code{\link[=R_user_dir]{R_user_dir()}}. Its value can be
 read with the \code{working_directory()} function. The directory can be
 deleted with \code{rm_working_directory()} and created with \code{init_working_directory()}.
 Each call will remove that directory when completed.

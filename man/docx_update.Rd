@@ -38,8 +38,11 @@ if (exec_available('word')) {
         value = fpar(
           run_word_field("DOCPROPERTY \"coco\" \\\\* MERGEFORMAT")))
     doc <- set_doc_properties(doc, coco = "test")
-    file <- print(doc, target = "output.docx")
-    docx_update(file)
+
+    docx_out <- tempfile(fileext = ".docx")
+
+    file <- print(doc, target = docx_out)
+    docx_update(docx_out)
   }
 }
 }

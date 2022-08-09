@@ -1,10 +1,11 @@
-
 ## Test environments
-* local R installation, R 4.0.5
-* Ubuntu, mac os and windows (on Github), R 4.0.5
-* win-builder (older, release and devel)
+
+- local OS X install (R 4.2.0)
+- ubuntu 20.04 (release)
+- macOS (release)
+- winbuilder (with release and devel) 
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 note
+There were no ERROR, WARNING or NOTE.
 

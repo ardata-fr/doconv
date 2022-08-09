@@ -1,4 +1,4 @@
-#' @importFrom rappdirs user_data_dir
+#' @importFrom tools R_user_dir
 #' @export
 #' @title manage docx2pdf working directory
 #' @description Initialize or remove working directory used
@@ -13,7 +13,7 @@
 #' only one directory where results are saved in order to have only one
 #' time to click this confirmation.
 #'
-#' This directory is managed by the rappdirs package. Its value can be
+#' This directory is managed by R function [R_user_dir()]. Its value can be
 #' read with the `working_directory()` function. The directory can be
 #' deleted with `rm_working_directory()` and created with `init_working_directory()`.
 #' Each call will remove that directory when completed.
@@ -26,7 +26,7 @@
 #' directories \[...\], provided that by default sizes are kept as small as possible
 #' and the contents are actively managed (including removing outdated material)."*
 working_directory <- function(){
-  dir <- user_data_dir(appname = "doconv", appauthor = "ardata")
+  dir <- R_user_dir(package = "doconv", which = "data")
   absolute_path(dir)
 }
 

@@ -3,11 +3,14 @@
 
 # doconv
 
-The tool offers a set of functions for converting ‘Microsoft Word’ or
+<img src="man/figures/logo.png" alt="doconv logo" align="right" /> The
+tool offers a set of functions for converting ‘Microsoft Word’ or
 ‘Microsoft PowerPoint’ documents to ‘PDF’ format and also for converting
 them to images in the form of thumbnails. In order to work, the package
 will use ‘Microsoft Word’, ‘Microsoft PowerPoint’, if they are not
-available program ‘LibreOffice’ can be used.
+available program ‘LibreOffice’ can be used. A function is also provided
+to update all fields and table of contents of a Word document using
+‘Microsoft Word’.
 
 <!-- badges: start -->
 

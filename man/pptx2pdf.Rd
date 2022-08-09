@@ -40,7 +40,7 @@ You must also click "allow" two times to:
 \item allow PowerPoint to write to the working directory.
 }
 
-This are one-time operations.
+This process is a one-time operation.
 }
 
 \examples{
