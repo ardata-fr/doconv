@@ -177,12 +177,13 @@ docx2pdf_win <- function(input, output = gsub("\\.docx$", ".pdf", input)){
 docx_update <- function(input) {
 
   if (is_osx()) {
-    docx_update_osx(input = input)
+    x <- docx_update_osx(input = input)
   } else if (is_windows()) {
-    docx_update_win(input = input)
+    x <- docx_update_win(input = input)
   } else {
     stop("docx_update is only available on 'macOS' and 'Windows' systems.", call. = FALSE)
   }
+  invisible(x)
 }
 
 docx_update_osx <- function(input){
