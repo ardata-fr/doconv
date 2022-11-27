@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.1.4
+Version: 0.2.0.001
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
@@ -18,9 +18,9 @@ Description: Functions to convert 'Microsoft Word' or 'Microsoft PowerPoint'
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Imports: magick, pdftools, locatexec, processx, tools
 Depends: R (>= 4.0.0)
-Suggests: officer
+Suggests: officer, tinytest, testthat
 BugReports: https://github.com/ardata-fr/doconv/issues
 SystemRequirements: LibreOffice, Microsoft Word
