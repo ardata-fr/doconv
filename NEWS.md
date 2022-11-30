@@ -1,3 +1,16 @@
+# doconv 0.2.1
+
+## Issues
+
+* fix tinytest registration
+
+
+# doconv 0.2.0
+
+## Features
+
+* new fonction `expect_snapshot_doc()` for visual testing.
+
 # doconv 0.1.4
 
 ## Features

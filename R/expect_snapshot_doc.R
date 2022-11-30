@@ -147,17 +147,16 @@ expect_office_doc_diff_tinytest <- function(current,
   to_miniature(current, fileout = current_miniature, width = width)
 
   target_miniature <- file.path(tinytest_dir, basename(current_miniature))
-
   if (!file.exists(target_miniature)) {
     file.copy(current_miniature, target_miniature, overwrite = TRUE)
     msg <- sprintf("new miniature was saved to: %s", target_miniature)
-    flag <- FALSE
-    results <- "0%"
+    flag <- TRUE
+    results <- "100%"
   } else {
     results <- diff_image(img1 = target_miniature, img2 = current_miniature)
     if (results < 0) {
       msg <- "difference detected - unequal dimensions"
-      results <- "??"
+      results <- "N/A"
       flag <- FALSE
     } else if (results < tolerance) {
       msg <- "no difference detected"
@@ -240,7 +239,7 @@ diff_image <- function(img1, img2) {
 tinytest_dir <- "_tinytest_doconv"
 
 .onLoad = function(libname, pkgname) {
-  if (requireNamespace("testthat")) {
+  if (requireNamespace("tinytest")) {
     tinytest::register_tinytest_extension(
       "doconv",
       c("expect_snapshot_doc"))
