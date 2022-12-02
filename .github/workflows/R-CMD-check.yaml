@@ -57,12 +57,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: Install dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
-
       - uses: r-lib/actions/check-r-package@v2
         env:
           LD_LIBRARY_PATH: /usr/lib/libreoffice/program/
