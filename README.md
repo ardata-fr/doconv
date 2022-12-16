@@ -6,11 +6,15 @@
 <img src="man/figures/logo.png" alt="doconv logo" align="right" /> The
 tool offers a set of functions for converting ‘Microsoft Word’ or
 ‘Microsoft PowerPoint’ documents to ‘PDF’ format and also for converting
-them to images in the form of thumbnails. In order to work, the package
-will use ‘Microsoft Word’, ‘Microsoft PowerPoint’, if they are not
-available program ‘LibreOffice’ can be used. A function is also provided
-to update all fields and table of contents of a Word document using
-‘Microsoft Word’.
+them to images in the form of thumbnails.  
+Some functions are provided to visual-test documents, format ‘doc’,
+‘docx’, ‘ppt’, ‘pptx’, ‘html’ and ‘png’ are supported. The functions can
+be used with packages “testthat” and package “tinytest”.
+
+In order to work, the package will use ‘Microsoft Word’, ‘Microsoft
+PowerPoint’, if they are not available program ‘LibreOffice’ can be
+used. A function is also provided to update all fields and table of
+contents of a Word document using ‘Microsoft Word’.
 
 <!-- badges: start -->
 
@@ -135,7 +139,7 @@ Don’t worry, these are one-time operations.
 
 ## Related work
 
--   Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr)
-    is providing `convert_to_pdf()` that works very well. The
-    functionality integrated in Bob Rudis’ package depends only on
-    ‘LibreOffice’.
+- Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr)
+  is providing `convert_to_pdf()` that works very well. The
+  functionality integrated in Bob Rudis’ package depends only on
+  ‘LibreOffice’.
