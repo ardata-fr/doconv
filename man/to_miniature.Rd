@@ -12,7 +12,8 @@ to_miniature(
   border_geometry = "2x2",
   dpi = 150,
   fileout = NULL,
-  timeout = 120
+  timeout = 120,
+  ...
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ is defined by this argument.}
 
 \item{timeout}{timeout in seconds that libreoffice is allowed to use
 in order to generate the corresponding pdf file, ignored if 0.}
+
+\item{...}{arguments used by webshot2 when HTML document.}
 }
 \value{
 a magick image object as returned by \code{\link[=image_read]{image_read()}}.

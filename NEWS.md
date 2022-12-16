@@ -1,5 +1,9 @@
 # doconv 0.2.1
 
+## Features
+
+* new fonction `expect_snapshot_html()` for visual testing HTML documents.
+
 ## Issues
 
 * fix tinytest registration

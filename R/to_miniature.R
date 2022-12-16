@@ -32,6 +32,7 @@
 #' @param dpi resolution (dots per inch) to use for images, see [pdf_convert()].
 #' @param timeout timeout in seconds that libreoffice is allowed to use
 #' in order to generate the corresponding pdf file, ignored if 0.
+#' @param ... arguments used by webshot2 when HTML document.
 #' @return a magick image object as returned by [image_read()].
 #' @examples
 #' library(locatexec)
@@ -48,11 +49,12 @@
 #' )
 #' if(exec_available("libreoffice") && check_libreoffice_export())
 #'   to_miniature(pptx_file)
-#' @importFrom locatexec pip_exec exec_available
+#' @importFrom locatexec exec_available
 to_miniature <- function(filename, row = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
                          dpi = 150,
-                         fileout = NULL, timeout = 120) {
+                         fileout = NULL, timeout = 120,
+                         ...) {
 
   if (!file.exists(filename)) {
     stop("filename does not exist")
@@ -138,3 +140,30 @@ pptx_to_miniature <- function(filename, row = NULL, width = 750,
   x
 }
 
+htmlshot <- function(x, fileout = NULL, ...) {
+
+  if (!requireNamespace("webshot2", quietly = TRUE)) {
+    package_name <- "webshot2"
+    stop(sprintf(
+      "'%s' package should be installed to create a minature from an HTML file.",
+      package_name)
+    )
+  }
+  curr_wd <- getwd()
+  path <- absolute_path(x)
+
+  setwd(dirname(path))
+  tryCatch(
+    {
+      suppressMessages(webshot2::webshot(
+        url = basename(path),
+        file = fileout, ...
+      ))
+    },
+    finally = {
+      setwd(curr_wd)
+    }
+  )
+
+  fileout
+}
