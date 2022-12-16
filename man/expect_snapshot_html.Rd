@@ -2,7 +2,7 @@
 % Please edit documentation in R/expect_snapshot_doc.R
 \name{expect_snapshot_html}
 \alias{expect_snapshot_html}
-\title{Test if the current HTML document matches a target document}
+\title{Visual test for an HTML document}
 \usage{
 expect_snapshot_html(
   name,
@@ -33,4 +33,34 @@ matches a target document. When the expectation is checked
 for the first time, the expectation fails and a target miniature
 of the document is saved in a folder named \verb{_tinytest_doconv} or
 \verb{_snaps}.
+}
+\examples{
+file <- tempfile(fileext = ".html")
+html <- paste0("<html><head><title>hello</title></head>",
+       "<body><h1>Hello World</h1></body></html>\n")
+cat(html, file = file)
+
+\dontrun{
+if (require("tinytest") && require("webshot2")){
+  # first run add a new snapshot
+  expect_snapshot_html(x = file, name = "html file",
+    engine = "tinytest")
+  # next runs compare with the snapshot
+  expect_snapshot_html(x = file, name = "html file",
+    engine = "tinytest")
+
+  # cleaning directory
+  unlink("_tinytest_doconv", recursive = TRUE,
+    force = TRUE)
+}
+if (require("testthat") && require("webshot2")){
+  local_edition(3)
+  # first run add a new snapshot
+  expect_snapshot_html(x = file, name = "html file",
+    engine = "testthat")
+  # next runs compare with the snapshot
+  expect_snapshot_html(x = file, name = "html file",
+    engine = "testthat")
+}
+}
 }

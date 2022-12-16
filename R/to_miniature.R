@@ -165,14 +165,18 @@ htmlshot <- function(x, fileout = NULL, ...) {
   path <- absolute_path(x)
 
   setwd(dirname(path))
+  tf <- file(tempfile(fileext = ".txt"), "w")
+  sink(tf)
   tryCatch(
     {
-      suppressMessages(webshot2::webshot(
+      webshot2::webshot(
         url = basename(path),
         file = fileout, ...
-      ))
+      )
     },
     finally = {
+      sink()
+      close(tf)
       setwd(curr_wd)
     }
   )

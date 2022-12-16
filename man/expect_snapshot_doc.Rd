@@ -2,7 +2,7 @@
 % Please edit documentation in R/expect_snapshot_doc.R
 \name{expect_snapshot_doc}
 \alias{expect_snapshot_doc}
-\title{Test if the current document matches a target document}
+\title{Visual test for a 'Microsoft Office' document}
 \usage{
 expect_snapshot_doc(
   name,
@@ -30,4 +30,26 @@ matches a target document. When the expectation is checked
 for the first time, the expectation fails and a target miniature
 of the document is saved in a folder named \verb{_tinytest_doconv} or
 \verb{_snaps}.
+}
+\examples{
+file <- system.file(package = "doconv",
+  "doc-examples/example.docx")
+\dontrun{
+if (require("tinytest") && msoffice_available()){
+  # first run add a new snapshot
+  expect_snapshot_doc(x = file, name = "docx file", engine = "tinytest")
+  # next runs compare with the snapshot
+  expect_snapshot_doc(x = file, name = "docx file", engine = "tinytest")
+
+  # cleaning directory
+  unlink("_tinytest_doconv", recursive = TRUE, force = TRUE)
+}
+if (require("testthat") && msoffice_available()){
+  local_edition(3)
+  # first run add a new snapshot
+  expect_snapshot_doc(x = file, name = "docx file", engine = "testthat")
+  # next runs compare with the snapshot
+  expect_snapshot_doc(x = file, name = "docx file", engine = "testthat")
+}
+}
 }

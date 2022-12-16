@@ -5,7 +5,7 @@ load_package <- function(z) {
   suppressPackageStartupMessages(require(z, character.only = TRUE))
 }
 
-#' @title Test if the current document matches a target document
+#' @title Visual test for a 'Microsoft Office' document
 #' @description This expectation can be used with 'tinytest' and 'testthat'
 #' to check if a current document of type pdf, docx, pptx or png
 #' matches a target document. When the expectation is checked
@@ -18,6 +18,27 @@ load_package <- function(z) {
 #' @param engine test package being used in the test suite, one of "tinytest" or "testthat".
 #' @return A [tinytest::tinytest()] or a [testthat::expect_snapshot_file] object.
 #' @export
+#' @examples
+#' file <- system.file(package = "doconv",
+#'   "doc-examples/example.docx")
+#' \dontrun{
+#' if (require("tinytest") && msoffice_available()){
+#'   # first run add a new snapshot
+#'   expect_snapshot_doc(x = file, name = "docx file", engine = "tinytest")
+#'   # next runs compare with the snapshot
+#'   expect_snapshot_doc(x = file, name = "docx file", engine = "tinytest")
+#'
+#'   # cleaning directory
+#'   unlink("_tinytest_doconv", recursive = TRUE, force = TRUE)
+#' }
+#' if (require("testthat") && msoffice_available()){
+#'   local_edition(3)
+#'   # first run add a new snapshot
+#'   expect_snapshot_doc(x = file, name = "docx file", engine = "testthat")
+#'   # next runs compare with the snapshot
+#'   expect_snapshot_doc(x = file, name = "docx file", engine = "testthat")
+#' }
+#' }
 expect_snapshot_doc <- function(
     name,
     x,
@@ -46,7 +67,7 @@ expect_snapshot_doc <- function(
 
 }
 
-#' @title Test if the current HTML document matches a target document
+#' @title Visual test for an HTML document
 #' @description This expectation can be used with 'tinytest' and 'testthat'
 #' to check if a current document of type HTML
 #' matches a target document. When the expectation is checked
@@ -60,6 +81,35 @@ expect_snapshot_doc <- function(
 #' @param ... arguments used by `webshot::webshot2()`.
 #' @return A [tinytest::tinytest()] or a [testthat::expect_snapshot_file] object.
 #' @export
+#' @examples
+#' file <- tempfile(fileext = ".html")
+#' html <- paste0("<html><head><title>hello</title></head>",
+#'        "<body><h1>Hello World</h1></body></html>\n")
+#' cat(html, file = file)
+#'
+#' \dontrun{
+#' if (require("tinytest") && require("webshot2")){
+#'   # first run add a new snapshot
+#'   expect_snapshot_html(x = file, name = "html file",
+#'     engine = "tinytest")
+#'   # next runs compare with the snapshot
+#'   expect_snapshot_html(x = file, name = "html file",
+#'     engine = "tinytest")
+#'
+#'   # cleaning directory
+#'   unlink("_tinytest_doconv", recursive = TRUE,
+#'     force = TRUE)
+#' }
+#' if (require("testthat") && require("webshot2")){
+#'   local_edition(3)
+#'   # first run add a new snapshot
+#'   expect_snapshot_html(x = file, name = "html file",
+#'     engine = "testthat")
+#'   # next runs compare with the snapshot
+#'   expect_snapshot_html(x = file, name = "html file",
+#'     engine = "testthat")
+#' }
+#' }
 expect_snapshot_html <- function(
     name,
     x,
