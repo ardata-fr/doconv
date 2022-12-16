@@ -85,6 +85,18 @@ to_miniature <- function(filename, row = NULL, width = NULL,
 
 }
 
+#' @export
+#' @title Check if 'Microsoft Office' is available
+#' @description The function test if 'Microsoft Office' is available.
+#' @return a single logical value.
+#' @examples
+#' msoffice_available()
+msoffice_available <- function() {
+  (is_windows() || is_osx()) &&
+    exec_available("word") &&
+    exec_available("powerpoint")
+}
+
 pdf_to_miniature <- function(filename, row = NULL, width = 650,
                              border_color = "#ccc", border_geometry = "2x2",
                              dpi = 150,

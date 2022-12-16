@@ -2,7 +2,9 @@
 
 ## Features
 
-* new fonction `expect_snapshot_html()` for visual testing HTML documents.
+* new function `expect_snapshot_html()` for visual testing HTML documents.
+* new function `msoffice_available()` to test if 'Word' and 'PowerPoint'
+are available.
 
 ## Issues
 
