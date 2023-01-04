@@ -335,7 +335,7 @@ diff_image <- function(img1, img2) {
 tinytest_dir <- "_tinytest_doconv"
 
 .onLoad = function(libname, pkgname) {
-  if (requireNamespace("tinytest")) {
+  if ("tinytest" %in% loadedNamespaces() && requireNamespace("tinytest")) {
     tinytest::register_tinytest_extension(
       "doconv",
       c("expect_snapshot_doc"))
