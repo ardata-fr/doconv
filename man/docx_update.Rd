@@ -31,18 +31,5 @@ if (exec_available('word')) {
   docx_out <- tempfile(fileext = ".docx")
   file.copy(file, docx_out)
   docx_update(input = docx_out)
-
-  if (require("officer")) {
-    doc <- read_docx()
-    doc <- body_add_fpar(doc,
-        value = fpar(
-          run_word_field("DOCPROPERTY \"coco\" \\\\* MERGEFORMAT")))
-    doc <- set_doc_properties(doc, coco = "test")
-
-    docx_out <- tempfile(fileext = ".docx")
-
-    file <- print(doc, target = docx_out)
-    docx_update(docx_out)
-  }
 }
 }

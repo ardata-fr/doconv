@@ -1,4 +1,11 @@
-# doconv 0.2.1
+# doconv 0.3.1
+
+## Issues
+
+- dont load tinytest
+- drop officer from suggests
+
+# doconv 0.3.0
 
 ## Features
 
