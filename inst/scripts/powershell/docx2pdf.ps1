@@ -21,7 +21,7 @@ $result = $doc.ExportAsFixedFormat(
                $opdf,
                [Microsoft.Office.Interop.Word.WdExportFormat]::wdExportFormatPDF,
                $false,
-               [Microsoft.Office.Interop.Word.WdExportOptimizeFor]::wdExportOptimizeForOnScreen,
+               [Microsoft.Office.Interop.Word.WdExportOptimizeFor]::wdExportOptimizeForPrint,
                [Microsoft.Office.Interop.Word.WdExportRange]::wdExportAllDocument,
                0,
                0,
