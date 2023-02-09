@@ -8,13 +8,16 @@ Authors@R: c(
     person(given = "ArData", role = "cph"),
     person("David", "Hajage", role = "ctb", comment = "initial powershell code")
     )
-Description: Functions to convert 'Microsoft Word' or 'Microsoft PowerPoint' 
- documents to 'PDF' format and also for converting them into a thumbnail. 
- In order to work, 'LibreOffice' must be installed on the machine and 
- or 'Microsoft Word'. If the latter is available, 
- it can be used to produce PDF documents identical to the originals, 
- otherwise, 'LibreOffice' is used. A function is also provided to update 
- all fields and table of contents of a Word document using 'Microsoft Word'.
+Description: It provides the ability to generate images from documents
+ of different types. Three main features are provided: functions for
+ generating document thumbnails, functions for performing visual tests
+ of documents and a function for updating fields and table of contents
+ of a Word or RTF document. In order to work, 'LibreOffice' must be
+ installed on the machine and or 'Microsoft Word'. If the latter is
+ available, it can be used to produce PDF documents or images
+ identical to the originals; otherwise, 'LibreOffice' is used and
+ the rendering can be sometimes different from the original
+ documents.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
