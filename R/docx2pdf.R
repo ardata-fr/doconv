@@ -12,6 +12,11 @@
 #' is containing a browsable TOC.
 #' - On macOS, an "AppleScript" script is used to control "Microsoft Word".
 #' The resulting PDF is not containing a browsable TOC as when on 'Windows'.
+#' @section Windows authorizations:
+#' If your execution policy is set to "RemoteSigned", 'doconv' will
+#' not be able to run powershell script. Set it to "Unrestricted" and it
+#' should work. If you are in a managed and administrated environment,
+#' you may not be able to use 'doconv' because of execution policies.
 #' @section Macos manual authorizations:
 #' On macOS the call is happening into a working
 #' directory managed with function [working_directory()].
@@ -45,7 +50,7 @@
 #'   }
 #' }
 #' @return the name of the produced pdf (the same value as `output`)
-docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
+docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)) {
 
   if (is_osx()) {
     docx2pdf_osx(input = input, output = output)
@@ -58,7 +63,7 @@ docx2pdf <- function(input, output = gsub("\\.docx$", ".pdf", input)) {
 
 #' @importFrom locatexec is_osx
 #' @importFrom processx run
-docx2pdf_osx <- function(input, output = gsub("\\.docx$", ".pdf", input)){
+docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
 
   if (!is_osx()) {
     stop("docx2pdf_osx() should only be used on 'macOS' systems.", call. = FALSE)
@@ -74,7 +79,7 @@ docx2pdf_osx <- function(input, output = gsub("\\.docx$", ".pdf", input)){
   init_working_directory()
   default_root <- working_directory()
 
-  output_name <- file.path(default_root, gsub("\\.docx$", ".pdf", basename(input)))
+  output_name <- file.path(default_root, gsub("\\.(docx|doc|rtf)$", ".pdf", basename(input)))
 
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "docx2pdf.applescript")
   script_path <- tempfile(fileext = ".applescript")
@@ -97,7 +102,7 @@ docx2pdf_osx <- function(input, output = gsub("\\.docx$", ".pdf", input)){
 }
 
 #' @importFrom locatexec is_windows
-docx2pdf_win <- function(input, output = gsub("\\.docx$", ".pdf", input)){
+docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
 
   if (!is_windows()) {
     stop("docx2pdf_win() should only be used on 'Windows' systems.", call. = FALSE)
@@ -113,7 +118,7 @@ docx2pdf_win <- function(input, output = gsub("\\.docx$", ".pdf", input)){
   init_working_directory()
   default_root <- working_directory()
 
-  output_name <- file.path(default_root, gsub("\\.docx$", ".pdf", basename(input)))
+  output_name <- file.path(default_root, gsub("\\.(docx|doc|rtf)$", ".pdf", basename(input)))
 
   script_sourcefile <- system.file(
     package = "doconv", "scripts", "powershell", "docx2pdf.ps1")

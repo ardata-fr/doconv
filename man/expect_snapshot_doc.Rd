@@ -2,7 +2,7 @@
 % Please edit documentation in R/expect_snapshot_doc.R
 \name{expect_snapshot_doc}
 \alias{expect_snapshot_doc}
-\title{Visual test for a 'Microsoft Office' document}
+\title{Visual test for document}
 \usage{
 expect_snapshot_doc(
   name,
@@ -25,7 +25,7 @@ A \code{\link[tinytest:tinytest]{tinytest::tinytest()}} or a \link[testthat:expe
 }
 \description{
 This expectation can be used with 'tinytest' and 'testthat'
-to check if a current document of type pdf, docx, pptx or png
+to check if a current document of type pdf, docx, doc, rtf, pptx or png
 matches a target document. When the expectation is checked
 for the first time, the expectation fails and a target miniature
 of the document is saved in a folder named \verb{_tinytest_doconv} or

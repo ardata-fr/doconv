@@ -17,8 +17,8 @@ to_miniature(
 )
 }
 \arguments{
-\item{filename}{input filename, a 'Microsoft Word' or a
-'Microsoft Word' or a 'PDF' document.}
+\item{filename}{input filename, supported documents are 'Microsoft Word',
+'Microsoft PowerPoint', 'RTF' and 'PDF' document.}
 
 \item{row}{row index for every pages. 0 are to be used to drop
 the page from the final minature.

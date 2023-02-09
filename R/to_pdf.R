@@ -1,18 +1,25 @@
 #' @export
 #' @title Convert documents to pdf
-#' @description Convert documents to pdf using Libre Office. It
-#' supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"
-#' can also be converted but some Word features are not supported
-#' such as sections.
+#' @description Convert documents to pdf with a script using
+#' 'Office' or 'Libre Office'.
 #'
-#' Windows users must be warned the program is slow on your platform. Performances
-#' are not excellent but fast enough on other platform.
+#' If 'Microsoft Word' and 'Microsoft PowerPoint' are available,
+#' files 'docx', 'doc', 'rtf' and 'pptx' will be converted to
+#' PDF with 'Office' via a script.
+#'
+#' If 'Microsoft Word' and 'Microsoft PowerPoint' are not available
+#' (on linux for example), 'Libre Office' will be used to convert
+#' documents. In that case the rendering can be different from
+#' the original document. It supports very well 'Microsoft PowerPoint'
+#' to PDF. 'Microsoft Word' can also be converted but some Word
+#' features are not supported, such as sections.
+#'
 #' @param input,output file input and optional file output. If output
 #' file is not provided, the value will be the value of input file with
-#' extension "pdf".
+#' extension 'pdf'.
 #' @param UserInstallation use this value to set a non-default user profile path
-#' for "LibreOffice". If not provided a temporary dir is created. It makes possibles
-#' to use more than a single session of "LibreOffice."
+#' for 'LibreOffice'. If not provided a temporary dir is created. It makes possibles
+#' to use more than a single session of 'LibreOffice'.
 #' @param timeout timeout in seconds, ignored if 0.
 #' @section Ubuntu platforms:
 #' On some Ubuntu platforms, 'LibreOffice' require to add in
@@ -69,7 +76,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
   }
 
 
-  if(grepl("\\.(doc|docx)$", input) && exec_available("word")){
+  if(grepl("\\.(doc|docx|rtf)$", input) && exec_available("word")){
     docx2pdf(input = input, output = output)
   } else if(grepl("\\.(ppt|pptx)$", input) && exec_available("powerpoint")){
     pptx2pdf(input = input, output = output)

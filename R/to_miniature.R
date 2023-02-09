@@ -5,8 +5,8 @@
 #' pages are arranged in rows, each row can contain one to several pages.
 #'
 #' The result can be saved as a png file.
-#' @param filename input filename, a 'Microsoft Word' or a
-#' 'Microsoft Word' or a 'PDF' document.
+#' @param filename input filename, supported documents are 'Microsoft Word',
+#' 'Microsoft PowerPoint', 'RTF' and 'PDF' document.
 #' @param row row index for every pages. 0 are to be used to drop
 #' the page from the final minature.
 #'
@@ -66,7 +66,7 @@ to_miniature <- function(filename, row = NULL, width = NULL,
       filename, row = row, width = width,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, dpi = dpi, timeout = timeout)
-  } else if(grepl("\\.(doc|docx)$", filename)){
+  } else if(grepl("\\.(docx|doc|rtf)$", filename)){
     if(is.null(width)) width <- 650
     docx_to_miniature(
       filename, row = row, width = width,

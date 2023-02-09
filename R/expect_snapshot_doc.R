@@ -5,9 +5,9 @@ load_package <- function(z) {
   suppressPackageStartupMessages(require(z, character.only = TRUE))
 }
 
-#' @title Visual test for a 'Microsoft Office' document
+#' @title Visual test for document
 #' @description This expectation can be used with 'tinytest' and 'testthat'
-#' to check if a current document of type pdf, docx, pptx or png
+#' to check if a current document of type pdf, docx, doc, rtf, pptx or png
 #' matches a target document. When the expectation is checked
 #' for the first time, the expectation fails and a target miniature
 #' of the document is saved in a folder named `_tinytest_doconv` or
@@ -53,6 +53,8 @@ expect_snapshot_doc <- function(
     x <- print(x, target = tempfile(fileext = ".docx"))
   } else if (inherits(x, "rpptx")) {
     x <- print(x, target = tempfile(fileext = ".pptx"))
+  } else if (inherits(x, "rtf")) {
+    x <- print(x, target = tempfile(fileext = ".rtf"))
   }
 
   if ("testthat" %in% engine) {
@@ -140,11 +142,8 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   testthat::announce_snapshot_file(name = name)
   png_out <- tempfile(fileext = ".png")
 
-  file_type <- gsub("(.*)\\.(pdf|docx|pptx|png)$", "\\2", x)
-  exec <- NULL
-  if (file_type %in% c("pptx", "docx")) {
-    exec <- c("pptx" = "powerpoint", "docx" = "word")[file_type]
-  }
+  file_type <- gsub("(.*)\\.(pdf|docx|pptx|rtf|png)$", "\\2", x)
+  exec <- guess_exec(file_type)
 
   if (!is.null(exec) && !exec_available(exec)) {
     return(
@@ -157,16 +156,14 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
     )
   }
 
-  if ("pdf" %in% file_type) {
+  if (file_type %in% c("pdf", "docx", "doc", "rtf")) {
     to_miniature(x, fileout = png_out, width = 1000)
   } else if ("pptx" %in% file_type) {
     to_miniature(x, fileout = png_out, width = 1200)
-  } else if ("docx" %in% file_type) {
-    to_miniature(x, fileout = png_out, width = 1000)
   } else if ("png" %in% file_type) {
     file.copy(x, png_out, overwrite = TRUE)
   } else {
-    stop("`expect_snapshot_doc()` only supports docx, pptx, pdf and png files.")
+    stop("`expect_snapshot_doc()` only supports docx, pptx, rtf, pdf and png files.")
   }
 
   testthat::expect_snapshot_file(
@@ -178,11 +175,8 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
 }
 
 expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
-  file_type <- gsub("(.*)\\.(pdf|docx|pptx|png)$", "\\2", current)
-  exec <- NULL
-  if (file_type %in% c("pptx", "docx")) {
-    exec <- c("pptx" = "powerpoint", "docx" = "word")[file_type]
-  }
+  file_type <- gsub("(.*)\\.(pdf|docx|pptx|rtf|png)$", "\\2", current)
+  exec <- guess_exec(file_type)
 
   if (!is.null(exec) && !exec_available(exec)) {
     return(
@@ -198,7 +192,7 @@ expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
     )
   }
 
-  if ("pdf" %in% file_type) {
+  if (file_type %in% c("pdf", "doc", "docx", "rtf")) {
     expect_office_doc_diff_tinytest(
       current,
       name,
@@ -212,17 +206,10 @@ expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
       tolerance = tolerance,
       width = 1200
     )
-  } else if ("docx" %in% file_type) {
-    expect_office_doc_diff_tinytest(
-      current,
-      name,
-      tolerance = tolerance,
-      width = 1000
-    )
   } else if (grepl("\\.png$", current)) {
     expect_png_diff(current, name, tolerance = tolerance)
   } else {
-    stop("`expect_snapshot_tinytest()` only supports docx, pptx, pdf and png files.")
+    stop("`expect_snapshot_tinytest()` only supports docx, doc, pptx, rtf, pdf and png files.")
   }
 }
 
@@ -321,6 +308,18 @@ expect_png_diff <- function(current,
 }
 
 # utils -----
+
+guess_exec <- function(file_type) {
+  exec <- NULL
+  if (file_type %in% c("pptx", "docx", "doc", "rtf")) {
+    exec <- c(
+      "pptx" = "powerpoint",
+      "docx" = "word",
+      "doc" = "word",
+      "rtf" = "word")[file_type]
+  }
+  exec
+}
 
 #' @importFrom magick image_raster image_read
 diff_image <- function(img1, img2) {

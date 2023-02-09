@@ -4,7 +4,7 @@
 \alias{docx2pdf}
 \title{Convert docx to pdf}
 \usage{
-docx2pdf(input, output = gsub("\\\\.docx$", ".pdf", input))
+docx2pdf(input, output = gsub("\\\\.(docx|doc|rtf)$", ".pdf", input))
 }
 \arguments{
 \item{input, output}{file input and optional file output (default
@@ -28,6 +28,14 @@ is containing a browsable TOC.
 The resulting PDF is not containing a browsable TOC as when on 'Windows'.
 }
 }
+\section{Windows authorizations}{
+
+If your execution policy is set to "RemoteSigned", 'doconv' will
+not be able to run powershell script. Set it to "Unrestricted" and it
+should work. If you are in a managed and administrated environment,
+you may not be able to use 'doconv' because of execution policies.
+}
+
 \section{Macos manual authorizations}{
 
 On macOS the call is happening into a working

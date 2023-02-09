@@ -14,26 +14,32 @@ to_pdf(
 \arguments{
 \item{input, output}{file input and optional file output. If output
 file is not provided, the value will be the value of input file with
-extension "pdf".}
+extension 'pdf'.}
 
 \item{timeout}{timeout in seconds, ignored if 0.}
 
 \item{UserInstallation}{use this value to set a non-default user profile path
-for "LibreOffice". If not provided a temporary dir is created. It makes possibles
-to use more than a single session of "LibreOffice."}
+for 'LibreOffice'. If not provided a temporary dir is created. It makes possibles
+to use more than a single session of 'LibreOffice'.}
 }
 \value{
 the name of the produced pdf (the same value as \code{output}),
 invisibly.
 }
 \description{
-Convert documents to pdf using Libre Office. It
-supports very well "Microsoft PowerPoint" to PDF. "Microsoft Word"
-can also be converted but some Word features are not supported
-such as sections.
+Convert documents to pdf with a script using
+'Office' or 'Libre Office'.
 
-Windows users must be warned the program is slow on your platform. Performances
-are not excellent but fast enough on other platform.
+If 'Microsoft Word' and 'Microsoft PowerPoint' are available,
+files 'docx', 'doc', 'rtf' and 'pptx' will be converted to
+PDF with 'Office' via a script.
+
+If 'Microsoft Word' and 'Microsoft PowerPoint' are not available
+(on linux for example), 'Libre Office' will be used to convert
+documents. In that case the rendering can be different from
+the original document. It supports very well 'Microsoft PowerPoint'
+to PDF. 'Microsoft Word' can also be converted but some Word
+features are not supported, such as sections.
 }
 \section{Ubuntu platforms}{
 
