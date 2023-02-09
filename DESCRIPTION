@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF' or 'PNG'
-Version: 0.3.2.002
+Version: 0.3.2
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),
@@ -12,7 +12,7 @@ Description: It provides the ability to generate images from documents
  of different types. Three main features are provided: functions for
  generating document thumbnails, functions for performing visual tests
  of documents and a function for updating fields and table of contents
- of a Word or RTF document. In order to work, 'LibreOffice' must be
+ of a 'Microsoft Word' or 'RTF' document. In order to work, 'LibreOffice' must be
  installed on the machine and or 'Microsoft Word'. If the latter is
  available, it can be used to produce PDF documents or images
  identical to the originals; otherwise, 'LibreOffice' is used and
