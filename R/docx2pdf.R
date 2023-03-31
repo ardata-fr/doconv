@@ -137,7 +137,7 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
 
   rm_working_directory()
 
-  if(!success) stop("could not convert ", input, call. = FALSE)
+  if(!success) stop("could not convert ", input, res$stderr, call. = FALSE)
 
   output
 
