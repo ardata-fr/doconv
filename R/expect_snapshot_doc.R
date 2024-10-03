@@ -69,6 +69,7 @@ expect_snapshot_doc <- function(
 
 }
 
+
 #' @title Visual test for an HTML document
 #' @description This expectation can be used with 'tinytest' and 'testthat'
 #' to check if a current document of type HTML

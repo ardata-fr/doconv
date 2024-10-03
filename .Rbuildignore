@@ -7,3 +7,4 @@
 ^revdep$
 ^Dockerfile$
 ^inst/medias$
+^dev_local
