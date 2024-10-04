@@ -156,7 +156,6 @@ ps_execution_policy <- function() {
 # check if policy allows PS script execution. If not advise user.
 stop_on_wrong_ps_exec_policy <- function() {
   policy <- ps_execution_policy()
-  ps_exec_policies_ok <- c("RemoteSigned", "Bypass", "Unrestricted")
   stop("Conversion failed.\n",
     "Your PowerShell execution policy '", policy, "' prevents script execution.\n",
     "Run one of the following commands in PS as admin to enable script execution: \n",

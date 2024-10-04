@@ -2,8 +2,8 @@
 
 ## Issues
 
-- Stop if PowerShell (PS) execution strategy does not allow running scripts and advise user. 
-  PS scripts are required for certain actions on Windows (#2). 
+- Fail with informative error message if PowerShell (PS) execution strategy does not allow
+  running PS scripts. PS scripts are required for certain actions on Windows (#2).
 
 # doconv 0.3.2
 
