@@ -113,8 +113,6 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
     stop("input does not exist", call. = FALSE)
   }
 
-  stop_on_wrong_ps_exec_policy()
-
   input <- absolute_path(input)
   output <- absolute_path(output)
 
@@ -129,11 +127,16 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   script_str[1] <- sprintf(script_str[1], input)
   script_str[2] <- sprintf(script_str[2], output_name)
   writeLines(script_str, script_path, useBytes = TRUE)
-
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
+
   success <- res$status == 0
 
-  if(success) {
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
+
+  if (success) {
     success <- file.copy(from = output_name, to = output, overwrite = TRUE)
   }
 
@@ -217,8 +220,6 @@ docx_update_win <- function(input){
     stop("input does not exist", call. = FALSE)
   }
 
-  stop_on_wrong_ps_exec_policy()
-
   input <- absolute_path(input)
 
   init_working_directory()
@@ -233,7 +234,12 @@ docx_update_win <- function(input){
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
 
-  if(!success) stop("could not update ", input, call. = FALSE)
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
+
+  if (!success) stop("could not update ", input, call. = FALSE)
 
   success
 }
@@ -347,8 +353,6 @@ pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
     stop("input does not exist", call. = FALSE)
   }
 
-  stop_on_wrong_ps_exec_policy()
-
   input <- absolute_path(input)
   output <- absolute_path(output)
 
@@ -362,6 +366,11 @@ pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
 
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
+
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
 
   if(!success) stop("could not convert ", input, call. = FALSE)
 

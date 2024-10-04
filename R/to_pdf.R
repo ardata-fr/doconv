@@ -153,7 +153,7 @@ check_libreoffice_export <- function(UserInstallation = NULL) {
                "--outdir", default_root,
                input),
       error_on_status = FALSE,
-      timeout = 15
+      timeout = 45
       )
   success <- res$status == 0
 

@@ -145,11 +145,10 @@ images_to_miniature <- function(img_list, row = NULL, width = 650,
   img_stack
 }
 
-
 # get PS exec policy
 ps_execution_policy <- function() {
   res <- run("powershell", args = c("Get-ExecutionPolicy"), error_on_status = FALSE)
-  policy <- gsub("\\s+", "",  res$stdout)
+  policy <- gsub("\\s+", "", res$stdout)
   policy
 }
 
@@ -157,11 +156,12 @@ ps_execution_policy <- function() {
 # check if policy allows PS script execution. If not advise user.
 stop_on_wrong_ps_exec_policy <- function() {
   policy <- ps_execution_policy()
-  ps_exec_policies_ok <- c("RemoteSigned", "Bypass","Unrestricted")
-  if (!policy %in% ps_exec_policies_ok) {
-    stop("PowerShell execution policy '", policy, "' prevents script execution.\n",
-            "Run one of the following commands in PS as admin to allow script execution: \n",
-            "  `Set-ExecutionPolicy Bypass`\n",
-            "  `Set-ExecutionPolicy Unrestricted`\n", call. = FALSE)
-  }
+  ps_exec_policies_ok <- c("RemoteSigned", "Bypass", "Unrestricted")
+  stop("Conversion failed.\n",
+    "Your PowerShell execution policy '", policy, "' prevents script execution.\n",
+    "Run one of the following commands in PS as admin to enable script execution: \n",
+    "  `Set-ExecutionPolicy Bypass`\n",
+    "  `Set-ExecutionPolicy Unrestricted`\n",
+    call. = FALSE
+  )
 }
