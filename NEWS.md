@@ -1,3 +1,10 @@
+# doconv 0.3.3 (dev version)
+
+## Issues
+
+- Fail with informative error message if PowerShell (PS) execution strategy does not allow
+  running PS scripts. PS scripts are required for certain actions on Windows (#2).
+
 # doconv 0.3.2
 
 ## Features

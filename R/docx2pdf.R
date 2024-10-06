@@ -61,10 +61,10 @@ docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)) 
   }
 }
 
+
 #' @importFrom locatexec is_osx
 #' @importFrom processx run
 docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
-
   if (!is_osx()) {
     stop("docx2pdf_osx() should only be used on 'macOS' systems.", call. = FALSE)
   }
@@ -101,6 +101,7 @@ docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   output
 }
 
+
 #' @importFrom locatexec is_windows
 docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
 
@@ -120,18 +121,22 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
 
   output_name <- file.path(default_root, gsub("\\.(docx|doc|rtf)$", ".pdf", basename(input)))
 
-  script_sourcefile <- system.file(
-    package = "doconv", "scripts", "powershell", "docx2pdf.ps1")
+  script_sourcefile <- system.file(package = "doconv", "scripts", "powershell", "docx2pdf.ps1")
   script_path <- tempfile(fileext = ".ps1")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
   script_str[1] <- sprintf(script_str[1], input)
   script_str[2] <- sprintf(script_str[2], output_name)
   writeLines(script_str, script_path, useBytes = TRUE)
-
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
+
   success <- res$status == 0
 
-  if(success) {
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
+
+  if (success) {
     success <- file.copy(from = output_name, to = output, overwrite = TRUE)
   }
 
@@ -140,9 +145,8 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   if(!success) stop("could not convert ", input, res$stderr, call. = FALSE)
 
   output
-
-
 }
+
 
 #' @export
 #' @title Update docx fields
@@ -178,6 +182,7 @@ docx_update <- function(input) {
   invisible(x)
 }
 
+
 docx_update_osx <- function(input){
 
   if (!is_osx()) {
@@ -203,6 +208,8 @@ docx_update_osx <- function(input){
 
   success
 }
+
+
 docx_update_win <- function(input){
 
   if (!is_windows()) {
@@ -227,14 +234,15 @@ docx_update_win <- function(input){
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
 
-  if(!success) stop("could not update ", input, call. = FALSE)
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
+
+  if (!success) stop("could not update ", input, call. = FALSE)
 
   success
 }
-
-
-
-
 
 
 #' @export
@@ -290,6 +298,7 @@ pptx2pdf <- function(input, output = gsub("\\.pptx$", ".pdf", input)) {
   }
 }
 
+
 #' @importFrom locatexec is_osx
 #' @importFrom processx run
 pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
@@ -332,6 +341,7 @@ pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
   output
 }
 
+
 #' @importFrom locatexec is_windows
 pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
 
@@ -357,10 +367,12 @@ pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
 
+  # fail with informative error if conversion fails due to PS Execution Policy
+  if (!success && grepl("UnauthorizedAccess", res$stderr)) {
+    stop_on_wrong_ps_exec_policy()
+  }
+
   if(!success) stop("could not convert ", input, call. = FALSE)
 
-  success
-
-
+  output
 }
-
