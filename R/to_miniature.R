@@ -24,16 +24,16 @@
 #' * 650 for docx files
 #' * 750 for pptx files
 #'
-#' @param border_color border color, see [image_border()].
+#' @param border_color border color, see [magick::image_border()].
 #' @param border_geometry border geometry to be added around
-#' images, see [image_border()].
+#' images, see [magick::image_border()].
 #' @param fileout if not NULL, result is saved in a png file whose filename
 #' is defined by this argument.
-#' @param dpi resolution (dots per inch) to use for images, see [pdf_convert()].
+#' @param dpi resolution (dots per inch) to use for images, see [pdftools::pdf_convert()].
 #' @param timeout timeout in seconds that libreoffice is allowed to use
 #' in order to generate the corresponding pdf file, ignored if 0.
 #' @param ... arguments used by webshot2 when HTML document.
-#' @return a magick image object as returned by [image_read()].
+#' @return a magick image object as returned by [magick::image_read()].
 #' @examples
 #' library(locatexec)
 #' docx_file <- system.file(
