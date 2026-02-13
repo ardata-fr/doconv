@@ -1,7 +1,7 @@
 Package: doconv
 Type: Package
 Title: Document Conversion to 'PDF', Thumbnails and Visual Testing
-Version: 0.4.0.001
+Version: 0.4.0.002
 Authors@R: c(
     person("David", "Gohel", role = c("aut", "cre"),
     email = "david.gohel@ardata.fr"),

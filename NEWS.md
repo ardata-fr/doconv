@@ -2,6 +2,9 @@
 
 ## Issues
 
+- Forward slashes in file paths are now converted to backslashes before
+  injection into PowerShell scripts, fixing failures when paths contain
+  spaces (#5).
 - PowerShell scripts now use `try/finally` to guarantee `Word.Quit()` and
   `PowerPoint.Quit()` are called even when an error occurs, preventing
   orphan COM processes on Windows.

@@ -59,6 +59,7 @@ absolute_path <- function(x){
 # Escape a file path for a PowerShell double-quoted string.
 # Backtick is the PS escape character; $, ", and ` need escaping.
 escape_path_ps <- function(path) {
+  path <- gsub("/", "\\", path, fixed = TRUE)
   path <- gsub("`", "``", path, fixed = TRUE)
   path <- gsub('"', '`"', path, fixed = TRUE)
   path <- gsub("$", "`$", path, fixed = TRUE)
