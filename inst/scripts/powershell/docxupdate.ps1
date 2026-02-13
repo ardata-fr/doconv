@@ -1,23 +1,16 @@
 $indocx = "%s"
 
 $Word = New-Object -ComObject Word.Application
-$doc = $Word.Documents.Open($indocx)
-
-$doc.Fields.Update()
-$tocs = $doc.TablesOfContents
-foreach ($toc in $tocs)
-{
-  $toc.Update()
-}
-$tocs = $doc.TablesOfFigures
-foreach ($toc in $tocs)
-{
-  $toc.Update()
-}
 $Word.Visible = $False
+try {
+  $doc = $Word.Documents.Open($indocx)
 
-$result = $doc.Save()
+  $doc.Fields.Update()
+  foreach ($toc in $doc.TablesOfContents) { $toc.Update() }
+  foreach ($toc in $doc.TablesOfFigures) { $toc.Update() }
 
-
-$doc.Close()
-$word.Quit()
+  $doc.Save()
+  $doc.Close()
+} finally {
+  $Word.Quit()
+}

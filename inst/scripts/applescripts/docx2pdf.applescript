@@ -1,27 +1,37 @@
 set indocx to POSIX file "%s"
 set opdf to POSIX file "%s"
 
-set myVariable to false
+set wasRunning to false
 
 if application "Microsoft Word" is running then
-  set myVariable to true
+  set wasRunning to true
 end if
 
-tell application "Microsoft Word"
-	set theActiveDoc to open file name indocx
-  repeat with aField in (get fields of theActiveDoc)
-    update field aField
-  end repeat
-  repeat with toc in (get tables of contents of theActiveDoc)
-    update toc
-  end repeat
-  repeat with toc in (get tables of figures of theActiveDoc)
-    update toc
-  end repeat
-	save as theActiveDoc file format format PDF file name opdf
-	close active window of theActiveDoc saving no
-end tell
+try
+  tell application "Microsoft Word"
+    set theActiveDoc to open file name indocx
+    repeat with aField in (get fields of theActiveDoc)
+      update field aField
+    end repeat
+    repeat with toc in (get tables of contents of theActiveDoc)
+      update toc
+    end repeat
+    repeat with toc in (get tables of figures of theActiveDoc)
+      update toc
+    end repeat
+    save as theActiveDoc file format format PDF file name opdf
+    close active window of theActiveDoc saving no
+  end tell
+on error errMsg
+  try
+    tell application "Microsoft Word" to close active window saving no
+  end try
+  if not wasRunning then
+    tell application "Microsoft Word" to quit
+  end if
+  error errMsg
+end try
 
-if myVariable is equal to false then
+if not wasRunning then
   tell application "Microsoft Word" to quit
 end if

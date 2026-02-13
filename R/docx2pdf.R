@@ -84,8 +84,8 @@ docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "docx2pdf.applescript")
   script_path <- tempfile(fileext = ".applescript")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  script_str[1] <- sprintf(script_str[1], input)
-  script_str[2] <- sprintf(script_str[2], output_name)
+  script_str[1] <- sub("%s", escape_path_applescript(input), script_str[1], fixed = TRUE)
+  script_str[2] <- sub("%s", escape_path_applescript(output_name), script_str[2], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
 
   res <- run("osascript", script_path, error_on_status = FALSE)
@@ -124,8 +124,8 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   script_sourcefile <- system.file(package = "doconv", "scripts", "powershell", "docx2pdf.ps1")
   script_path <- tempfile(fileext = ".ps1")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  script_str[1] <- sprintf(script_str[1], input)
-  script_str[2] <- sprintf(script_str[2], output_name)
+  script_str[1] <- sub("%s", escape_path_ps(input), script_str[1], fixed = TRUE)
+  script_str[2] <- sub("%s", escape_path_ps(output_name), script_str[2], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
 
@@ -200,7 +200,7 @@ docx_update_osx <- function(input){
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "docxupdate.applescript")
   script_path <- tempfile(fileext = ".applescript")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  script_str[1] <- sprintf(script_str[1], input)
+  script_str[1] <- sub("%s", escape_path_applescript(input), script_str[1], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
 
   res <- run("osascript", script_path)
@@ -228,7 +228,7 @@ docx_update_win <- function(input){
   script_sourcefile <- system.file(package = "doconv", "scripts", "powershell", "docxupdate.ps1")
   script_path <- tempfile(fileext = ".ps1")
   docxupdate_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  docxupdate_str[1] <- sprintf(docxupdate_str[1], input)
+  docxupdate_str[1] <- sub("%s", escape_path_ps(input), docxupdate_str[1], fixed = TRUE)
   writeLines(docxupdate_str, script_path, useBytes = TRUE)
 
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
@@ -322,8 +322,8 @@ pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "pptx2pdf.applescript")
   script_path <- tempfile(fileext = ".applescript")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  script_str[1] <- sprintf(script_str[1], input)
-  script_str[2] <- sprintf(script_str[2], output_name)
+  script_str[1] <- sub("%s", escape_path_applescript(input), script_str[1], fixed = TRUE)
+  script_str[2] <- sub("%s", escape_path_applescript(output_name), script_str[2], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
 
   res <- run("osascript", script_path, error_on_status = FALSE)
@@ -360,8 +360,8 @@ pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input)){
     package = "doconv", "scripts", "powershell", "pptx2pdf.ps1")
   script_path <- tempfile(fileext = ".ps1")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
-  script_str[1] <- sprintf(script_str[1], input)
-  script_str[2] <- sprintf(script_str[2], normalizePath(output, mustWork = FALSE))
+  script_str[1] <- sub("%s", escape_path_ps(input), script_str[1], fixed = TRUE)
+  script_str[2] <- sub("%s", escape_path_ps(normalizePath(output, mustWork = FALSE)), script_str[2], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
 
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)

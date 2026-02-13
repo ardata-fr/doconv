@@ -1,4 +1,24 @@
-# doconv 0.3.3 (dev version)
+# doconv 0.4.0
+
+## Issues
+
+- PowerShell scripts now use `try/finally` to guarantee `Word.Quit()` and
+  `PowerPoint.Quit()` are called even when an error occurs, preventing
+  orphan COM processes on Windows.
+- `Word.Visible = $False` is now set before opening the document in
+  PowerShell scripts, eliminating the brief window flash on startup.
+- PowerPoint's `Presentations.Open()` now uses `WithWindow=$false` to
+  open presentations without a visible window.
+- AppleScript scripts now use `try/on error` blocks to ensure cleanup
+  (close document + conditional quit) runs even when an error occurs,
+  and the error is re-raised so that `processx::run()` sees a non-zero
+  exit status.
+- File paths are now sanitized before injection into script templates:
+  `sprintf()` replaced by `sub()` to handle `%` in paths, and special
+  characters (`"`, `` ` ``, `$`, `\`) are escaped for PowerShell and
+  AppleScript respectively.
+
+# doconv 0.3.3
 
 ## Issues
 

@@ -56,6 +56,22 @@ absolute_path <- function(x){
   epath
 }
 
+# Escape a file path for a PowerShell double-quoted string.
+# Backtick is the PS escape character; $, ", and ` need escaping.
+escape_path_ps <- function(path) {
+  path <- gsub("`", "``", path, fixed = TRUE)
+  path <- gsub('"', '`"', path, fixed = TRUE)
+  path <- gsub("$", "`$", path, fixed = TRUE)
+  path
+}
+
+# Escape a file path for an AppleScript double-quoted string.
+escape_path_applescript <- function(path) {
+  path <- gsub("\\", "\\\\", path, fixed = TRUE)
+  path <- gsub('"', '\\"', path, fixed = TRUE)
+  path
+}
+
 #' @noRd
 #' @importFrom pdftools pdf_convert pdf_length
 #' @title Convert a PDF document to images

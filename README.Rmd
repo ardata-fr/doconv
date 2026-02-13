@@ -16,18 +16,25 @@ library(doconv)
 
 # doconv
 
-<img src="man/figures/logo.png" alt="doconv logo" align="right" /> The tool offers a set of functions for converting 'Microsoft Word' or 
-'Microsoft PowerPoint' documents to 'PDF' format and also for converting 
-them to images in the form of thumbnails.
+<img src="man/figures/logo.png" alt="doconv logo" align="right" /> The package provides functions for converting 'Microsoft Word' or
+'Microsoft PowerPoint' documents to 'PDF' format and also for converting
+them to images in the form of thumbnails. A function is also provided to
+update all fields and tables of contents of a Word document.
 
-In order to work, the package will use 'Microsoft Word', 'Microsoft PowerPoint',
-if they are not available program 'LibreOffice' can be used. A function is also
-provided to update all fields and table of contents of a Word document using
-'Microsoft Word'.
+The package uses 'Microsoft Word' or 'Microsoft PowerPoint' when available;
+otherwise 'LibreOffice' can be used as a fallback.
 
-These features are also used to provide functions for visual-testing documents,
-format 'doc', 'docx', 'ppt', 'pptx', 'html', 'pdf' and 'png' are supported. The
-functions can be used with packages "testthat" and package "tinytest".
+Visual-testing functions for documents are also provided.
+Formats 'doc', 'docx', 'ppt', 'pptx', 'html', 'pdf' and 'png' are supported. The
+functions can be used with packages 'testthat' and 'tinytest'.
+
+**Important:** For faithful rendering, this package requires 'Microsoft Word'
+and 'Microsoft PowerPoint', which are only available on **Windows** and **macOS**.
+'LibreOffice' works on all platforms (including Linux) but its rendering of
+Office documents is often inaccurate (misplaced content, wrong fonts, broken
+layouts). Because 'Microsoft Office' is licensed desktop software, this package
+is best suited for **interactive use** rather than CI/CD pipelines or server
+deployments.
 
 <!-- badges: start -->
 [![R build status](https://github.com/ardata-fr/doconv/workflows/R-CMD-check/badge.svg)](https://github.com/ardata-fr/doconv/actions)
@@ -42,55 +49,84 @@ You can install the latest version from GitHub with:
 devtools::install_github("ardata-fr/doconv")
 ```
 
-## Example
+## Setup
+
+The package requires 'Microsoft Word' and 'Microsoft PowerPoint'.
+If they cannot be installed, 'LibreOffice' can be used instead; please visit
+<https://www.libreoffice.org/> and follow the installation instructions.
+
+Use function `check_libreoffice_export()` to check that 'LibreOffice'
+is installed and can export to PDF:
+
+```{r}
+check_libreoffice_export()
+```
+
+When 'Microsoft Word' or 'Microsoft PowerPoint' are available,
+the output looks exactly like the original document.
+With 'LibreOffice', be aware that the rendering may differ
+(sections can be misinterpreted, for example).
+
+### Authorization on macOS
+
+If you are running R on macOS, you have to authorize a few things before
+starting.
+
+PDF processing takes place in a working directory managed with
+function `working_directory()`. 'Word' and 'PowerPoint' must be
+authorized to write to this directory. These permissions must be set
+manually as required by the macOS security policy.
+
+You must click a few buttons:
+
+1. Allow R to run 'AppleScript' scripts that will control Word.
+2. Allow Word to write to the working directory.
+
+![](man/figures/authorizations.png)
+
+These are one-time operations.
+
+## Usage
 
 ```{r}
 library(doconv)
 ```
 
-## Generate thumbails from file
+### Generate thumbnails
 
-You can generate thumbails as an image by using `to_miniature`:
+`to_miniature()` converts a document to an image of thumbnails:
 
 ```{r}
 docx_file <- system.file(package = "doconv", "doc-examples/example.docx")
 to_miniature(
-  filename = docx_file, 
+  filename = docx_file,
   row = c(1, 1, 2, 2))
 ```
 
-It uses 'Microsoft Word' or 'Microsoft PowerPoint' program to convert Word or 
-PowerPoint documents to PDF. If program 'Microsoft Word' or 'Microsoft PowerPoint'
-is not available, it uses 'LibreOffice' to convert Word or PowerPoint documents to PDF.
-
-Thus, this package can only be used when 'Microsoft Word' and 'Microsoft PowerPoint' 
-programs are available or eventually 'LibreOffice'.
-
-## Convert a PowerPoint file to PDF
+### Convert to PDF
 
 ```{r}
-docx_file <- system.file(package = "doconv", "doc-examples/example.pptx")
-to_pdf(docx_file, output = "pptx_example.pdf")
+pptx_file <- system.file(package = "doconv", "doc-examples/example.pptx")
+to_pdf(pptx_file, output = "pptx_example.pdf")
 to_miniature("pptx_example.pdf", width = 1000)
 ```
 
-## Convert a Word file to PDF
-
 ```{r}
 to_pdf(docx_file, output = "docx_example.pdf")
+to_miniature("docx_example.pdf", width = 1000)
 ```
 
 ```{r include=FALSE}
-unlink(c("docx_example.pdf", "pptx_example.pdf") )
+unlink(c("docx_example.pdf", "pptx_example.pdf"))
 ```
 
-## Update Word fields and TOC
+### Update Word fields and TOC
 
 ```{r eval=FALSE}
 library(officer)
 library(doconv)
 
-read_docx() |> 
+read_docx() |>
   body_add_fpar(
     value = fpar(
       run_word_field("DOCPROPERTY \"coco\" \\* MERGEFORMAT"))) |>
@@ -99,63 +135,12 @@ read_docx() |>
   docx_update()
 ```
 
-
-## Setup
-
-If not available on your machine and if possible, install 
-'Microsoft Word' or 'Microsoft PowerPoint' programs.
-
-If 'Microsoft Word' and 'Microsoft PowerPoint' can not be installed, 
-install 'LibreOffice' on your machine; please visit 
-https://www.libreoffice.org/ and follow the installation instructions.
-
-Use function `check_libreoffice_export()` to check that the software 
-is installed and can export to PDF:
-
-```{r}
-check_libreoffice_export()
-```
-
-
-If 'Microsoft Word' or 'Microsoft PowerPoint' are available on your machine, 
-you can get images or pdf that looks exactly the same than the original document.
-If not 'LibreOffice' is used to convert Word documents 
-to PDF or as an image, in this case, be aware that 'LibreOffice' does not 
-always render the document as 'Microsoft Word' would do (sections can be 
-misunderstood for example).
-
-### Authorization on macOS
-
-If you are running R for 'macOS', you have to authorize few things before 
-starting.
-
-PDF processing will happen into a working
-directory managed with function `working_directory()`.
-
-Manual interventions are necessary to authorize 'Word' and
-'PowerPoint' applications to write in a single directory: the working directory.
-
-These permissions must be set manually, this is required by the macOS security
-policy. We think that this is not a problem because it is unlikely that you will
-use a Mac machine as a server.
-
-User must manually click on few buttons:
-
-1. allow R to run 'AppleScript' scripts that will control Word
-2. allow Word to write to the working directory.
-
-![](man/figures/authorizations.png)
-
-Don't worry, these are one-time operations.
-
-
 ## Related work
 
-* Packages [docxtractr](https://CRAN.R-project.org/package=docxtractr) is providing 
-`convert_to_pdf()` that works very well. The functionality integrated in Bob Rudis' 
-package depends only on 'LibreOffice'. 
+* Package [docxtractr](https://CRAN.R-project.org/package=docxtractr) provides
+`convert_to_pdf()`, which works very well. The functionality integrated in Bob Rudis'
+package depends only on 'LibreOffice'.
 
 ```{r include=FALSE}
 # minimage::compress_images("man/figures", "man/figures", overwrite = TRUE)
 ```
-
