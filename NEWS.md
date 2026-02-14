@@ -2,6 +2,10 @@
 
 ## Features
 
+- New exported function `run_in_shiny_app()` to run an arbitrary
+  command against a live Shiny application. Manages the app lifecycle
+  (start, wait for HTTP readiness, stop) via processx; the command
+  to execute is passed through `...` to `processx::run()`.
 - New exported functions `expect_snapshot_ggplots()` and
   `expect_snapshot_flextables()` for visual regression testing of
   ggplot2 plots and flextable objects within testthat test suites.

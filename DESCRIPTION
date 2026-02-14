@@ -1,7 +1,7 @@
 Type: Package
 Package: doconv
 Title: Document Conversion to 'PDF', Thumbnails and Visual Testing
-Version: 0.4.0.004
+Version: 0.4.0.005
 Authors@R: c(
     person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
     person("ArData", role = "cph"),
@@ -28,7 +28,8 @@ Imports:
     pdftools,
     processx,
     tools
-Suggests: 
+Suggests:
+    curl,
     flextable,
     ragg,
     testthat,
