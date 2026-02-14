@@ -138,6 +138,125 @@ expect_snapshot_html <- function(
 }
 
 
+#' @title Skip tests when PNG snapshot dependencies are unavailable
+#' @description Skips a testthat test if ragg or gdtools are not installed.
+#' Also registers Liberation Sans via [gdtools::register_liberationsans()].
+#' @return Invisibly returns NULL or skips the test.
+#' @export
+#' @importFrom gdtools font_set_liberation
+skip_if_not_snapshot_png <- function() {
+  if (!requireNamespace("testthat", quietly = TRUE)) {
+    stop("Package 'testthat' is required.")
+  }
+  testthat::skip_if_not_installed("ragg")
+  font_set_liberation()
+}
+
+#' @title Visual snapshot test for ggplot2 plot(s)
+#' @description Renders ggplot2 objects to PNG with ragg and compares
+#' against a reference snapshot using [expect_snapshot_doc()].
+#'
+#' When `x` is a list of ggplot2 objects, individual renderings are
+#' assembled into a single composite image via `images_to_miniature()`.
+#' By default each plot occupies its own row; use `ncol` to arrange
+#' several plots per row. The snapshot is always a single file
+#' named `<name>.png`, stored in testthat's `_snaps` directory.
+#'
+#' If a plot fails to render, its slot is replaced by a blank white
+#' rectangle of the same dimensions, making the failure visible in
+#' the diff.
+#'
+#' On the first run the reference snapshot is created and the
+#' test is reported as a new snapshot. Subsequent runs compare
+#' the current rendering against the stored reference.
+#' @param x a ggplot2 object or a list of ggplot2 objects.
+#' @param name a unique string used as the snapshot file name
+#'   (`<name>.png`). Must be unique across the test file.
+#' @param width,height image dimensions (default 9 x 7 inches).
+#' @param units units for width/height, default "in".
+#' @param res resolution in DPI, default 200.
+#' @param ncol number of images per row in the composite when `x`
+#'   is a list (default `NULL`, one image per row).
+#' @param tolerance ratio of different pixels allowed, default 0.001.
+#' @return The result of [expect_snapshot_doc()].
+#' @export
+expect_snapshot_ggplots <- function(x, name, width = 9, height = 7,
+                                    units = "in", res = 200,
+                                    ncol = NULL, tolerance = 0.001) {
+  skip_if_not_snapshot_png()
+  png_files <- ggplot_to_png(x, width = width, height = height,
+                              units = units, res = res)
+  if (length(png_files) > 1L) {
+    img_list <- lapply(png_files, image_read)
+    fileout <- tempfile(fileext = ".png")
+    images_to_miniature(img_list, ncol = ncol, fileout = fileout)
+    png_files <- fileout
+  }
+  expect_snapshot_doc(name = name, x = png_files[[1]],
+                      engine = "testthat", tolerance = tolerance)
+}
+
+#' @title Visual snapshot test for flextable object(s)
+#' @description Renders flextable objects to PNG with
+#' [flextable::save_as_image()] and compares against a reference
+#' snapshot using [expect_snapshot_doc()].
+#'
+#' When `x` is a list of flextable objects, individual renderings are
+#' assembled into a single composite image via `images_to_miniature()`.
+#' By default each table occupies its own row; use `ncol` to arrange
+#' several tables per row. The snapshot is always a single file
+#' named `<name>.png`, stored in testthat's `_snaps` directory.
+#'
+#' If a table fails to render, its slot is replaced by a blank white
+#' rectangle (200 x 50 px), making the failure visible in the diff.
+#'
+#' On the first run the reference snapshot is created and the
+#' test is reported as a new snapshot. Subsequent runs compare
+#' the current rendering against the stored reference.
+#' @param x a flextable object or a list containing flextable objects.
+#' @param name a unique string used as the snapshot file name
+#'   (`<name>.png`). Must be unique across the test file.
+#' @param res resolution in DPI, default 200.
+#' @param ncol number of images per row in the composite when `x`
+#'   is a list (default `NULL`, one image per row).
+#' @param tolerance ratio of different pixels allowed, default 0.001.
+#' @return The result of [expect_snapshot_doc()].
+#' @export
+expect_snapshot_flextables <- function(x, name, res = 200,
+                                       ncol = NULL, tolerance = 0.001) {
+  skip_if_not_snapshot_png()
+  if (!requireNamespace("flextable", quietly = TRUE)) {
+    stop("Package 'flextable' is required.")
+  }
+  if (inherits(x, "flextable")) {
+    x <- list(x)
+  } else if (is.list(x)) {
+    x <- Filter(function(el) inherits(el, "flextable"), x)
+  }
+  png_files <- vapply(x, function(obj) {
+    path <- tempfile(fileext = ".png")
+    tryCatch(
+      flextable::save_as_image(x = obj, path = path, res = res),
+      error = function(e) {
+        ragg::agg_png(filename = path, width = 200, height = 50)
+        grid::grid.rect(gp = grid::gpar(col = NA, fill = "white"))
+        grDevices::dev.off()
+      }
+    )
+    path
+  }, character(1))
+
+  if (length(png_files) > 1L) {
+    img_list <- lapply(png_files, image_read)
+    fileout <- tempfile(fileext = ".png")
+    images_to_miniature(img_list, ncol = ncol, fileout = fileout)
+    png_files <- fileout
+  }
+  expect_snapshot_doc(name = name, x = png_files[[1]],
+                      engine = "testthat", tolerance = tolerance)
+}
+
+
 expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   name <- paste0(name, ".png")
   testthat::announce_snapshot_file(name = name)

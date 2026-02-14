@@ -108,6 +108,30 @@ pdf_to_images <- function(file, dpi = 150) {
 }
 
 
+ggplot_to_png <- function(x, width = 9, height = 7, units = "in", res = 200) {
+  if (!requireNamespace("ragg", quietly = TRUE)) {
+    stop("Package 'ragg' is required for PNG rendering.")
+  }
+  if (inherits(x, "gg")) {
+    x <- list(x)
+  } else if (is.list(x)) {
+    x <- Filter(function(el) inherits(el, "gg"), x)
+  }
+  vapply(x, function(obj) {
+    path <- tempfile(fileext = ".png")
+    ragg::agg_png(filename = path, width = width, height = height,
+                  units = units, res = res)
+    tryCatch(
+      print(obj),
+      error = function(e) {
+        grid::grid.rect(gp = grid::gpar(col = NA, fill = "white"))
+      },
+      finally = grDevices::dev.off()
+    )
+    path
+  }, character(1))
+}
+
 compute_row <- function(img_list, ncol, ncol_landscape = NULL) {
   n <- length(img_list)
 

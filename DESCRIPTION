@@ -1,28 +1,40 @@
-Package: doconv
 Type: Package
+Package: doconv
 Title: Document Conversion to 'PDF', Thumbnails and Visual Testing
-Version: 0.4.0.003
+Version: 0.4.0.004
 Authors@R: c(
-    person("David", "Gohel", role = c("aut", "cre"),
-    email = "david.gohel@ardata.fr"),
-    person(given = "ArData", role = "cph"),
-    person("David", "Hajage", role = "ctb", comment = "initial powershell code")
-    )
-Description: Provides the ability to generate images from documents
- of different types. Three main features are provided: generating
- document thumbnails, performing visual tests of documents, and
- updating fields and tables of contents of a 'Microsoft Word' or
- 'RTF' document. 'Microsoft Word' and/or 'LibreOffice' must be
- installed on the machine. If 'Microsoft Word' is available, it
- can produce PDF documents or images identical to the originals;
- otherwise 'LibreOffice' is used and the rendering may sometimes
- differ from the original documents.
+    person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
+    person("ArData", role = "cph"),
+    person("David", "Hajage", role = "ctb",
+           comment = "initial powershell code")
+  )
+Description: Provides the ability to generate images from documents of
+    different types. Three main features are provided: generating document
+    thumbnails, performing visual tests of documents, and updating fields
+    and tables of contents of a 'Microsoft Word' or 'RTF' document.
+    'Microsoft Word' and/or 'LibreOffice' must be installed on the
+    machine. If 'Microsoft Word' is available, it can produce PDF
+    documents or images identical to the originals; otherwise
+    'LibreOffice' is used and the rendering may sometimes differ from the
+    original documents.
 License: MIT + file LICENSE
+BugReports: https://github.com/ardata-fr/doconv/issues
+Depends: 
+    R (>= 4.0.0)
+Imports: 
+    gdtools,
+    locatexec,
+    magick,
+    pdftools,
+    processx,
+    tools
+Suggests: 
+    flextable,
+    ragg,
+    testthat,
+    tinytest,
+    webshot2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Imports: magick, pdftools, locatexec, processx, tools
-Depends: R (>= 4.0.0)
-Suggests: tinytest, testthat, webshot2
-BugReports: https://github.com/ardata-fr/doconv/issues
 SystemRequirements: LibreOffice, Microsoft Word

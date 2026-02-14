@@ -2,6 +2,11 @@
 
 ## Features
 
+- New exported functions `expect_snapshot_ggplots()` and
+  `expect_snapshot_flextables()` for visual regression testing of
+  ggplot2 plots and flextable objects within testthat test suites.
+- New exported helper `skip_if_not_snapshot_png()` to skip tests
+  when snapshot dependencies (ragg, gdtools) are not available.
 - `to_miniature()` gains `ncol` and `ncol_landscape` parameters for
   easier page layout. `ncol` groups pages N-per-row; adding
   `ncol_landscape` enables orientation-aware layout where portrait and
