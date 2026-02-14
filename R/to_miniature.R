@@ -8,7 +8,8 @@
 #' @param filename input filename, supported documents are 'Microsoft Word',
 #' 'Microsoft PowerPoint', 'RTF' and 'PDF' document.
 #' @param row row index for every pages. 0 are to be used to drop
-#' the page from the final minature.
+#' the page from the final minature. If both `row` and `ncol` are
+#' provided, `row` takes precedence and a warning is issued.
 #'
 #' * `c(1, 1)` is to be used to specify that a 2 pages document
 #' is to be displayed in a single row with two columns.
@@ -19,6 +20,11 @@
 #' is to be displayed as: first row with pages 1 and 2,
 #' second row with pages 4 and 5.
 #'
+#' @param ncol number of pages per row. When set, pages are automatically
+#' arranged with `ncol` pages per row. Ignored if `row` is also provided.
+#' @param ncol_landscape number of landscape-oriented pages per row.
+#' When set, portrait pages use `ncol` per row and landscape pages use
+#' `ncol_landscape` per row. Requires `ncol`.
 #' @param width width of a single image, recommanded values are:
 #'
 #' * 650 for docx files
@@ -50,7 +56,8 @@
 #' if(exec_available("libreoffice") && check_libreoffice_export())
 #'   to_miniature(pptx_file)
 #' @importFrom locatexec exec_available
-to_miniature <- function(filename, row = NULL, width = NULL,
+to_miniature <- function(filename, row = NULL, ncol = NULL,
+                         ncol_landscape = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
                          dpi = 150,
                          fileout = NULL, timeout = 120,
@@ -63,19 +70,22 @@ to_miniature <- function(filename, row = NULL, width = NULL,
   if(grepl("\\.(ppt|pptx)$", filename)){
     if(is.null(width)) width <- 750
     pptx_to_miniature(
-      filename, row = row, width = width,
+      filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+      width = width,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, dpi = dpi, timeout = timeout)
   } else if(grepl("\\.(docx|doc|rtf)$", filename)){
     if(is.null(width)) width <- 650
     docx_to_miniature(
-      filename, row = row, width = width,
+      filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+      width = width,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, timeout = timeout)
   } else if(grepl("\\.pdf$", filename)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
-      filename, row = row, width = width,
+      filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+      width = width,
       border_color = border_color, border_geometry = border_geometry,
       dpi = dpi,
       fileout = fileout)
@@ -97,14 +107,16 @@ msoffice_available <- function() {
     exec_available("powerpoint")
 }
 
-pdf_to_miniature <- function(filename, row = NULL, width = 650,
+pdf_to_miniature <- function(filename, row = NULL, ncol = NULL,
+                             ncol_landscape = NULL, width = 650,
                              border_color = "#ccc", border_geometry = "2x2",
                              dpi = 150,
                              fileout = NULL) {
   img_list <- pdf_to_images(filename, dpi = dpi)
   x <- images_to_miniature(
     img_list = img_list,
-    row = row, width = width * dpi/72,
+    row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+    width = width * dpi/72,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
@@ -112,7 +124,8 @@ pdf_to_miniature <- function(filename, row = NULL, width = 650,
   x
 }
 
-docx_to_miniature <- function(filename, row = NULL, width = 650,
+docx_to_miniature <- function(filename, row = NULL, ncol = NULL,
+                              ncol_landscape = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
                               fileout = NULL, dpi = 150, timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
@@ -124,7 +137,8 @@ docx_to_miniature <- function(filename, row = NULL, width = 650,
   }
 
   x <- pdf_to_miniature(pdf_filename,
-    row = row, width = width, dpi = dpi,
+    row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+    width = width, dpi = dpi,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
@@ -132,7 +146,8 @@ docx_to_miniature <- function(filename, row = NULL, width = 650,
   x
 }
 
-pptx_to_miniature <- function(filename, row = NULL, width = 750,
+pptx_to_miniature <- function(filename, row = NULL, ncol = NULL,
+                              ncol_landscape = NULL, width = 750,
                               border_color = "#ccc", border_geometry = "2x2",
                               dpi = 150,
                               fileout = NULL, timeout = 120) {
@@ -144,7 +159,8 @@ pptx_to_miniature <- function(filename, row = NULL, width = 750,
   }
 
   x <- pdf_to_miniature(pdf_filename,
-    row = row, width = width, dpi = dpi,
+    row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+    width = width, dpi = dpi,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))

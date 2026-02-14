@@ -7,6 +7,8 @@
 to_miniature(
   filename,
   row = NULL,
+  ncol = NULL,
+  ncol_landscape = NULL,
   width = NULL,
   border_color = "#ccc",
   border_geometry = "2x2",
@@ -21,7 +23,8 @@ to_miniature(
 'Microsoft PowerPoint', 'RTF' and 'PDF' document.}
 
 \item{row}{row index for every pages. 0 are to be used to drop
-the page from the final minature.
+the page from the final minature. If both \code{row} and \code{ncol} are
+provided, \code{row} takes precedence and a warning is issued.
 \itemize{
 \item \code{c(1, 1)} is to be used to specify that a 2 pages document
 is to be displayed in a single row with two columns.
@@ -32,6 +35,13 @@ third row with pages 4 and 5.
 is to be displayed as: first row with pages 1 and 2,
 second row with pages 4 and 5.
 }}
+
+\item{ncol}{number of pages per row. When set, pages are automatically
+arranged with \code{ncol} pages per row. Ignored if \code{row} is also provided.}
+
+\item{ncol_landscape}{number of landscape-oriented pages per row.
+When set, portrait pages use \code{ncol} per row and landscape pages use
+\code{ncol_landscape} per row. Requires \code{ncol}.}
 
 \item{width}{width of a single image, recommanded values are:
 \itemize{

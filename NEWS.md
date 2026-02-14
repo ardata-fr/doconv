@@ -1,5 +1,12 @@
 # doconv 0.4.0
 
+## Features
+
+- `to_miniature()` gains `ncol` and `ncol_landscape` parameters for
+  easier page layout. `ncol` groups pages N-per-row; adding
+  `ncol_landscape` enables orientation-aware layout where portrait and
+  landscape pages use different column counts.
+
 ## Issues
 
 - Forward slashes in file paths are now converted to backslashes before

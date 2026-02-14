@@ -108,6 +108,37 @@ pdf_to_images <- function(file, dpi = 150) {
 }
 
 
+compute_row <- function(img_list, ncol, ncol_landscape = NULL) {
+  n <- length(img_list)
+
+  if (is.null(ncol_landscape)) {
+    return(rep(seq_len(ceiling(n / ncol)), each = ncol, length.out = n))
+  }
+
+  orientations <- vapply(img_list, function(img) {
+    info <- image_info(img)
+    if (info$width > info$height) "landscape" else "portrait"
+  }, character(1))
+
+  row <- integer(n)
+  current_row <- 1L
+  col_in_row <- 0L
+  current_orientation <- orientations[1]
+
+  for (i in seq_len(n)) {
+    max_cols <- if (orientations[i] == "landscape") ncol_landscape else ncol
+    if (orientations[i] != current_orientation || col_in_row >= max_cols) {
+      current_row <- current_row + 1L
+      col_in_row <- 0L
+      current_orientation <- orientations[i]
+    }
+    col_in_row <- col_in_row + 1L
+    row[i] <- current_row
+  }
+
+  row
+}
+
 #' @import magick
 #' @noRd
 #' @title Convert a set of images to a single png miniature
@@ -115,13 +146,26 @@ pdf_to_images <- function(file, dpi = 150) {
 #' where pages are arranged in a layout.
 #' @param img_list a list of magick image objects
 #' @param row row index for every pages
+#' @param ncol number of pages per row
+#' @param ncol_landscape number of landscape pages per row
 #' @param width width of a single image
 #' @param border_color border color
 #' @param border_geometry border geometry to be added around images
 #' @param fileout is not NULL image is saved to fileout
-images_to_miniature <- function(img_list, row = NULL, width = 650,
+images_to_miniature <- function(img_list, row = NULL, ncol = NULL,
+                                ncol_landscape = NULL, width = 650,
                                 border_color = "#ccc", border_geometry = "2x2",
                                 fileout = NULL) {
+
+  if (!is.null(row) && !is.null(ncol)) {
+    warning("`row` and `ncol` are both set, `ncol` is ignored.")
+  }
+  if (!is.null(ncol_landscape) && is.null(ncol)) {
+    stop("`ncol_landscape` requires `ncol`.")
+  }
+  if (is.null(row) && !is.null(ncol)) {
+    row <- compute_row(img_list, ncol = ncol, ncol_landscape = ncol_landscape)
+  }
 
   if (is.null(row)) {
     row <- seq_along(img_list)
