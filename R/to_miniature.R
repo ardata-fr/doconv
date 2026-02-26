@@ -36,6 +36,9 @@
 #' @param fileout if not NULL, result is saved in a png file whose filename
 #' is defined by this argument.
 #' @param dpi resolution (dots per inch) to use for images, see [pdftools::pdf_convert()].
+#' @param show_markup logical. If `TRUE`, tracked changes and comments
+#' are rendered visibly in the PDF output. Only effective for docx files
+#' on Windows (requires Microsoft Word). Default is `FALSE`.
 #' @param timeout timeout in seconds that libreoffice is allowed to use
 #' in order to generate the corresponding pdf file, ignored if 0.
 #' @param ... arguments used by webshot2 when HTML document.
@@ -60,6 +63,7 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
                          ncol_landscape = NULL, width = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
                          dpi = 150,
+                         show_markup = FALSE,
                          fileout = NULL, timeout = 120,
                          ...) {
 
@@ -80,6 +84,7 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
+      show_markup = show_markup,
       fileout = fileout, timeout = timeout)
   } else if(grepl("\\.pdf$", filename)){
     if(is.null(width)) width <- 650
@@ -127,11 +132,12 @@ pdf_to_miniature <- function(filename, row = NULL, ncol = NULL,
 docx_to_miniature <- function(filename, row = NULL, ncol = NULL,
                               ncol_landscape = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
+                              show_markup = FALSE,
                               fileout = NULL, dpi = 150, timeout = 120) {
   pdf_filename <- tempfile(fileext = ".pdf")
 
   if (exec_available("word")) {
-    docx2pdf(input = filename, output = pdf_filename)
+    docx2pdf(input = filename, output = pdf_filename, show_markup = show_markup)
   } else {
     to_pdf(input = filename, output = pdf_filename, timeout = timeout)
   }

@@ -15,6 +15,9 @@
   easier page layout. `ncol` groups pages N-per-row; adding
   `ncol_landscape` enables orientation-aware layout where portrait and
   landscape pages use different column counts.
+- `docx2pdf()` and `to_miniature()` gain a `show_markup` parameter.
+  When `TRUE`, tracked changes and comments are rendered visibly in the
+  PDF output on Windows. Requires Microsoft Word.
 
 ## Issues
 

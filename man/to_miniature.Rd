@@ -13,6 +13,7 @@ to_miniature(
   border_color = "#ccc",
   border_geometry = "2x2",
   dpi = 150,
+  show_markup = FALSE,
   fileout = NULL,
   timeout = 120,
   ...
@@ -55,6 +56,10 @@ When set, portrait pages use \code{ncol} per row and landscape pages use
 images, see \code{\link[magick:composite]{magick::image_border()}}.}
 
 \item{dpi}{resolution (dots per inch) to use for images, see \code{\link[pdftools:pdf_render_page]{pdftools::pdf_convert()}}.}
+
+\item{show_markup}{logical. If \code{TRUE}, tracked changes and comments
+are rendered visibly in the PDF output. Only effective for docx files
+on Windows (requires Microsoft Word). Default is \code{FALSE}.}
 
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}

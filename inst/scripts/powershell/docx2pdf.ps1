@@ -1,5 +1,6 @@
 $indocx = "%s"
 $opdf = "%s"
+$showMarkup = "%s"
 
 $Word = New-Object -ComObject Word.Application
 $Word.Visible = $False
@@ -10,6 +11,14 @@ try {
   foreach ($toc in $doc.TablesOfContents) { $toc.Update() }
   foreach ($toc in $doc.TablesOfFigures) { $toc.Update() }
 
+  if ($showMarkup -eq "True") {
+    $Word.ActiveWindow.View.ShowRevisionsAndComments = $true
+    $Word.ActiveWindow.View.RevisionsView = [Microsoft.Office.Interop.Word.WdRevisionsView]::wdRevisionsViewFinal
+    $exportItem = [Microsoft.Office.Interop.Word.WdExportItem]::wdExportDocumentWithMarkup
+  } else {
+    $exportItem = [Microsoft.Office.Interop.Word.WdExportItem]::wdExportDocumentContent
+  }
+
   $doc.ExportAsFixedFormat(
     $opdf,
     [Microsoft.Office.Interop.Word.WdExportFormat]::wdExportFormatPDF,
@@ -17,7 +26,7 @@ try {
     [Microsoft.Office.Interop.Word.WdExportOptimizeFor]::wdExportOptimizeForPrint,
     [Microsoft.Office.Interop.Word.WdExportRange]::wdExportAllDocument,
     0, 0,
-    [Microsoft.Office.Interop.Word.WdExportItem]::wdExportDocumentContent,
+    $exportItem,
     $true, $false,
     [Microsoft.Office.Interop.Word.WdExportCreateBookmarks]::wdExportCreateWordBookmarks,
     $true, $false, $true

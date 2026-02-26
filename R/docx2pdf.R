@@ -36,6 +36,10 @@
 #'
 #' @param input,output file input and optional file output (default
 #' to input with pdf extension).
+#' @param show_markup logical. If `TRUE`, tracked changes and comments
+#' are rendered visibly in the PDF output. Only supported on Windows;
+#' on macOS a warning is issued and the parameter is ignored.
+#' Default is `FALSE`.
 #' @examples
 #' library(locatexec)
 #' if (exec_available('word')) {
@@ -50,12 +54,13 @@
 #'   }
 #' }
 #' @return the name of the produced pdf (the same value as `output`)
-docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)) {
+docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input),
+                     show_markup = FALSE) {
 
   if (is_osx()) {
-    docx2pdf_osx(input = input, output = output)
+    docx2pdf_osx(input = input, output = output, show_markup = show_markup)
   } else if (is_windows()) {
-    docx2pdf_win(input = input, output = output)
+    docx2pdf_win(input = input, output = output, show_markup = show_markup)
   } else {
     stop("docx2pdf is only available on 'macOS' and 'Windows' systems.", call. = FALSE)
   }
@@ -64,9 +69,14 @@ docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)) 
 
 #' @importFrom locatexec is_osx
 #' @importFrom processx run
-docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
+docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input),
+                         show_markup = FALSE){
   if (!is_osx()) {
     stop("docx2pdf_osx() should only be used on 'macOS' systems.", call. = FALSE)
+  }
+
+  if (show_markup) {
+    warning("show_markup is not supported on macOS and will be ignored.", call. = FALSE)
   }
 
   if (!file.exists(input)) {
@@ -103,7 +113,8 @@ docx2pdf_osx <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
 
 
 #' @importFrom locatexec is_windows
-docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input)){
+docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input),
+                         show_markup = FALSE){
 
   if (!is_windows()) {
     stop("docx2pdf_win() should only be used on 'Windows' systems.", call. = FALSE)
@@ -126,6 +137,7 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
   script_str[1] <- sub("%s", escape_path_ps(input), script_str[1], fixed = TRUE)
   script_str[2] <- sub("%s", escape_path_ps(output_name), script_str[2], fixed = TRUE)
+  script_str[3] <- sub("%s", if (show_markup) "True" else "False", script_str[3], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
 
