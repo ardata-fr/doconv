@@ -4,11 +4,20 @@
 \alias{docx2pdf}
 \title{Convert docx to pdf}
 \usage{
-docx2pdf(input, output = gsub("\\\\.(docx|doc|rtf)$", ".pdf", input))
+docx2pdf(
+  input,
+  output = gsub("\\\\.(docx|doc|rtf)$", ".pdf", input),
+  show_markup = FALSE
+)
 }
 \arguments{
 \item{input, output}{file input and optional file output (default
 to input with pdf extension).}
+
+\item{show_markup}{logical. If \code{TRUE}, tracked changes and comments
+are rendered visibly in the PDF output. Only supported on Windows;
+on macOS a warning is issued and the parameter is ignored.
+Default is \code{FALSE}.}
 }
 \value{
 the name of the produced pdf (the same value as \code{output})
