@@ -20,7 +20,7 @@ to_miniature(
 }
 \arguments{
 \item{filename}{input filename, supported documents are 'Microsoft Word',
-'Microsoft PowerPoint', 'RTF' and 'PDF' document.}
+'Microsoft PowerPoint', 'Microsoft Excel' (.xlsx, .xlsm), 'RTF' and 'PDF' document.}
 
 \item{row}{row index for every pages. 0 are to be used to drop
 the page from the final minature. If both \code{row} and \code{ncol} are

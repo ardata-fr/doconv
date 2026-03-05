@@ -6,7 +6,7 @@
 #'
 #' The result can be saved as a png file.
 #' @param filename input filename, supported documents are 'Microsoft Word',
-#' 'Microsoft PowerPoint', 'RTF' and 'PDF' document.
+#' 'Microsoft PowerPoint', 'Microsoft Excel' (.xlsx, .xlsm), 'RTF' and 'PDF' document.
 #' @param row row index for every pages. 0 are to be used to drop
 #' the page from the final minature. If both `row` and `ncol` are
 #' provided, `row` takes precedence and a warning is issued.
@@ -70,6 +70,13 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
   if(grepl("\\.(ppt|pptx)$", filename)){
     if(is.null(width)) width <- 750
     pptx_to_miniature(
+      filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+      width = width,
+      border_color = border_color, border_geometry = border_geometry,
+      fileout = fileout, dpi = dpi, timeout = timeout)
+  } else if(grepl("\\.(xlsx|xlsm)$", filename)){
+    if(is.null(width)) width <- 750
+    xlsx_to_miniature(
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
@@ -154,6 +161,28 @@ pptx_to_miniature <- function(filename, row = NULL, ncol = NULL,
   pdf_filename <- tempfile(fileext = ".pdf")
   if (exec_available("powerpoint")) {
     pptx2pdf(input = filename, output = pdf_filename)
+  } else {
+    to_pdf(input = filename, output = pdf_filename, timeout = timeout)
+  }
+
+  x <- pdf_to_miniature(pdf_filename,
+    row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+    width = width, dpi = dpi,
+    border_color = border_color, border_geometry = border_geometry
+  )
+  if(!is.null(fileout))
+    image_write(x, path = fileout, format = "png")
+  x
+}
+
+xlsx_to_miniature <- function(filename, row = NULL, ncol = NULL,
+                              ncol_landscape = NULL, width = 750,
+                              border_color = "#ccc", border_geometry = "2x2",
+                              dpi = 150,
+                              fileout = NULL, timeout = 120) {
+  pdf_filename <- tempfile(fileext = ".pdf")
+  if (exec_available("excel")) {
+    xlsx2pdf(input = filename, output = pdf_filename)
   } else {
     to_pdf(input = filename, output = pdf_filename, timeout = timeout)
   }
