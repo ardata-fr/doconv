@@ -187,9 +187,15 @@ xlsx_to_miniature <- function(filename, row = NULL, ncol = NULL,
     to_pdf(input = filename, output = pdf_filename, timeout = timeout)
   }
 
-  x <- pdf_to_miniature(pdf_filename,
+  # Inline pdf_to_miniature steps to add whitespace trimming for Excel
+  img_list <- pdf_to_images(pdf_filename, dpi = dpi)
+  img_list <- lapply(img_list, image_trim)
+  img_list <- lapply(img_list, image_border, color = "white", geometry = "10x10")
+
+  x <- images_to_miniature(
+    img_list = img_list,
     row = row, ncol = ncol, ncol_landscape = ncol_landscape,
-    width = width, dpi = dpi,
+    width = width * dpi / 72,
     border_color = border_color, border_geometry = border_geometry
   )
   if(!is.null(fileout))
