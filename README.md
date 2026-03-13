@@ -4,26 +4,28 @@
 # doconv
 
 <img src="man/figures/logo.png" alt="doconv logo" align="right" /> The
-package provides functions for converting ‘Microsoft Word’ or ‘Microsoft
-PowerPoint’ documents to ‘PDF’ format and also for converting them to
-images in the form of thumbnails. A function is also provided to update
-all fields and tables of contents of a Word document.
+package provides functions for converting ‘Microsoft Word’, ‘Microsoft
+PowerPoint’ or ‘Microsoft Excel’ documents to ‘PDF’ format and also for
+converting them to images in the form of thumbnails. A function is also
+provided to update all fields and tables of contents of a Word document.
 
-The package uses ‘Microsoft Word’ or ‘Microsoft PowerPoint’ when
-available; otherwise ‘LibreOffice’ can be used as a fallback.
+The package uses ‘Microsoft Word’, ‘Microsoft PowerPoint’ or ‘Microsoft
+Excel’ when available; otherwise ‘LibreOffice’ can be used as a
+fallback.
 
 Visual-testing functions for documents are also provided. Formats ‘doc’,
-‘docx’, ‘ppt’, ‘pptx’, ‘html’, ‘pdf’ and ‘png’ are supported. The
-functions can be used with packages ‘testthat’ and ‘tinytest’.
+‘docx’, ‘ppt’, ‘pptx’, ‘xlsx’, ‘xlsm’, ‘html’, ‘pdf’ and ‘png’ are
+supported. The functions can be used with packages ‘testthat’ and
+‘tinytest’.
 
 **Important:** For faithful rendering, this package requires ‘Microsoft
-Word’ and ‘Microsoft PowerPoint’, which are only available on
-**Windows** and **macOS**. ‘LibreOffice’ works on all platforms
-(including Linux) but its rendering of Office documents is often
-inaccurate (misplaced content, wrong fonts, broken layouts). Because
-‘Microsoft Office’ is licensed desktop software, this package is best
-suited for **interactive use** rather than CI/CD pipelines or server
-deployments.
+Word’, ‘Microsoft PowerPoint’ and ‘Microsoft Excel’, which are only
+available on **Windows** and **macOS**. ‘LibreOffice’ works on all
+platforms (including Linux) but its rendering of Office documents is
+often inaccurate (misplaced content, wrong fonts, broken layouts).
+Because ‘Microsoft Office’ is licensed desktop software, this package is
+best suited for **interactive use** rather than CI/CD pipelines or
+server deployments.
 
 <!-- badges: start -->
 
@@ -42,23 +44,22 @@ devtools::install_github("ardata-fr/doconv")
 
 ## Setup
 
-The package requires ‘Microsoft Word’ and ‘Microsoft PowerPoint’. If
-they cannot be installed, ‘LibreOffice’ can be used instead; please
-visit <https://www.libreoffice.org/> and follow the installation
-instructions.
+The package requires ‘Microsoft Word’, ‘Microsoft PowerPoint’ and
+‘Microsoft Excel’. If they cannot be installed, ‘LibreOffice’ can be
+used instead; please visit <https://www.libreoffice.org/> and follow the
+installation instructions.
 
 Use function `check_libreoffice_export()` to check that ‘LibreOffice’ is
 installed and can export to PDF:
 
 ``` r
 check_libreoffice_export()
-#> [1] TRUE
 ```
 
-When ‘Microsoft Word’ or ‘Microsoft PowerPoint’ are available, the
-output looks exactly like the original document. With ‘LibreOffice’, be
-aware that the rendering may differ (sections can be misinterpreted, for
-example).
+When ‘Microsoft Word’, ‘Microsoft PowerPoint’ or ‘Microsoft Excel’ are
+available, the output looks exactly like the original document. With
+‘LibreOffice’, be aware that the rendering may differ (sections can be
+misinterpreted, for example).
 
 ### Authorization on macOS
 
@@ -96,7 +97,7 @@ to_miniature(
   row = c(1, 1, 2, 2))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" alt="" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ### Convert to PDF
 
@@ -106,14 +107,22 @@ to_pdf(pptx_file, output = "pptx_example.pdf")
 to_miniature("pptx_example.pdf", width = 1000)
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" alt="" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 ``` r
 to_pdf(docx_file, output = "docx_example.pdf")
 to_miniature("docx_example.pdf", width = 1000)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" alt="" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+``` r
+xlsx_file <- system.file(package = "doconv", "doc-examples/example.xlsx")
+to_pdf(xlsx_file, output = "xlsx_example.pdf")
+to_miniature("xlsx_example.pdf", width = 1000)
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ### Update Word fields and TOC
 

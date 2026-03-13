@@ -5,3 +5,6 @@
 revdep
 Dockerfile
 dev_local
+
+/.quarto/
+**/*.quarto_ipynb
