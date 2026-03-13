@@ -30,11 +30,11 @@ invisibly.
 Convert documents to pdf with a script using
 'Office' or 'Libre Office'.
 
-If 'Microsoft Word' and 'Microsoft PowerPoint' are available,
-files 'docx', 'doc', 'rtf' and 'pptx' will be converted to
-PDF with 'Office' via a script.
+If 'Microsoft Word', 'Microsoft PowerPoint' and 'Microsoft Excel'
+are available, files 'docx', 'doc', 'rtf', 'pptx', 'xlsx' and
+'xlsm' will be converted to PDF with 'Office' via a script.
 
-If 'Microsoft Word' and 'Microsoft PowerPoint' are not available
+If 'Microsoft Office' applications are not available
 (on linux for example), 'Libre Office' will be used to convert
 documents. In that case the rendering can be different from
 the original document. It supports very well 'Microsoft PowerPoint'

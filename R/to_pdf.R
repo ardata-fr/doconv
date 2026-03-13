@@ -3,11 +3,11 @@
 #' @description Convert documents to pdf with a script using
 #' 'Office' or 'Libre Office'.
 #'
-#' If 'Microsoft Word' and 'Microsoft PowerPoint' are available,
-#' files 'docx', 'doc', 'rtf' and 'pptx' will be converted to
-#' PDF with 'Office' via a script.
+#' If 'Microsoft Word', 'Microsoft PowerPoint' and 'Microsoft Excel'
+#' are available, files 'docx', 'doc', 'rtf', 'pptx', 'xlsx' and
+#' 'xlsm' will be converted to PDF with 'Office' via a script.
 #'
-#' If 'Microsoft Word' and 'Microsoft PowerPoint' are not available
+#' If 'Microsoft Office' applications are not available
 #' (on linux for example), 'Libre Office' will be used to convert
 #' documents. In that case the rendering can be different from
 #' the original document. It supports very well 'Microsoft PowerPoint'
@@ -80,6 +80,8 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     docx2pdf(input = input, output = output)
   } else if(grepl("\\.(ppt|pptx)$", input) && exec_available("powerpoint")){
     pptx2pdf(input = input, output = output)
+  } else if(grepl("\\.(xlsx|xlsm|xls)$", input) && exec_available("excel")){
+    xlsx2pdf(input = input, output = output)
   } else {
     file_set_origin <- list.files(default_root, full.names = TRUE)
 
@@ -88,7 +90,14 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
           args = c("--headless",
                    if(!is_windows()) sprintf("-env:UserInstallation=file://%s", UserInstallation)
                    else sprintf("-env:UserInstallation=file:///%s", UserInstallation),
-                   "--convert-to", "pdf:writer_pdf_Export",
+                   "--convert-to",
+                   if (grepl("\\.(xlsx|xlsm|xls)$", input)) {
+                     "pdf:calc_pdf_Export"
+                   } else if (grepl("\\.(ppt|pptx)$", input)) {
+                     "pdf:impress_pdf_Export"
+                   } else {
+                     "pdf:writer_pdf_Export"
+                   },
                    "--outdir", default_root,
                    input),
           error_on_status = FALSE)

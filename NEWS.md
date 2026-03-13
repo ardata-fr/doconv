@@ -1,3 +1,13 @@
+# doconv (development version)
+
+## Features
+
+- New function `xlsx2pdf()` converts Excel workbooks (.xlsx, .xlsm) to PDF.
+- `to_pdf()` now supports Excel files with native or LibreOffice fallback.
+- `to_miniature()` now supports Excel files.
+- LibreOffice fallback uses correct PDF filter per file type
+  (calc_pdf_Export, impress_pdf_Export, writer_pdf_Export).
+
 # doconv 0.4.0
 
 ## Features
