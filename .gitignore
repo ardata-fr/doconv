@@ -8,3 +8,5 @@ dev_local
 
 /.quarto/
 **/*.quarto_ipynb
+.claude/
+tmp/
