@@ -78,9 +78,9 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
   }
 
 
-  if(grepl("\\.(doc|docx|rtf)$", input) && exec_available("word")){
+  if(grepl("\\.(doc|docx|rtf)$", input, ignore.case = TRUE) && exec_available("word")){
     docx2pdf(input = input, output = output)
-  } else if(grepl("\\.(ppt|pptx)$", input) && exec_available("powerpoint")){
+  } else if(grepl("\\.(ppt|pptx)$", input, ignore.case = TRUE) && exec_available("powerpoint")){
     pptx2pdf(input = input, output = output)
   } else {
     file_set_origin <- list.files(default_root, full.names = TRUE)

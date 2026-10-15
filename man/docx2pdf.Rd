@@ -4,7 +4,10 @@
 \alias{docx2pdf}
 \title{Convert docx to pdf}
 \usage{
-docx2pdf(input, output = gsub("\\\\.(docx|doc|rtf)$", ".pdf", input))
+docx2pdf(
+  input,
+  output = gsub("\\\\.(docx|doc|rtf)$", ".pdf", input, ignore.case = TRUE)
+)
 }
 \arguments{
 \item{input, output}{file input and optional file output (default

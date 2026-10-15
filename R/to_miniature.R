@@ -67,21 +67,21 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
     stop("filename does not exist")
   }
 
-  if(grepl("\\.(ppt|pptx)$", filename)){
+  if(grepl("\\.(ppt|pptx)$", filename, ignore.case = TRUE)){
     if(is.null(width)) width <- 750
     pptx_to_miniature(
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, dpi = dpi, timeout = timeout)
-  } else if(grepl("\\.(docx|doc|rtf)$", filename)){
+  } else if(grepl("\\.(docx|doc|rtf)$", filename, ignore.case = TRUE)){
     if(is.null(width)) width <- 650
     docx_to_miniature(
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, dpi = dpi, timeout = timeout)
-  } else if(grepl("\\.pdf$", filename)){
+  } else if(grepl("\\.pdf$", filename, ignore.case = TRUE)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,

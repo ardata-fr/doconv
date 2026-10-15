@@ -4,7 +4,7 @@
 \alias{pptx2pdf}
 \title{Convert pptx to pdf}
 \usage{
-pptx2pdf(input, output = gsub("\\\\.pptx$", ".pdf", input))
+pptx2pdf(input, output = gsub("\\\\.pptx$", ".pdf", input, ignore.case = TRUE))
 }
 \arguments{
 \item{input, output}{file input and optional file output (default

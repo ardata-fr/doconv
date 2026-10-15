@@ -95,7 +95,7 @@ pdf_to_images <- function(file, dpi = 150) {
   dest <- tempfile()
   dir.create(dest)
 
-  png_file <- gsub("\\.pdf$", "_%d.%s", basename(file))
+  png_file <- gsub("\\.pdf$", "_%d.%s", basename(file), ignore.case = TRUE)
 
   # pdf_convert() returns the files in page order, list.files() would
   # sort them alphabetically (page 10 before page 2)

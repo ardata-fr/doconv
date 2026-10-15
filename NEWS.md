@@ -17,6 +17,9 @@
 - `expect_snapshot_doc()` now accepts '.doc' files, as documented.
 - `docx_update()` no longer creates an unused working directory, and
   raises an explicit error on macOS when the update fails.
+- File extensions are no longer case sensitive ('.DOCX', '.PDF', etc.).
+  `to_miniature()` refused these files, and the default `output` of
+  `docx2pdf()` and `pptx2pdf()` was the input file itself.
 
 
 # doconv 0.4.0
