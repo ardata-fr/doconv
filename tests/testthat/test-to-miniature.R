@@ -27,4 +27,5 @@ test_that("file extensions are not case sensitive", {
   }
   expect_identical(default_output(docx2pdf, "doc.DOCX"), "doc.pdf")
   expect_identical(default_output(pptx2pdf, "doc.PPTX"), "doc.pdf")
+  expect_identical(default_output(pptx2pdf, "doc.ppt"), "doc.pdf")
 })

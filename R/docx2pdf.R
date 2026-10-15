@@ -284,7 +284,7 @@ docx_update_win <- function(input){
 #'   }
 #' }
 #' @return the name of the produced pdf (the same value as `output`)
-pptx2pdf <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.case = TRUE)) {
+pptx2pdf <- function(input, output = gsub("\\.(pptx|ppt)$", ".pdf", input, ignore.case = TRUE)) {
 
   if (is_osx()) {
     pptx2pdf_osx(input = input, output = output)
@@ -298,7 +298,7 @@ pptx2pdf <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.case
 
 #' @importFrom locatexec is_osx
 #' @importFrom processx run
-pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.case = TRUE)){
+pptx2pdf_osx <- function(input, output = gsub("\\.(pptx|ppt)$", ".pdf", input, ignore.case = TRUE)){
 
   if (!is_osx()) {
     stop("pptx2pdf_osx() should only be used on 'macOS' systems.", call. = FALSE)
@@ -314,7 +314,7 @@ pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.
   init_working_directory()
   default_root <- working_directory()
 
-  output_name <- file.path(default_root, gsub("\\.pptx$", ".pdf", basename(input), ignore.case = TRUE))
+  output_name <- file.path(default_root, gsub("\\.(pptx|ppt)$", ".pdf", basename(input), ignore.case = TRUE))
 
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "pptx2pdf.applescript")
   script_path <- tempfile(fileext = ".applescript")
@@ -340,7 +340,7 @@ pptx2pdf_osx <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.
 
 
 #' @importFrom locatexec is_windows
-pptx2pdf_win <- function(input, output = gsub("\\.pptx$", ".pdf", input, ignore.case = TRUE)){
+pptx2pdf_win <- function(input, output = gsub("\\.(pptx|ppt)$", ".pdf", input, ignore.case = TRUE)){
 
   if (!is_windows()) {
     stop("pptx2pdf_win() should only be used on 'Windows' systems.", call. = FALSE)

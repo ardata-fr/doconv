@@ -20,6 +20,8 @@
 - File extensions are no longer case sensitive ('.DOCX', '.PDF', etc.).
   `to_miniature()` refused these files, and the default `output` of
   `docx2pdf()` and `pptx2pdf()` was the input file itself.
+- The default `output` of `pptx2pdf()` is now also a '.pdf' file when the
+  input is a '.ppt' file; it was the input file itself.
 
 
 # doconv 0.4.0
