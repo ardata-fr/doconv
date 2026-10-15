@@ -70,7 +70,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
 
   if(is.null(UserInstallation)){
     UserInstallation <- absolute_path(tempfile(pattern = "lo_", fileext = ""))
-    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE))
+    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE), add = TRUE)
   } else {
     UserInstallation <- absolute_path(UserInstallation)
   }
@@ -140,7 +140,7 @@ check_libreoffice_export <- function(UserInstallation = NULL) {
 
   if(is.null(UserInstallation)){
     UserInstallation <- absolute_path(tempfile(pattern = "lo_", fileext = ""))
-    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE))
+    on.exit(unlink(UserInstallation, recursive = TRUE, force = TRUE), add = TRUE)
   } else {
     UserInstallation <- absolute_path(UserInstallation)
   }

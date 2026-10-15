@@ -8,6 +8,8 @@
   documents must be updated.
 - With testthat, `expect_snapshot_doc()` now skips the test when 'Word' or
   'PowerPoint' is not available; it was failing with an error.
+- `to_pdf()` and `check_libreoffice_export()` no longer leave a temporary
+  directory behind when 'LibreOffice' is used.
 
 
 # doconv 0.4.0
