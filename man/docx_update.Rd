@@ -10,7 +10,7 @@ docx_update(input)
 \item{input}{file input}
 }
 \value{
-the name of the produced pdf (the same value as \code{output})
+\code{TRUE}, invisibly; an error is raised if the update fails.
 }
 \description{
 Update all fields and table of contents of a

@@ -169,7 +169,7 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
 #'   file.copy(file, docx_out)
 #'   docx_update(input = docx_out)
 #' }
-#' @return the name of the produced pdf (the same value as `output`)
+#' @return `TRUE`, invisibly; an error is raised if the update fails.
 docx_update <- function(input) {
 
   if (is_osx()) {
@@ -195,16 +195,16 @@ docx_update_osx <- function(input){
 
   input <- absolute_path(input)
 
-  init_working_directory()
-
   script_sourcefile <- system.file(package = "doconv", "scripts", "applescripts", "docxupdate.applescript")
   script_path <- tempfile(fileext = ".applescript")
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
   script_str[1] <- sub("%s", escape_path_applescript(input), script_str[1], fixed = TRUE)
   writeLines(script_str, script_path, useBytes = TRUE)
 
-  res <- run("osascript", script_path)
+  res <- run("osascript", script_path, error_on_status = FALSE)
   success <- res$status == 0
+
+  if (!success) stop("could not update ", input, call. = FALSE)
 
   success
 }
@@ -221,9 +221,6 @@ docx_update_win <- function(input){
   }
 
   input <- absolute_path(input)
-
-  init_working_directory()
-  default_root <- working_directory()
 
   script_sourcefile <- system.file(package = "doconv", "scripts", "powershell", "docxupdate.ps1")
   script_path <- tempfile(fileext = ".ps1")

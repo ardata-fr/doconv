@@ -15,6 +15,8 @@
 - `to_miniature()` now uses its `dpi` argument with 'Word' and 'RTF'
   documents; 150 was always used.
 - `expect_snapshot_doc()` now accepts '.doc' files, as documented.
+- `docx_update()` no longer creates an unused working directory, and
+  raises an explicit error on macOS when the update fails.
 
 
 # doconv 0.4.0
