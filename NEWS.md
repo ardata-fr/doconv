@@ -22,6 +22,11 @@
   `docx2pdf()` and `pptx2pdf()` was the input file itself.
 - The default `output` of `pptx2pdf()` is now also a '.pdf' file when the
   input is a '.ppt' file; it was the input file itself.
+- `run_in_shiny_app()` now stops as soon as the app process stops, and
+  shows its error output; it was waiting until `timeout`. It also fails
+  when the port is already in use; the command was run against the other
+  app. The app is now started with the 'Rscript' of the running R session
+  instead of the first one found on the PATH.
 
 
 # doconv 0.4.0

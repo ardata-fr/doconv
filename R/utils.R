@@ -56,6 +56,11 @@ absolute_path <- function(x){
   epath
 }
 
+# 'Rscript' of the running R session, not the first one found on the PATH
+rscript_exec <- function() {
+  file.path(R.home("bin"), if (is_windows()) "Rscript.exe" else "Rscript")
+}
+
 # Escape a file path for a PowerShell double-quoted string.
 # Backtick is the PS escape character; $, ", and ` need escaping.
 escape_path_ps <- function(path) {
