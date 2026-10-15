@@ -32,6 +32,12 @@
   The PowerShell scripts are now written in UTF-8 with a BOM, Windows
   PowerShell was reading them with the ANSI code page and could not find
   the file, without any error (#8).
+- `docx2pdf()`, `pptx2pdf()` and `docx_update()` (and so `to_pdf()`,
+  `to_miniature()` and `expect_snapshot_doc()`) now wait for each other
+  across R processes. 'Word' and 'PowerPoint' run as a single instance
+  and simultaneous conversions, e.g. from parallel checks, were failing
+  with "could not convert". The new dependency 'filelock' is used for
+  this.
 
 
 # doconv 0.4.0

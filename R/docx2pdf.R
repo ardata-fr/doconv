@@ -53,9 +53,9 @@
 docx2pdf <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", input, ignore.case = TRUE)) {
 
   if (is_osx()) {
-    docx2pdf_osx(input = input, output = output)
+    with_office_lock(docx2pdf_osx(input = input, output = output))
   } else if (is_windows()) {
-    docx2pdf_win(input = input, output = output)
+    with_office_lock(docx2pdf_win(input = input, output = output))
   } else {
     stop("docx2pdf is only available on 'macOS' and 'Windows' systems.", call. = FALSE)
   }
@@ -173,9 +173,9 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
 docx_update <- function(input) {
 
   if (is_osx()) {
-    x <- docx_update_osx(input = input)
+    x <- with_office_lock(docx_update_osx(input = input))
   } else if (is_windows()) {
-    x <- docx_update_win(input = input)
+    x <- with_office_lock(docx_update_win(input = input))
   } else {
     stop("docx_update is only available on 'macOS' and 'Windows' systems.", call. = FALSE)
   }
@@ -287,9 +287,9 @@ docx_update_win <- function(input){
 pptx2pdf <- function(input, output = gsub("\\.(pptx|ppt)$", ".pdf", input, ignore.case = TRUE)) {
 
   if (is_osx()) {
-    pptx2pdf_osx(input = input, output = output)
+    with_office_lock(pptx2pdf_osx(input = input, output = output))
   } else if (is_windows()) {
-    pptx2pdf_win(input = input, output = output)
+    with_office_lock(pptx2pdf_win(input = input, output = output))
   } else {
     stop("pptx2pdf is only available on 'macOS' and 'Windows' systems.", call. = FALSE)
   }

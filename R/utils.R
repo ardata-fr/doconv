@@ -56,6 +56,23 @@ absolute_path <- function(x){
   epath
 }
 
+# Run `expr` while holding a lock shared by all R processes of the user.
+# 'Word' and 'PowerPoint' run as a single instance: two conversions at
+# the same time (e.g. parallel checks) use the same instance and one of
+# them fails. They also share the same working directory.
+with_office_lock <- function(expr, timeout = 600) {
+  lock_dir <- R_user_dir(package = "doconv", which = "cache")
+  dir.create(lock_dir, showWarnings = FALSE, recursive = TRUE)
+  lock <- filelock::lock(file.path(lock_dir, "office.lock"),
+                         timeout = timeout * 1000)
+  if (is.null(lock)) {
+    stop("could not get access to 'Microsoft Office' within ", timeout,
+         " seconds, another R process is still using it.", call. = FALSE)
+  }
+  on.exit(filelock::unlock(lock))
+  expr
+}
+
 # 'Rscript' of the running R session, not the first one found on the PATH
 rscript_exec <- function() {
   file.path(R.home("bin"), if (is_windows()) "Rscript.exe" else "Rscript")

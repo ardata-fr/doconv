@@ -1,7 +1,7 @@
 Type: Package
 Package: doconv
 Title: Document Conversion to 'PDF', Thumbnails and Visual Testing
-Version: 0.4.1.011
+Version: 0.4.1.012
 Authors@R: c(
     person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
     person("ArData", role = "cph"),
@@ -22,6 +22,7 @@ BugReports: https://github.com/ardata-fr/doconv/issues
 Depends: 
     R (>= 4.0.0)
 Imports: 
+    filelock,
     gdtools,
     locatexec,
     magick,
