@@ -265,15 +265,10 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   file_type <- gsub("(.*)\\.(pdf|docx|pptx|rtf|png)$", "\\2", x)
   exec <- guess_exec(file_type)
 
+  # the snapshot is announced above, so that it is kept when the test
+  # is skipped
   if (!is.null(exec) && !exec_available(exec)) {
-    return(
-      testthat::expect_snapshot_file(
-        png_out, name,
-        compare = function(ref, new) {
-          FALSE
-        }
-      )
-    )
+    testthat::skip(paste0(shQuote(exec), " must be available to run this test"))
   }
 
   if (file_type %in% c("pdf", "docx", "doc", "rtf")) {

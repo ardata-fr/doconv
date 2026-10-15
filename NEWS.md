@@ -6,6 +6,8 @@
   the page order of documents of 10 pages or more; pages were sorted
   alphabetically (page 10 before page 2). Reference miniatures of such
   documents must be updated.
+- With testthat, `expect_snapshot_doc()` now skips the test when 'Word' or
+  'PowerPoint' is not available; it was failing with an error.
 
 
 # doconv 0.4.0
