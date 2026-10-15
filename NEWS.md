@@ -10,6 +10,8 @@
   'PowerPoint' is not available; it was failing with an error.
 - `to_pdf()` and `check_libreoffice_export()` no longer leave a temporary
   directory behind when 'LibreOffice' is used.
+- The `timeout` argument of `to_pdf()` (also used by `to_miniature()`) is
+  now applied to 'LibreOffice', which could previously run without limit.
 
 
 # doconv 0.4.0

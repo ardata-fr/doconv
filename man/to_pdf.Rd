@@ -16,7 +16,9 @@ to_pdf(
 file is not provided, the value will be the value of input file with
 extension 'pdf'.}
 
-\item{timeout}{timeout in seconds, ignored if 0.}
+\item{timeout}{timeout in seconds that 'LibreOffice' is allowed to use
+to convert the document, ignored if 0. It is not used when 'Microsoft
+Office' converts the document.}
 
 \item{UserInstallation}{use this value to set a non-default user profile path
 for 'LibreOffice'. If not provided a temporary dir is created. It makes possibles

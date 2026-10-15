@@ -20,7 +20,9 @@
 #' @param UserInstallation use this value to set a non-default user profile path
 #' for 'LibreOffice'. If not provided a temporary dir is created. It makes possibles
 #' to use more than a single session of 'LibreOffice'.
-#' @param timeout timeout in seconds, ignored if 0.
+#' @param timeout timeout in seconds that 'LibreOffice' is allowed to use
+#' to convert the document, ignored if 0. It is not used when 'Microsoft
+#' Office' converts the document.
 #' @section Ubuntu platforms:
 #' On some Ubuntu platforms, 'LibreOffice' require to add in
 #' the environment variable `LD_LIBRARY_PATH` the following path:
@@ -91,7 +93,13 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
                    "--convert-to", "pdf:writer_pdf_Export",
                    "--outdir", default_root,
                    input),
-          error_on_status = FALSE)
+          error_on_status = FALSE,
+          timeout = if (timeout > 0) timeout else Inf)
+
+    if (isTRUE(res$timeout)) {
+      stop("could not convert ", input, ": 'LibreOffice' did not finish within ",
+           timeout, " seconds.", call. = FALSE)
+    }
     success <- res$status == 0
 
     if(!success) stop("could not convert ", input, call. = FALSE)
