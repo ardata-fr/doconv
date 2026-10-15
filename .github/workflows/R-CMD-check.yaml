@@ -5,6 +5,10 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    # 4AM every monday, to catch changes in dependencies
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
 
 name: R-CMD-check
 
@@ -19,16 +23,16 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release'}
-          - {os: macOS-latest, r: 'release'}
-          - {os: ubuntu-latest, r: 'release'}
+          - {os: macOS-latest,   r: 'release'}
+          - {os: ubuntu-latest,  r: 'devel'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -37,10 +41,9 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: install freetype2 and imagemagick deps and libreoffice
-        if: matrix.config.os == 'macOS-latest'
-        run: |
-           brew install --cask libreoffice
+      - name: Install LibreOffice (macOS)
+        if: runner.os == 'macOS'
+        run: brew install --cask libreoffice
 
       # macOS runner images no longer ship XQuartz, but the RSPM binary of
       # gdtools is linked against /opt/X11/lib/libXrender.1.dylib.
@@ -48,15 +51,15 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install --cask xquartz
 
-      - name: install libreoffice for ubuntu
-        if: matrix.config.os == 'ubuntu-latest'
+      - name: Install LibreOffice (Linux)
+        if: runner.os == 'Linux'
         run: |
-           sudo apt install libreoffice
+          sudo apt-get update
+          sudo apt-get install -y libreoffice
 
-      - name: install libreoffice for windows
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          choco install libreoffice-fresh -y
+      - name: Install LibreOffice (Windows)
+        if: runner.os == 'Windows'
+        run: choco install libreoffice-fresh -y
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -65,5 +68,5 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         env:
+          # needed by LibreOffice on some Ubuntu platforms, see ?to_pdf
           LD_LIBRARY_PATH: /usr/lib/libreoffice/program/
-
