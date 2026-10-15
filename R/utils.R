@@ -61,6 +61,17 @@ rscript_exec <- function() {
   file.path(R.home("bin"), if (is_windows()) "Rscript.exe" else "Rscript")
 }
 
+# Write a PowerShell script in UTF-8 with a BOM, Windows PowerShell 5.1
+# reads files without BOM with the ANSI code page and non ASCII paths
+# are then not found (#8).
+write_ps1 <- function(x, path) {
+  con <- file(path, open = "wb")
+  on.exit(close(con))
+  writeBin(as.raw(c(0xef, 0xbb, 0xbf)), con)
+  writeLines(enc2utf8(x), con, sep = "\r\n", useBytes = TRUE)
+  invisible(path)
+}
+
 # Escape a file path for a PowerShell double-quoted string.
 # Backtick is the PS escape character; $, ", and ` need escaping.
 escape_path_ps <- function(path) {

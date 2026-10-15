@@ -27,6 +27,11 @@
   when the port is already in use; the command was run against the other
   app. The app is now started with the 'Rscript' of the running R session
   instead of the first one found on the PATH.
+- On Windows, `docx2pdf()`, `docx_update()` and `pptx2pdf()` now work with
+  file paths containing non ASCII characters (e.g. Chinese characters).
+  The PowerShell scripts are now written in UTF-8 with a BOM, Windows
+  PowerShell was reading them with the ANSI code page and could not find
+  the file, without any error (#8).
 
 
 # doconv 0.4.0

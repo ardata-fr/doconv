@@ -126,7 +126,7 @@ docx2pdf_win <- function(input, output = gsub("\\.(docx|doc|rtf)$", ".pdf", inpu
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
   script_str[1] <- sub("%s", escape_path_ps(input), script_str[1], fixed = TRUE)
   script_str[2] <- sub("%s", escape_path_ps(output_name), script_str[2], fixed = TRUE)
-  writeLines(script_str, script_path, useBytes = TRUE)
+  write_ps1(script_str, script_path)
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
 
   success <- res$status == 0
@@ -226,7 +226,7 @@ docx_update_win <- function(input){
   script_path <- tempfile(fileext = ".ps1")
   docxupdate_str <- readLines(script_sourcefile, encoding = "UTF-8")
   docxupdate_str[1] <- sub("%s", escape_path_ps(input), docxupdate_str[1], fixed = TRUE)
-  writeLines(docxupdate_str, script_path, useBytes = TRUE)
+  write_ps1(docxupdate_str, script_path)
 
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
@@ -359,7 +359,7 @@ pptx2pdf_win <- function(input, output = gsub("\\.(pptx|ppt)$", ".pdf", input, i
   script_str <- readLines(script_sourcefile, encoding = "UTF-8")
   script_str[1] <- sub("%s", escape_path_ps(input), script_str[1], fixed = TRUE)
   script_str[2] <- sub("%s", escape_path_ps(normalizePath(output, mustWork = FALSE)), script_str[2], fixed = TRUE)
-  writeLines(script_str, script_path, useBytes = TRUE)
+  write_ps1(script_str, script_path)
 
   res <- run("powershell", args = c("-file", script_path), error_on_status = FALSE)
   success <- res$status == 0
