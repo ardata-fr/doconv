@@ -18,13 +18,19 @@ export(to_pdf)
 export(working_directory)
 import(magick)
 importFrom(gdtools,font_set_liberation)
-importFrom(locatexec,exec_available)
-importFrom(locatexec,is_osx)
-importFrom(locatexec,is_windows)
-importFrom(locatexec,libreoffice_exec)
-importFrom(magick,image_raster)
-importFrom(magick,image_read)
-importFrom(pdftools,pdf_convert)
-importFrom(pdftools,pdf_length)
+importFrom(locatexec,
+  exec_available,
+  is_osx,
+  is_windows,
+  libreoffice_exec
+)
+importFrom(magick,
+  image_raster,
+  image_read
+)
+importFrom(pdftools,
+  pdf_convert,
+  pdf_length
+)
 importFrom(processx,run)
 importFrom(tools,R_user_dir)

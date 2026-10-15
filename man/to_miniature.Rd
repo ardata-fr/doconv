@@ -49,12 +49,12 @@ When set, portrait pages use \code{ncol} per row and landscape pages use
 \item 750 for pptx files
 }}
 
-\item{border_color}{border color, see \code{\link[magick:composite]{magick::image_border()}}.}
+\item{border_color}{border color, see \code{\link[magick:image_border]{magick::image_border()}}.}
 
 \item{border_geometry}{border geometry to be added around
-images, see \code{\link[magick:composite]{magick::image_border()}}.}
+images, see \code{\link[magick:image_border]{magick::image_border()}}.}
 
-\item{dpi}{resolution (dots per inch) to use for images, see \code{\link[pdftools:pdf_render_page]{pdftools::pdf_convert()}}.}
+\item{dpi}{resolution (dots per inch) to use for images, see \code{\link[pdftools:pdf_convert]{pdftools::pdf_convert()}}.}
 
 \item{fileout}{if not NULL, result is saved in a png file whose filename
 is defined by this argument.}
@@ -65,7 +65,7 @@ in order to generate the corresponding pdf file, ignored if 0.}
 \item{...}{arguments used by webshot2 when HTML document.}
 }
 \value{
-a magick image object as returned by \code{\link[magick:editing]{magick::image_read()}}.
+a magick image object as returned by \code{\link[magick:image_read]{magick::image_read()}}.
 }
 \description{
 Convert a file into an image (magick image) where the

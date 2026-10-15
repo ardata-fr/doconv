@@ -97,13 +97,14 @@ pdf_to_images <- function(file, dpi = 150) {
 
   png_file <- gsub("\\.pdf$", "_%d.%s", basename(file))
 
+  # pdf_convert() returns the files in page order, list.files() would
+  # sort them alphabetically (page 10 before page 2)
   screen_copies <- pdf_convert(
     pdf = file, format = "png", verbose = FALSE,
     dpi = dpi,
     filenames = file.path(dest, png_file)
   )
-  img_src <- list.files(dest, pattern = "\\.png$", full.names = TRUE)
-  img_list <- lapply(img_src, image_read)
+  img_list <- lapply(screen_copies, image_read)
   img_list
 }
 

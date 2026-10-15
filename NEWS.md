@@ -1,3 +1,13 @@
+# doconv 0.4.1
+
+## Issues
+
+- `to_miniature()` and the visual tests (`expect_snapshot_doc()`) now keep
+  the page order of documents of 10 pages or more; pages were sorted
+  alphabetically (page 10 before page 2). Reference miniatures of such
+  documents must be updated.
+
+
 # doconv 0.4.0
 
 ## Features
