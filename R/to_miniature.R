@@ -80,7 +80,7 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout, timeout = timeout)
+      fileout = fileout, dpi = dpi, timeout = timeout)
   } else if(grepl("\\.pdf$", filename)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(

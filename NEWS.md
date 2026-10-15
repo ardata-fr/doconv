@@ -12,6 +12,8 @@
   directory behind when 'LibreOffice' is used.
 - The `timeout` argument of `to_pdf()` (also used by `to_miniature()`) is
   now applied to 'LibreOffice', which could previously run without limit.
+- `to_miniature()` now uses its `dpi` argument with 'Word' and 'RTF'
+  documents; 150 was always used.
 
 
 # doconv 0.4.0
