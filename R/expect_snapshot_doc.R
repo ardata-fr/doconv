@@ -262,7 +262,7 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   testthat::announce_snapshot_file(name = name)
   png_out <- tempfile(fileext = ".png")
 
-  file_type <- gsub("(.*)\\.(pdf|docx|pptx|rtf|png)$", "\\2", x)
+  file_type <- gsub("(.*)\\.(pdf|docx|doc|pptx|rtf|png)$", "\\2", x)
   exec <- guess_exec(file_type)
 
   # the snapshot is announced above, so that it is kept when the test
@@ -278,7 +278,7 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   } else if ("png" %in% file_type) {
     file.copy(x, png_out, overwrite = TRUE)
   } else {
-    stop("`expect_snapshot_doc()` only supports docx, pptx, rtf, pdf and png files.")
+    stop("`expect_snapshot_doc()` only supports docx, doc, pptx, rtf, pdf and png files.")
   }
 
   testthat::expect_snapshot_file(
@@ -290,7 +290,7 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
 }
 
 expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
-  file_type <- gsub("(.*)\\.(pdf|docx|pptx|rtf|png)$", "\\2", current)
+  file_type <- gsub("(.*)\\.(pdf|docx|doc|pptx|rtf|png)$", "\\2", current)
   exec <- guess_exec(file_type)
 
   if (!is.null(exec) && !exec_available(exec)) {

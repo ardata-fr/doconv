@@ -14,6 +14,7 @@
   now applied to 'LibreOffice', which could previously run without limit.
 - `to_miniature()` now uses its `dpi` argument with 'Word' and 'RTF'
   documents; 150 was always used.
+- `expect_snapshot_doc()` now accepts '.doc' files, as documented.
 
 
 # doconv 0.4.0
