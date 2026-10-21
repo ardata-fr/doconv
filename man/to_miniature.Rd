@@ -21,7 +21,8 @@ to_miniature(
 }
 \arguments{
 \item{filename}{input filename, supported documents are 'Microsoft Word',
-'Microsoft PowerPoint', 'RTF' and 'PDF' document.}
+'Microsoft PowerPoint', 'Microsoft Excel', 'RTF' and 'PDF' document.
+The pages of an 'Excel' workbook are trimmed of their white margins.}
 
 \item{row}{row index for every pages. 0 are to be used to drop
 the page from the final minature. If both \code{row} and \code{ncol} are
@@ -46,7 +47,7 @@ When set, portrait pages use \code{ncol} per row and landscape pages use
 
 \item{width}{width of a single image, recommanded values are:
 \itemize{
-\item 650 for docx files
+\item 650 for docx and xlsx files
 \item 750 for pptx files
 }}
 

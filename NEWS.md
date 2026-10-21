@@ -12,6 +12,13 @@
   be updated. With 'LibreOffice', comments are drawn in the margin, and
   hiding tracked changes is only supported for 'docx' files and requires
   package 'officer'.
+- Support for 'Excel' workbooks (idea from #11): new function
+  `xlsx2pdf()`, and 'xlsx' and 'xlsm' files are now accepted by
+  `to_pdf()`, `to_miniature()` and `expect_snapshot_doc()`. With 'Excel',
+  each sheet is scaled to the width of one page, without modifying the
+  workbook; with 'LibreOffice', each sheet is exported on a single page
+  with the size of its content. The pages of the miniature are trimmed of
+  their white margins.
 
 ## Issues
 

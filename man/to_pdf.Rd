@@ -40,16 +40,20 @@ invisibly.
 Convert documents to pdf with a script using
 'Office' or 'Libre Office'.
 
-If 'Microsoft Word' and 'Microsoft PowerPoint' are available,
-files 'docx', 'doc', 'rtf' and 'pptx' will be converted to
-PDF with 'Office' via a script.
+If 'Microsoft Word', 'Microsoft PowerPoint' and 'Microsoft Excel'
+are available, files 'docx', 'doc', 'rtf', 'pptx', 'ppt', 'xlsx'
+and 'xlsm' will be converted to PDF with 'Office' via a script.
 
-If 'Microsoft Word' and 'Microsoft PowerPoint' are not available
-(on linux for example), 'Libre Office' will be used to convert
-documents. In that case the rendering can be different from
+If they are not available (on linux for example), 'Libre Office'
+will be used to convert documents. In that case the rendering can be different from
 the original document. It supports very well 'Microsoft PowerPoint'
 to PDF. 'Microsoft Word' can also be converted but some Word
 features are not supported, such as sections.
+
+Workbooks ('xlsx', 'xlsm', 'xls', 'ods') are exported sheet by sheet:
+'Excel' scales each sheet to the width of one page, see \code{\link[=xlsx2pdf]{xlsx2pdf()}};
+'LibreOffice' exports each sheet on a single page with the size of
+its content.
 }
 \section{Linux platforms}{
 

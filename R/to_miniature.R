@@ -6,7 +6,8 @@
 #'
 #' The result can be saved as a png file.
 #' @param filename input filename, supported documents are 'Microsoft Word',
-#' 'Microsoft PowerPoint', 'RTF' and 'PDF' document.
+#' 'Microsoft PowerPoint', 'Microsoft Excel', 'RTF' and 'PDF' document.
+#' The pages of an 'Excel' workbook are trimmed of their white margins.
 #' @param row row index for every pages. 0 are to be used to drop
 #' the page from the final minature. If both `row` and `ncol` are
 #' provided, `row` takes precedence and a warning is issued.
@@ -27,7 +28,7 @@
 #' `ncol_landscape` per row. Requires `ncol`.
 #' @param width width of a single image, recommanded values are:
 #'
-#' * 650 for docx files
+#' * 650 for docx and xlsx files
 #' * 750 for pptx files
 #'
 #' @param border_color border color, see [magick::image_border()].
@@ -86,6 +87,13 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
       border_color = border_color, border_geometry = border_geometry,
       fileout = fileout, dpi = dpi, timeout = timeout,
       show_markup = show_markup)
+  } else if(grepl("\\.(xlsx|xlsm)$", filename, ignore.case = TRUE)){
+    if(is.null(width)) width <- 650
+    xlsx_to_miniature(
+      filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+      width = width,
+      border_color = border_color, border_geometry = border_geometry,
+      fileout = fileout, dpi = dpi, timeout = timeout)
   } else if(grepl("\\.pdf$", filename, ignore.case = TRUE)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
@@ -170,6 +178,39 @@ pptx_to_miniature <- function(filename, row = NULL, ncol = NULL,
     width = width, dpi = dpi,
     border_color = border_color, border_geometry = border_geometry
   )
+  if(!is.null(fileout))
+    image_write(x, path = fileout, format = "png")
+  x
+}
+
+# pages of a workbook are trimmed: 'Excel' pages have white margins
+# around the sheet, and 'LibreOffice' pages have the size of the sheet,
+# which can be wider than `width`.
+xlsx_to_miniature <- function(filename, row = NULL, ncol = NULL,
+                              ncol_landscape = NULL, width = 650,
+                              border_color = "#ccc", border_geometry = "2x2",
+                              dpi = 150,
+                              fileout = NULL, timeout = 120) {
+  pdf_filename <- tempfile(fileext = ".pdf")
+  if (exec_available("excel")) {
+    xlsx2pdf(input = filename, output = pdf_filename)
+  } else {
+    to_pdf(input = filename, output = pdf_filename, timeout = timeout)
+  }
+
+  width <- width * dpi/72
+  img_list <- lapply(pdf_to_images(pdf_filename, dpi = dpi), function(img) {
+    img <- image_border(image_trim(img), color = "white", geometry = "20x20")
+    image_resize(img, geometry = sprintf("%.0fx>", width))
+  })
+  x <- images_to_miniature(
+    img_list = img_list,
+    row = row, ncol = ncol, ncol_landscape = ncol_landscape,
+    width = width,
+    border_color = border_color, border_geometry = border_geometry
+  )
+  # pages have different sizes, the space around them is transparent
+  x <- image_flatten(image_background(x, color = "white"))
   if(!is.null(fileout))
     image_write(x, path = fileout, format = "png")
   x

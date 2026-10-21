@@ -298,6 +298,9 @@ check_show_markup <- function(show_markup) {
 libreoffice_pdf_filter <- function(input, show_markup = FALSE) {
   if (show_markup && grepl("\\.(docx|doc|rtf|odt)$", input, ignore.case = TRUE)) {
     'pdf:writer_pdf_Export:{"ExportNotesInMargin":{"type":"boolean","value":"true"}}'
+  } else if (grepl("\\.(xlsx|xlsm|xls|ods)$", input, ignore.case = TRUE)) {
+    # one page per sheet, with the size of its content
+    'pdf:calc_pdf_Export:{"SinglePageSheets":{"type":"boolean","value":"true"}}'
   } else {
     "pdf:writer_pdf_Export"
   }

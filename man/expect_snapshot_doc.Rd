@@ -29,7 +29,8 @@ A \code{\link[tinytest:tinytest]{tinytest::tinytest()}} or a \link[testthat:expe
 }
 \description{
 This expectation can be used with 'tinytest' and 'testthat'
-to check if a current document of type pdf, docx, doc, rtf, pptx or png
+to check if a current document of type pdf, docx, doc, rtf, pptx,
+xlsx, xlsm or png
 matches a target document. When the expectation is checked
 for the first time, the expectation fails and a target miniature
 of the document is saved in a folder named \verb{_tinytest_doconv} or
