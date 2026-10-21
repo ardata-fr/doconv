@@ -17,7 +17,7 @@ test_that("docx_hide_revisions() asks for the final view of tracked changes", {
 
   docx <- markup_docx()
   hidden <- docx_hide_revisions(docx, dir = dir)
-  expect_identical(dirname(hidden), dir)
+  expect_identical(normalizePath(dirname(hidden)), normalizePath(dir))
   settings <- utils::unzip(hidden, files = "word/settings.xml", exdir = tempfile())
   settings <- paste(readLines(settings, warn = FALSE), collapse = "\n")
   expect_match(settings, '<w:revisionView w:markup="false" w:insDel="false"', fixed = TRUE)
