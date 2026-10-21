@@ -23,6 +23,12 @@
 #' @param timeout timeout in seconds that 'LibreOffice' is allowed to use
 #' to convert the document, ignored if 0. It is not used when 'Microsoft
 #' Office' converts the document.
+#' @param show_markup if `TRUE`, tracked changes and comments of a 'Word'
+#' document are shown in the PDF. If `FALSE` (the default), the PDF shows
+#' the final document, without tracked changes marks and without comments.
+#' It is ignored for other documents. With 'LibreOffice', comments are
+#' drawn in the margin, and hiding tracked changes is only supported for
+#' 'docx' files and requires package 'officer'.
 #' @section Ubuntu platforms:
 #' On some Ubuntu platforms, 'LibreOffice' require to add in
 #' the environment variable `LD_LIBRARY_PATH` the following path:
@@ -52,7 +58,8 @@
 #' @importFrom locatexec libreoffice_exec
 #' @importFrom locatexec is_windows
 to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
-                   timeout = 120, UserInstallation = NULL) {
+                   timeout = 120, UserInstallation = NULL, show_markup = FALSE) {
+  check_show_markup(show_markup)
   if (!file.exists(input)) {
     stop("input does not exist")
   }
@@ -79,20 +86,28 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
 
 
   if(grepl("\\.(doc|docx|rtf)$", input, ignore.case = TRUE) && exec_available("word")){
-    docx2pdf(input = input, output = output)
+    docx2pdf(input = input, output = output, show_markup = show_markup)
   } else if(grepl("\\.(ppt|pptx)$", input, ignore.case = TRUE) && exec_available("powerpoint")){
     pptx2pdf(input = input, output = output)
   } else {
     file_set_origin <- list.files(default_root, full.names = TRUE)
+
+    lo_input <- input
+    if (!show_markup) {
+      revisions_dir <- tempfile()
+      dir.create(revisions_dir)
+      on.exit(unlink(revisions_dir, recursive = TRUE, force = TRUE), add = TRUE)
+      lo_input <- docx_hide_revisions(input, dir = revisions_dir)
+    }
 
     res <- run(
           libreoffice_exec(),
           args = c("--headless",
                    if(!is_windows()) sprintf("-env:UserInstallation=file://%s", UserInstallation)
                    else sprintf("-env:UserInstallation=file:///%s", UserInstallation),
-                   "--convert-to", "pdf:writer_pdf_Export",
+                   "--convert-to", libreoffice_pdf_filter(input, show_markup),
                    "--outdir", default_root,
-                   input),
+                   lo_input),
           error_on_status = FALSE,
           timeout = if (timeout > 0) timeout else Inf)
 

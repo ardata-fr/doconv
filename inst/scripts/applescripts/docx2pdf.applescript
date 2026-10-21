@@ -1,5 +1,6 @@
 set indocx to POSIX file "%s"
 set opdf to POSIX file "%s"
+set showMarkup to %s
 
 set wasRunning to false
 
@@ -19,6 +20,10 @@ try
     repeat with toc in (get tables of figures of theActiveDoc)
       update toc
     end repeat
+    -- the PDF shows tracked changes and comments as the window does
+    set theView to view of active window of theActiveDoc
+    set show revisions and comments of theView to showMarkup
+    set revisions view of theView to revisions view final
     save as theActiveDoc file format format PDF file name opdf
     close active window of theActiveDoc saving no
   end tell

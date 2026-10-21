@@ -1,5 +1,18 @@
 # doconv 0.4.1
 
+## Features
+
+- New argument `show_markup` in `docx2pdf()`, `to_pdf()`, `to_miniature()`
+  and `expect_snapshot_doc()`, to show tracked changes and comments of
+  'Word' documents in the PDF and the miniature (idea from #10). It is
+  `FALSE` by default: all engines now give the final document, without
+  tracked changes marks and without comments. 'Word' on macOS was showing
+  them, and 'LibreOffice' was showing tracked changes: miniatures and
+  reference snapshots of documents with tracked changes or comments must
+  be updated. With 'LibreOffice', comments are drawn in the margin, and
+  hiding tracked changes is only supported for 'docx' files and requires
+  package 'officer'.
+
 ## Issues
 
 - `to_miniature()` and the visual tests (`expect_snapshot_doc()`) now keep

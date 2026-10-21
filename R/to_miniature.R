@@ -38,6 +38,8 @@
 #' @param dpi resolution (dots per inch) to use for images, see [pdftools::pdf_convert()].
 #' @param timeout timeout in seconds that libreoffice is allowed to use
 #' in order to generate the corresponding pdf file, ignored if 0.
+#' @param show_markup if `TRUE`, tracked changes and comments of a 'Word'
+#' document are shown, see [to_pdf()]. Ignored for other documents.
 #' @param ... arguments used by webshot2 when HTML document.
 #' @return a magick image object as returned by [magick::image_read()].
 #' @examples
@@ -61,7 +63,9 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
                          border_color = "#ccc", border_geometry = "2x2",
                          dpi = 150,
                          fileout = NULL, timeout = 120,
+                         show_markup = FALSE,
                          ...) {
+  check_show_markup(show_markup)
 
   if (!file.exists(filename)) {
     stop("filename does not exist")
@@ -80,7 +84,8 @@ to_miniature <- function(filename, row = NULL, ncol = NULL,
       filename, row = row, ncol = ncol, ncol_landscape = ncol_landscape,
       width = width,
       border_color = border_color, border_geometry = border_geometry,
-      fileout = fileout, dpi = dpi, timeout = timeout)
+      fileout = fileout, dpi = dpi, timeout = timeout,
+      show_markup = show_markup)
   } else if(grepl("\\.pdf$", filename, ignore.case = TRUE)){
     if(is.null(width)) width <- 650
     pdf_to_miniature(
@@ -127,13 +132,15 @@ pdf_to_miniature <- function(filename, row = NULL, ncol = NULL,
 docx_to_miniature <- function(filename, row = NULL, ncol = NULL,
                               ncol_landscape = NULL, width = 650,
                               border_color = "#ccc", border_geometry = "2x2",
-                              fileout = NULL, dpi = 150, timeout = 120) {
+                              fileout = NULL, dpi = 150, timeout = 120,
+                              show_markup = FALSE) {
   pdf_filename <- tempfile(fileext = ".pdf")
 
   if (exec_available("word")) {
-    docx2pdf(input = filename, output = pdf_filename)
+    docx2pdf(input = filename, output = pdf_filename, show_markup = show_markup)
   } else {
-    to_pdf(input = filename, output = pdf_filename, timeout = timeout)
+    to_pdf(input = filename, output = pdf_filename, timeout = timeout,
+           show_markup = show_markup)
   }
 
   x <- pdf_to_miniature(pdf_filename,

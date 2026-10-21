@@ -8,7 +8,8 @@ expect_snapshot_doc(
   name,
   x,
   tolerance = 0.001,
-  engine = c("tinytest", "testthat")
+  engine = c("tinytest", "testthat"),
+  show_markup = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,9 @@ expect_snapshot_doc(
 \item{tolerance}{the ratio of different pixels that is acceptable before triggering a failure.}
 
 \item{engine}{test package being used in the test suite, one of "tinytest" or "testthat".}
+
+\item{show_markup}{if \code{TRUE}, tracked changes and comments of a 'Word'
+document are shown in the miniature, see \code{\link[=to_pdf]{to_pdf()}}.}
 }
 \value{
 A \code{\link[tinytest:tinytest]{tinytest::tinytest()}} or a \link[testthat:expect_snapshot_file]{testthat::expect_snapshot_file} object.

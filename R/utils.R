@@ -283,3 +283,68 @@ stop_on_wrong_ps_exec_policy <- function() {
     call. = FALSE
   )
 }
+
+# tracked changes and comments ----
+
+check_show_markup <- function(show_markup) {
+  if (!is.logical(show_markup) || length(show_markup) != 1L || is.na(show_markup)) {
+    stop("`show_markup` must be TRUE or FALSE.", call. = FALSE)
+  }
+  invisible(show_markup)
+}
+
+# 'LibreOffice' PDF filter. Comments are drawn in the margin with
+# `show_markup = TRUE`, they are not exported otherwise.
+libreoffice_pdf_filter <- function(input, show_markup = FALSE) {
+  if (show_markup && grepl("\\.(docx|doc|rtf|odt)$", input, ignore.case = TRUE)) {
+    'pdf:writer_pdf_Export:{"ExportNotesInMargin":{"type":"boolean","value":"true"}}'
+  } else {
+    "pdf:writer_pdf_Export"
+  }
+}
+
+# 'LibreOffice' always shows tracked changes, unless the document settings
+# ask for the final view (`w:revisionView`); 'Word' ignores this setting.
+# Returns `input`, or a copy in `dir` with these settings when `input`
+# contains tracked changes.
+docx_hide_revisions <- function(input, dir) {
+  if (!grepl("\\.docx$", input, ignore.case = TRUE)) {
+    return(input)
+  }
+  unz <- tempfile()
+  on.exit(unlink(unz, recursive = TRUE, force = TRUE))
+
+  document <- utils::unzip(input, files = "word/document.xml", exdir = unz)
+  if (!length(document)) {
+    return(input)
+  }
+  xml <- paste(readLines(document, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  if (!grepl("<w:(ins|del|moveFrom|moveTo)[ >]", xml)) {
+    return(input)
+  }
+  if (!requireNamespace("officer", quietly = TRUE)) {
+    warning("package 'officer' is required to hide tracked changes with ",
+            "'LibreOffice', they are shown in the PDF.", call. = FALSE)
+    return(input)
+  }
+
+  unlink(unz, recursive = TRUE, force = TRUE)
+  officer::unpack_folder(input, unz)
+  settings_file <- file.path(unz, "word", "settings.xml")
+  if (!file.exists(settings_file)) {
+    return(input)
+  }
+  settings <- paste(readLines(settings_file, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  settings <- gsub("<w:revisionView[^>]*/>", "", settings)
+  # first child instead of its schema position: only read by 'LibreOffice'
+  settings <- sub(
+    "(<w:settings[^>]*>)",
+    "\\1<w:revisionView w:markup=\"false\" w:insDel=\"false\" w:formatting=\"false\"/>",
+    settings
+  )
+  writeLines(settings, settings_file, useBytes = TRUE)
+
+  output <- file.path(dir, basename(input))
+  officer::pack_folder(unz, output)
+  output
+}

@@ -16,6 +16,8 @@ load_package <- function(z) {
 #' @param x file path of a document
 #' @param tolerance the ratio of different pixels that is acceptable before triggering a failure.
 #' @param engine test package being used in the test suite, one of "tinytest" or "testthat".
+#' @param show_markup if `TRUE`, tracked changes and comments of a 'Word'
+#' document are shown in the miniature, see [to_pdf()].
 #' @return A [tinytest::tinytest()] or a [testthat::expect_snapshot_file] object.
 #' @export
 #' @examples
@@ -43,10 +45,12 @@ expect_snapshot_doc <- function(
     name,
     x,
     tolerance = 0.001,
-    engine = c("tinytest", "testthat")
+    engine = c("tinytest", "testthat"),
+    show_markup = FALSE
     ) {
 
   engine <- match.arg(engine)
+  check_show_markup(show_markup)
   load_package(engine)
 
   if (inherits(x, "rdocx")) {
@@ -60,11 +64,11 @@ expect_snapshot_doc <- function(
   if ("testthat" %in% engine) {
     expect_snapshot_testthat(
       name = name, x = x,
-      tolerance = tolerance)
+      tolerance = tolerance, show_markup = show_markup)
   } else {
     expect_snapshot_tinytest(
       name = name, current = x,
-      tolerance = tolerance)
+      tolerance = tolerance, show_markup = show_markup)
   }
 
 }
@@ -257,7 +261,7 @@ expect_snapshot_flextables <- function(x, name, res = 200,
 }
 
 
-expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
+expect_snapshot_testthat <- function(name, x, tolerance = 0.001, show_markup = FALSE) {
   name <- paste0(name, ".png")
   testthat::announce_snapshot_file(name = name)
   png_out <- tempfile(fileext = ".png")
@@ -272,7 +276,7 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   }
 
   if (file_type %in% c("pdf", "docx", "doc", "rtf")) {
-    to_miniature(x, fileout = png_out, width = 1000)
+    to_miniature(x, fileout = png_out, width = 1000, show_markup = show_markup)
   } else if ("pptx" %in% file_type) {
     to_miniature(x, fileout = png_out, width = 1200)
   } else if ("png" %in% file_type) {
@@ -289,7 +293,7 @@ expect_snapshot_testthat <- function(name, x, tolerance = 0.001) {
   )
 }
 
-expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
+expect_snapshot_tinytest <- function(current, name, tolerance = 0.001, show_markup = FALSE) {
   file_type <- tolower(gsub("(.*)\\.(pdf|docx|doc|pptx|rtf|png)$", "\\2", current, ignore.case = TRUE))
   exec <- guess_exec(file_type)
 
@@ -312,7 +316,8 @@ expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
       current,
       name,
       tolerance = tolerance,
-      width = 1000
+      width = 1000,
+      show_markup = show_markup
     )
   } else if ("pptx" %in% file_type) {
     expect_office_doc_diff_tinytest(
@@ -331,7 +336,8 @@ expect_snapshot_tinytest <- function(current, name, tolerance = 0.001) {
 expect_office_doc_diff_tinytest <- function(current,
                                             name,
                                             tolerance = sqrt(.Machine$double.eps),
-                                            width = 1000) {
+                                            width = 1000,
+                                            show_markup = FALSE) {
   # portable test names
   name <- gsub(" ", "_", name)
 
@@ -342,7 +348,8 @@ expect_office_doc_diff_tinytest <- function(current,
   dir.create(tmp_current, showWarnings = FALSE, recursive = TRUE)
 
   current_miniature <- file.path(tmp_current, paste0(name, ".png"))
-  to_miniature(current, fileout = current_miniature, width = width)
+  to_miniature(current, fileout = current_miniature, width = width,
+               show_markup = show_markup)
 
   target_miniature <- file.path(tinytest_dir, basename(current_miniature))
   if (!file.exists(target_miniature)) {

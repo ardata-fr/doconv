@@ -8,7 +8,8 @@ to_pdf(
   input,
   output = gsub("\\\\.[[:alnum:]]+$", ".pdf", input),
   timeout = 120,
-  UserInstallation = NULL
+  UserInstallation = NULL,
+  show_markup = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,13 @@ Office' converts the document.}
 \item{UserInstallation}{use this value to set a non-default user profile path
 for 'LibreOffice'. If not provided a temporary dir is created. It makes possibles
 to use more than a single session of 'LibreOffice'.}
+
+\item{show_markup}{if \code{TRUE}, tracked changes and comments of a 'Word'
+document are shown in the PDF. If \code{FALSE} (the default), the PDF shows
+the final document, without tracked changes marks and without comments.
+It is ignored for other documents. With 'LibreOffice', comments are
+drawn in the margin, and hiding tracked changes is only supported for
+'docx' files and requires package 'officer'.}
 }
 \value{
 the name of the produced pdf (the same value as \code{output}),

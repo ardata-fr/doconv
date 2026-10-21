@@ -15,6 +15,7 @@ to_miniature(
   dpi = 150,
   fileout = NULL,
   timeout = 120,
+  show_markup = FALSE,
   ...
 )
 }
@@ -61,6 +62,9 @@ is defined by this argument.}
 
 \item{timeout}{timeout in seconds that libreoffice is allowed to use
 in order to generate the corresponding pdf file, ignored if 0.}
+
+\item{show_markup}{if \code{TRUE}, tracked changes and comments of a 'Word'
+document are shown, see \code{\link[=to_pdf]{to_pdf()}}. Ignored for other documents.}
 
 \item{...}{arguments used by webshot2 when HTML document.}
 }
