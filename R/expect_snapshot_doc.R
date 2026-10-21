@@ -461,7 +461,28 @@ diff_image <- function(img1, img2) {
       info.reference$height != info.current$height) {
     return(-1.0)
   }
-  image_compare_dist(img.reference, img.current, metric = "AE")$distortion
+  distortion <- image_compare_dist(img.reference, img.current, metric = "AE")$distortion
+  if (ae_is_count()) {
+    distortion <- distortion / (info.current$width * info.current$height)
+  }
+  distortion
+}
+
+# The "AE" metric is a number of pixels with older 'ImageMagick' versions
+# (e.g. 6.9.12, Ubuntu 24.04) and a ratio with newer ones (e.g. 6.9.13).
+# Two images of 2 pixels with one different pixel tell which one it is.
+ae_cache <- new.env(parent = emptyenv())
+ae_is_count <- function() {
+  if (is.null(ae_cache$is_count)) {
+    white <- array(1, c(1, 2, 3))
+    one_black <- white
+    one_black[1, 1, ] <- 0
+    ae <- image_compare_dist(
+      image_read(white), image_read(one_black), metric = "AE"
+    )$distortion
+    ae_cache$is_count <- ae > 0.75
+  }
+  ae_cache$is_count
 }
 
 tinytest_dir <- "_tinytest_doconv"
