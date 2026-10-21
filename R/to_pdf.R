@@ -29,13 +29,13 @@
 #' It is ignored for other documents. With 'LibreOffice', comments are
 #' drawn in the margin, and hiding tracked changes is only supported for
 #' 'docx' files and requires package 'officer'.
-#' @section Ubuntu platforms:
-#' On some Ubuntu platforms, 'LibreOffice' require to add in
-#' the environment variable `LD_LIBRARY_PATH` the following path:
-#' `/usr/lib/libreoffice/program` (you should see the message
-#' "libreglo.so cannot open shared object file" if it is the case). This
-#' can be done with R
-#' command `Sys.setenv(LD_LIBRARY_PATH = "/usr/lib/libreoffice/program/")`
+#' @section Linux platforms:
+#' R adds its own library directories to the environment variable
+#' `LD_LIBRARY_PATH`, which made 'LibreOffice' fail when run from R
+#' (with the message "libreglo.so cannot open shared object file", or
+#' an abort when `/usr/lib/libreoffice/program` was added to this
+#' variable). 'LibreOffice' is now run without this variable, there is
+#' nothing to set.
 #' @examples
 #' library(locatexec)
 #' if (exec_available("libreoffice") && check_libreoffice_export()) {
@@ -108,6 +108,7 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
                    "--convert-to", libreoffice_pdf_filter(input, show_markup),
                    "--outdir", default_root,
                    lo_input),
+          env = libreoffice_env(),
           error_on_status = FALSE,
           timeout = if (timeout > 0) timeout else Inf)
 
@@ -124,8 +125,10 @@ to_pdf <- function(input, output = gsub("\\.[[:alnum:]]+$", ".pdf", input),
     success <- file.copy(from = file_set_new, to = output, overwrite = TRUE)
     unlink(file.path(default_root, basename(input)), force = TRUE)
     unlink(file_set_new, force = TRUE)
-    if (any(!success)) {
-      stop("could not convert ", input, call. = FALSE)
+    # 'LibreOffice' can exit with status 0 without writing anything
+    if (!length(success) || any(!success)) {
+      stop("could not convert ", input, ": 'LibreOffice' did not produce a PDF. ",
+           trimws(paste(res$stdout, res$stderr)), call. = FALSE)
     }
   }
 
@@ -175,6 +178,7 @@ check_libreoffice_export <- function(UserInstallation = NULL) {
                "--convert-to", "pdf:writer_pdf_Export",
                "--outdir", default_root,
                input),
+      env = libreoffice_env(),
       error_on_status = FALSE,
       timeout = 45
       )

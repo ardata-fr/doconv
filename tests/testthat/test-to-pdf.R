@@ -30,3 +30,34 @@ test_that("to_pdf() stops LibreOffice after timeout", {
   pdf_file <- to_pdf(txt_file, output = tempfile(fileext = ".pdf"), timeout = 0)
   expect_true(file.exists(pdf_file))
 })
+
+test_that("LibreOffice is run without R's LD_LIBRARY_PATH on Linux", {
+  skip_if_not(locatexec::is_unix())
+  old <- Sys.getenv("LD_LIBRARY_PATH", unset = NA)
+  on.exit(if (is.na(old)) Sys.unsetenv("LD_LIBRARY_PATH") else Sys.setenv(LD_LIBRARY_PATH = old))
+  Sys.setenv(LD_LIBRARY_PATH = "/r/lib:/usr/lib/x86_64-linux-gnu")
+
+  res <- processx::run("sh", c("-c", "echo \"[$LD_LIBRARY_PATH]\""), env = libreoffice_env())
+  expect_identical(trimws(res$stdout), "[]")
+})
+
+test_that("to_pdf() fails when LibreOffice exits without writing a PDF", {
+  # LibreOffice can exit with status 0 after an export error
+  local_mocked_bindings(
+    exec_available = function(...) FALSE,
+    libreoffice_exec = function(...) "soffice",
+    run = function(...) {
+      list(status = 0L, stdout = "", stderr = "Error: Please verify input parameters...",
+           timeout = FALSE)
+    }
+  )
+  txt_file <- tempfile(fileext = ".txt")
+  writeLines("hello", txt_file)
+  pdf_file <- tempfile(fileext = ".pdf")
+
+  expect_error(
+    to_pdf(txt_file, output = pdf_file),
+    "did not produce a PDF. Error: Please verify input parameters"
+  )
+  expect_false(file.exists(pdf_file))
+})

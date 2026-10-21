@@ -21,6 +21,7 @@ importFrom(gdtools,font_set_liberation)
 importFrom(locatexec,
   exec_available,
   is_osx,
+  is_unix,
   is_windows,
   libreoffice_exec
 )

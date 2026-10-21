@@ -15,6 +15,16 @@
 
 ## Issues
 
+- On Linux, 'LibreOffice' is now run without the `LD_LIBRARY_PATH` set by
+  R. R prepends its own library directories to this variable and
+  'LibreOffice' was failing ("libreglo.so cannot open shared object file"),
+  or aborting when `/usr/lib/libreoffice/program` was added to it as the
+  documentation suggested. 'locatexec' >= 0.2.1 is needed to detect
+  'LibreOffice' in this case.
+- `to_pdf()` now fails when 'LibreOffice' does not produce a PDF; it was
+  returning the output path although no file was written, as 'LibreOffice'
+  can exit without error status after an export error.
+
 - `to_miniature()` and the visual tests (`expect_snapshot_doc()`) now keep
   the page order of documents of 10 pages or more; pages were sorted
   alphabetically (page 10 before page 2). Reference miniatures of such

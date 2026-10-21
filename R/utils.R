@@ -348,3 +348,12 @@ docx_hide_revisions <- function(input, dir) {
   officer::pack_folder(unz, output)
   output
 }
+
+# 'LibreOffice' is run without the LD_LIBRARY_PATH set by R on Linux: R
+# prepends its own library directories to it (see R_HOME/etc/ldpaths) and
+# 'LibreOffice' then fails ("libreglo.so: cannot open shared object file")
+# or aborts.
+#' @importFrom locatexec is_unix
+libreoffice_env <- function() {
+  if (is_unix()) c("current", LD_LIBRARY_PATH = "") else "current"
+}

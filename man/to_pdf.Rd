@@ -51,14 +51,14 @@ the original document. It supports very well 'Microsoft PowerPoint'
 to PDF. 'Microsoft Word' can also be converted but some Word
 features are not supported, such as sections.
 }
-\section{Ubuntu platforms}{
+\section{Linux platforms}{
 
-On some Ubuntu platforms, 'LibreOffice' require to add in
-the environment variable \code{LD_LIBRARY_PATH} the following path:
-\verb{/usr/lib/libreoffice/program} (you should see the message
-"libreglo.so cannot open shared object file" if it is the case). This
-can be done with R
-command \code{Sys.setenv(LD_LIBRARY_PATH = "/usr/lib/libreoffice/program/")}
+R adds its own library directories to the environment variable
+\code{LD_LIBRARY_PATH}, which made 'LibreOffice' fail when run from R
+(with the message "libreglo.so cannot open shared object file", or
+an abort when \verb{/usr/lib/libreoffice/program} was added to this
+variable). 'LibreOffice' is now run without this variable, there is
+nothing to set.
 }
 
 \examples{

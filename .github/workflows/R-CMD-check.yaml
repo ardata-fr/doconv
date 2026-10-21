@@ -67,6 +67,3 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
-        env:
-          # needed by LibreOffice on some Ubuntu platforms, see ?to_pdf
-          LD_LIBRARY_PATH: /usr/lib/libreoffice/program/

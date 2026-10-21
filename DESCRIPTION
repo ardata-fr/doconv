@@ -1,7 +1,7 @@
 Type: Package
 Package: doconv
 Title: Document Conversion to 'PDF', Thumbnails and Visual Testing
-Version: 0.4.1.014
+Version: 0.4.1.015
 Authors@R: c(
     person("David", "Gohel", , "david.gohel@ardata.fr", role = c("aut", "cre")),
     person("ArData", role = "cph"),
@@ -24,7 +24,7 @@ Depends:
 Imports: 
     filelock,
     gdtools,
-    locatexec,
+    locatexec (>= 0.2.1),
     magick,
     pdftools,
     processx,
@@ -42,3 +42,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 SystemRequirements: LibreOffice, Microsoft Word
+Remotes: ardata-fr/locatexec
