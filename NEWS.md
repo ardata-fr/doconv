@@ -39,6 +39,13 @@
   with "could not convert". The new dependency 'filelock' is used for
   this.
 
+## Changes
+
+- The visual tests (`expect_snapshot_doc()` and the functions using it)
+  compare images faster: identical files are no longer decoded, and pixels
+  are compared by 'ImageMagick' (`magick::image_compare_dist()`) instead of
+  in R. The measured ratio of different pixels is unchanged.
+
 
 # doconv 0.4.0
 

@@ -436,14 +436,25 @@ guess_exec <- function(file_type) {
   exec
 }
 
-#' @importFrom magick image_raster image_read
+# ratio of different pixels, -1 if dimensions differ. Identical files are
+# not decoded; otherwise pixels are compared by ImageMagick ("AE" metric),
+# alpha channel included, which is much faster than comparing rasters in R.
+# Both images get an alpha channel: when the first one has none (an opaque
+# PNG), ImageMagick ignores the alpha channel of the second one.
+#' @importFrom magick image_read image_info image_compare_dist image_convert
 diff_image <- function(img1, img2) {
-  img.reference <- image_raster(image_read(img1), tidy = FALSE)
-  img.empty <- image_raster(image_read(img2), tidy = FALSE)
-  if (length(img.empty) != length(img.reference)) {
+  if (identical(unname(tools::md5sum(img1)), unname(tools::md5sum(img2)))) {
+    return(0.0)
+  }
+  img.reference <- image_convert(image_read(img1), matte = TRUE)
+  img.current <- image_convert(image_read(img2), matte = TRUE)
+  info.reference <- image_info(img.reference)
+  info.current <- image_info(img.current)
+  if (info.reference$width != info.current$width ||
+      info.reference$height != info.current$height) {
     return(-1.0)
   }
-  sum(img.reference != img.empty) / length(img.empty)
+  image_compare_dist(img.reference, img.current, metric = "AE")$distortion
 }
 
 tinytest_dir <- "_tinytest_doconv"
