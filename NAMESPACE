@@ -27,9 +27,7 @@ importFrom(locatexec,
   libreoffice_exec
 )
 importFrom(magick,
-  image_compare_dist,
-  image_convert,
-  image_info,
+  image_data,
   image_read
 )
 importFrom(pdftools,

@@ -456,45 +456,22 @@ guess_exec <- function(file_type) {
 }
 
 # ratio of different pixels, -1 if dimensions differ. Identical files are
-# not decoded; otherwise pixels are compared by ImageMagick ("AE" metric),
-# alpha channel included, which is much faster than comparing rasters in R.
-# Both images get an alpha channel: when the first one has none (an opaque
-# PNG), ImageMagick ignores the alpha channel of the second one.
-#' @importFrom magick image_read image_info image_compare_dist image_convert
+# not decoded; otherwise the decoded RGBA bytes are compared, a pixel
+# differs when one of its 4 bytes differs. An opaque RGB image gets an
+# alpha of 255. The 'ImageMagick' "AE" metric is not used: it is a number
+# of pixels with 6.9.12, a ratio with 6.9.13 and a ratio weighted by the
+# size of the differences with 7.1.2.
+#' @importFrom magick image_read image_data
 diff_image <- function(img1, img2) {
   if (identical(unname(tools::md5sum(img1)), unname(tools::md5sum(img2)))) {
     return(0.0)
   }
-  img.reference <- image_convert(image_read(img1), matte = TRUE)
-  img.current <- image_convert(image_read(img2), matte = TRUE)
-  info.reference <- image_info(img.reference)
-  info.current <- image_info(img.current)
-  if (info.reference$width != info.current$width ||
-      info.reference$height != info.current$height) {
+  reference <- image_data(image_read(img1), channels = "rgba")
+  current <- image_data(image_read(img2), channels = "rgba")
+  if (!identical(dim(reference), dim(current))) {
     return(-1.0)
   }
-  distortion <- image_compare_dist(img.reference, img.current, metric = "AE")$distortion
-  if (ae_is_count()) {
-    distortion <- distortion / (info.current$width * info.current$height)
-  }
-  distortion
-}
-
-# The "AE" metric is a number of pixels with older 'ImageMagick' versions
-# (e.g. 6.9.12, Ubuntu 24.04) and a ratio with newer ones (e.g. 6.9.13).
-# Two images of 2 pixels with one different pixel tell which one it is.
-ae_cache <- new.env(parent = emptyenv())
-ae_is_count <- function() {
-  if (is.null(ae_cache$is_count)) {
-    white <- array(1, c(1, 2, 3))
-    one_black <- white
-    one_black[1, 1, ] <- 0
-    ae <- image_compare_dist(
-      image_read(white), image_read(one_black), metric = "AE"
-    )$distortion
-    ae_cache$is_count <- ae > 0.75
-  }
-  ae_cache$is_count
+  sum(colSums(reference != current) > 0) / (dim(current)[2] * dim(current)[3])
 }
 
 tinytest_dir <- "_tinytest_doconv"

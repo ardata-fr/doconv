@@ -1,3 +1,13 @@
+# doconv 0.4.2
+
+## Issues
+
+- The visual tests (`expect_snapshot_doc()` and the functions using it)
+  now count different pixels by comparing the decoded bytes of the images.
+  The 'AE' metric of 'ImageMagick' used in 0.4.1 does not count pixels with
+  'ImageMagick' 7, where it is weighted by the size of the differences:
+  small differences, e.g. of antialiasing, were underestimated.
+
 # doconv 0.4.1
 
 ## Features
