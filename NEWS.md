@@ -31,7 +31,6 @@
 - `to_pdf()` now fails when 'LibreOffice' does not produce a PDF; it was
   returning the output path although no file was written, as 'LibreOffice'
   can exit without error status after an export error.
-
 - `to_miniature()` and the visual tests (`expect_snapshot_doc()`) now keep
   the page order of documents of 10 pages or more; pages were sorted
   alphabetically (page 10 before page 2). Reference miniatures of such
